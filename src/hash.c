@@ -2,18 +2,17 @@
 
 #include <stdlib.h>
 
-typedef struct entrada {
-	const char *clave;
-	void *elemento;
-	struct entrada *siguiente;
-} entrada_t;
+// typedef struct entrada {
+// 	const char *clave;
+// 	void *elemento;
+// 	struct entrada *siguiente;
+// } entrada_t;
 
-struct hash {
-	entrada_t **tabla;
-	size_t capacidad;
-	size_t ocupados;
-};
-
+// struct hash {
+// 	entrada_t **tabla;
+// 	size_t capacidad;
+// 	size_t ocupados;
+// };
 
 hash_t *hash_crear(size_t capacidad)
 {
