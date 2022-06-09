@@ -94,19 +94,21 @@ int main()
 	// printf("%s\n", garage->tabla[2]->clave);
 	// if (hash_contiene(garage, "AC123BD")) printf("HOLA");
 
-	verificar_vehiculo(garage, "AC123BD",true);
-	verificar_vehiculo(garage, "OPQ976", true);
-	verificar_vehiculo(garage, "A421ACB",true);
-	verificar_vehiculo(garage, "AA442CD",true);
-	verificar_vehiculo(garage, "AC152AD",true);
-	verificar_vehiculo(garage, "DZE443", true);
-	verificar_vehiculo(garage, "AA436BA",true);
-	verificar_vehiculo(garage, "QDM443", true);
-	verificar_vehiculo(garage, "BD123AC",true);
-	verificar_vehiculo(garage, "CD442AA",true);
-	verificar_vehiculo(garage, "PQO697", true);
-	verificar_vehiculo(garage, "DZE443", true);
-	verificar_vehiculo(garage, "AC152AD",true);
+	verificar_vehiculo(garage, "AC123BD", true);
+	verificar_vehiculo(garage, "OPQ976",  true);
+	verificar_vehiculo(garage, "A421ACB", true);
+	verificar_vehiculo(garage, "AA442CD", true);
+	verificar_vehiculo(garage, "AC152AD", true);
+	verificar_vehiculo(garage, "DZE443",  true);
+	verificar_vehiculo(garage, "AA436BA", true);
+	verificar_vehiculo(garage, "QDM443",  true);
+	verificar_vehiculo(garage, "BD123AC", true);
+	verificar_vehiculo(garage, "CD442AA", true);
+	verificar_vehiculo(garage, "PQO697",  true);
+	verificar_vehiculo(garage, "DZE443",  true);
+	verificar_vehiculo(garage, "AC152AD", true);
+
+	printf("\nCHECKPOINT\n\n");
 
 	quitar_vehiculo(garage, "QDM443");
 	quitar_vehiculo(garage, "PQO697");

@@ -60,7 +60,7 @@ entrada_t *lista_insertar(entrada_t *head, entrada_t *nueva_entrada, void ***ant
 hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **anterior)
 {
 	size_t posicion = funcion_hash(clave) % hash->capacidad;
-	printf("%i\n", (int)posicion);
+	// printf("%i\n", (int)posicion);
 
 	entrada_t *nueva_entrada = malloc(sizeof(entrada_t));
 	nueva_entrada->clave = clave;
@@ -73,7 +73,7 @@ hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **an
 	if (!lista) return NULL;
 
 	hash->tabla[posicion] = lista;
-	printf("%s/n", hash->tabla[posicion]->clave);
+	// printf("%s/n", hash->tabla[posicion]->clave);
 	// hash->tabla[] = lista;
 
 	return hash;
@@ -83,21 +83,19 @@ entrada_t *lista_quitar(entrada_t *head, const char *clave, void **quitado)
 {
 	entrada_t *iterador = head;
 	entrada_t *anterior = NULL;
-	entrada_t *auxiliar = NULL;
-	// void *retorno = NULL;
 
-	while (iterador->siguiente != NULL && iterador->clave != clave) {
+	while (iterador != NULL && iterador->clave != clave) {
 		anterior = iterador;
 		iterador = iterador->siguiente;
 	}
 
-	if (!iterador->siguiente) return NULL;
+	if (!iterador) return NULL;
 
 	if (iterador->clave == clave) {
-		quitado = iterador->elemento;
-		auxiliar = iterador->siguiente;
-		anterior->siguiente = iterador->siguiente;
-		free(auxiliar);
+		*quitado = iterador->elemento;
+		if (!anterior) head = iterador->siguiente;
+		else anterior->siguiente = iterador->siguiente;
+		free(iterador);
 	}
 
 	return head;
@@ -105,10 +103,12 @@ entrada_t *lista_quitar(entrada_t *head, const char *clave, void **quitado)
 
 void *hash_quitar(hash_t *hash, const char *clave)
 {
+	// printf("ACA");
 	size_t posicion = funcion_hash(clave) % hash->capacidad;
 	void *quitado = NULL;
 
 	lista_quitar(hash->tabla[posicion], clave, &quitado);
+	printf("QUITADO: %s\n", (const char *)quitado);
 	return quitado;
 }
 
@@ -140,16 +140,16 @@ void *hash_obtener(hash_t *hash, const char *clave)
 bool hash_contiene(hash_t *hash, const char *clave)
 {
 	entrada_t *a = NULL;
-	printf("\nBUSCANDO CLAVE: %s\n", clave);
+	// printf("\nBUSCANDO CLAVE: %s\n", clave);
 	
 	for (int i = 0; i < hash->capacidad; i++) {
 		a = recorrer_hasta_encontrar(hash->tabla[i], clave);
 		if (a != NULL) {
-			printf("ENCONTRE LA CLAVE :D %s\n", a->clave);
+			// printf("ENCONTRE LA CLAVE :D %s\n", a->clave);
 			return true;
 		};
 	}
-	printf("NO ENCONTRE LA CLAVE D:");
+	// printf("NO ENCONTRE LA CLAVE D:");
 	return false;
 }
 
