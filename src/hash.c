@@ -108,13 +108,36 @@ void *hash_quitar(hash_t *hash, const char *clave)
 	return quitado;
 }
 
+entrada_t *recorrer_hasta_encontrar(entrada_t *head, const char *clave)
+{
+	if (!head) return NULL;
+
+	if (head->clave == clave) return head;
+
+	return recorrer_hasta_encontrar(head->siguiente, clave);
+}
+
 void *hash_obtener(hash_t *hash, const char *clave)
 {
+	entrada_t *a = NULL;
+
+	for (int i = 0; i < hash->capacidad; i++) {
+		a = recorrer_hasta_encontrar(hash->tabla[i], clave);
+		if (a->clave == clave) return a->elemento;
+	}
+
 	return NULL;
 }
 
 bool hash_contiene(hash_t *hash, const char *clave)
 {
+	entrada_t *a = NULL;
+	
+	for (int i = 0; i < hash->capacidad; i++) {
+		a = recorrer_hasta_encontrar(hash->tabla[i], clave);
+		if (a->clave == clave) return true;
+	}
+
 	return false;
 }
 
