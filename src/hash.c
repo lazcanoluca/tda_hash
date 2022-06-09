@@ -3,17 +3,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// typedef struct entrada {
-// 	const char *clave;
-// 	void *elemento;
-// 	struct entrada *siguiente;
-// } entrada_t;
+typedef struct entrada {
+	const char *clave;
+	void *elemento;
+	struct entrada *siguiente;
+} entrada_t;
 
-// struct hash {
-// 	entrada_t **tabla;
-// 	size_t capacidad;
-// 	size_t ocupados;
-// };
+struct hash {
+	entrada_t **tabla;
+	size_t capacidad;
+	size_t ocupados;
+};
+
+hash_t *rehash(hash_t *hash)
+{
+	return NULL;
+}
 
 hash_t *hash_crear(size_t capacidad)
 {
@@ -108,7 +113,7 @@ void *hash_quitar(hash_t *hash, const char *clave)
 	void *quitado = NULL;
 
 	lista_quitar(hash->tabla[posicion], clave, &quitado);
-	printf("QUITADO: %s\n", (const char *)quitado);
+	// printf("QUITADO: %s\n", (const char *)quitado);
 	return quitado;
 }
 
@@ -173,3 +178,4 @@ size_t hash_con_cada_clave(hash_t *hash,
 {
 	return 0;
 }
+
