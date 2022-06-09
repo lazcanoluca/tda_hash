@@ -2,17 +2,17 @@
 
 #include <stdlib.h>
 
-// typedef struct entrada {
-// 	const char *clave;
-// 	void *elemento;
-// 	struct entrada *siguiente;
-// } entrada_t;
+typedef struct entrada {
+	const char *clave;
+	void *elemento;
+	struct entrada *siguiente;
+} entrada_t;
 
-// struct hash {
-// 	entrada_t **tabla;
-// 	size_t capacidad;
-// 	size_t ocupados;
-// };
+struct hash {
+	entrada_t **tabla;
+	size_t capacidad;
+	size_t ocupados;
+};
 
 hash_t *hash_crear(size_t capacidad)
 {
@@ -75,9 +75,37 @@ hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **an
 	return hash;
 }
 
+entrada_t *lista_quitar(entrada_t *head, const char *clave, void **quitado)
+{
+	entrada_t *iterador = head;
+	entrada_t *anterior = NULL;
+	entrada_t *auxiliar = NULL;
+	// void *retorno = NULL;
+
+	while (iterador->siguiente != NULL && iterador->clave != clave) {
+		anterior = iterador;
+		iterador = iterador->siguiente;
+	}
+
+	if (!iterador->siguiente) return NULL;
+
+	if (iterador->clave == clave) {
+		quitado = iterador->elemento;
+		auxiliar = iterador->siguiente;
+		anterior->siguiente = iterador->siguiente;
+		free(auxiliar);
+	}
+
+	return head;
+}
+
 void *hash_quitar(hash_t *hash, const char *clave)
 {
-	return NULL;
+	size_t posicion = funcion_hash(clave) % hash->capacidad;
+	void *quitado = NULL;
+
+	entrada_t *lista = lista_quitar(hash->tabla[posicion], clave, &quitado);
+	return quitado;
 }
 
 void *hash_obtener(hash_t *hash, const char *clave)
