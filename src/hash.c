@@ -112,7 +112,12 @@ void *hash_quitar(hash_t *hash, const char *clave)
 	size_t posicion = funcion_hash(clave) % hash->capacidad;
 	void *quitado = NULL;
 
-	lista_quitar(hash->tabla[posicion], clave, &quitado);
+	entrada_t *lista = lista_quitar(hash->tabla[posicion], clave, &quitado);
+
+	if (!lista) return NULL;
+
+	hash->tabla[posicion] = lista;
+
 	// printf("QUITADO: %s\n", (const char *)quitado);
 	return quitado;
 }
@@ -172,10 +177,7 @@ void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 }
 
 size_t hash_con_cada_clave(hash_t *hash,
-						   bool (*f)(const char *clave,
-						   void *valor, void *aux),
+						   bool (*f)(const char *clave, void *valor, void *aux),
 						   void *aux)
 {
 	return 0;
-}
-
