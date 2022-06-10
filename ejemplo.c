@@ -75,46 +75,43 @@ int main()
 
 	printf("Agrego autos al garage\n");
 
-	guardar_vehiculo(garage, "AC123BD", "Auto de Mariano");
-	guardar_vehiculo(garage, "OPQ976", "Auto de Lucas");
-	guardar_vehiculo(garage, "A421ACB", "Moto de Manu");
-	guardar_vehiculo(garage, "AA442CD", "Auto de Guido");
+	// guardar_vehiculo(garage, "AC123BD", "Auto de Mariano");
+	// guardar_vehiculo(garage, "OPQ976", "Auto de Lucas");
+	// guardar_vehiculo(garage, "A421ACB", "Moto de Manu");
+	// guardar_vehiculo(garage, "AA442CD", "Auto de Guido");
 	guardar_vehiculo(garage, "AC152AD", "Auto de Agustina");
 	guardar_vehiculo(garage, "DZE443", "Auto de Jonathan");
 	guardar_vehiculo(garage, "AA436BA", "Auto de Gonzalo");
 	guardar_vehiculo(garage, "QDM443", "Auto de Daniela");
-	guardar_vehiculo(garage, "BD123AC", "Auto de Pablo");
-	guardar_vehiculo(garage, "CD442AA", "Auto de Micaela");
-	guardar_vehiculo(garage, "PQO697", "Auto de Juan");
+	// guardar_vehiculo(garage, "BD123AC", "Auto de Pablo");
+	// guardar_vehiculo(garage, "CD442AA", "Auto de Micaela");
+	// guardar_vehiculo(garage, "PQO697", "Auto de Juan");
 	guardar_vehiculo(garage, "DZE443", "Auto de Jonathan otra vez");
 	guardar_vehiculo(garage, "AC152AD", "Auto de Agustina otra vez");
 
-	// verificar_vehiculo(garage, "QDM443", true);
-	// verificar_vehiculo(garage, "PQO697", true);
-	// printf("%s\n", garage->tabla[2]->clave);
-	// if (hash_contiene(garage, "AC123BD")) printf("HOLA");
-
-	verificar_vehiculo(garage, "AC123BD", true);
-	verificar_vehiculo(garage, "OPQ976",  true);
-	verificar_vehiculo(garage, "A421ACB", true);
-	verificar_vehiculo(garage, "AA442CD", true);
+	// verificar_vehiculo(garage, "AC123BD", true);
+	// verificar_vehiculo(garage, "OPQ976",  true);
+	// verificar_vehiculo(garage, "A421ACB", true);
+	// verificar_vehiculo(garage, "AA442CD", true);
 	verificar_vehiculo(garage, "AC152AD", true);
 	verificar_vehiculo(garage, "DZE443",  true);
 	verificar_vehiculo(garage, "AA436BA", true);
 	verificar_vehiculo(garage, "QDM443",  true);
-	verificar_vehiculo(garage, "BD123AC", true);
-	verificar_vehiculo(garage, "CD442AA", true);
-	verificar_vehiculo(garage, "PQO697",  true);
+	// verificar_vehiculo(garage, "BD123AC", true);
+	// verificar_vehiculo(garage, "CD442AA", true);
+	// verificar_vehiculo(garage, "PQO697",  true);
 	verificar_vehiculo(garage, "DZE443",  true);
 	verificar_vehiculo(garage, "AC152AD", true);
 
-	printf("\nCHECKPOINT\n\n");
-
 	quitar_vehiculo(garage, "QDM443");
-	quitar_vehiculo(garage, "PQO697");
+	// quitar_vehiculo(garage, "PQO697");
+	quitar_vehiculo(garage, "DZE443");
+	quitar_vehiculo(garage, "AC152AD");
 
 	verificar_vehiculo(garage, "QDM443", false);
-	verificar_vehiculo(garage, "PQO697", false);
+	// verificar_vehiculo(garage, "PQO697", false);
+	verificar_vehiculo(garage, "DZE443", false);
+	verificar_vehiculo(garage, "AC152AD", false);
 
 	size_t impresas = hash_con_cada_clave(garage, mostrar_patente, NULL);
 	printf("Se mostraron %zu patentes con el iterador interno\n\n",

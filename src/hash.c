@@ -55,7 +55,7 @@ entrada_t *lista_insertar(entrada_t *head, entrada_t *nueva_entrada, void ***ant
 	}
 
 	if (iterador->clave == nueva_entrada->clave) {
-		anterior = iterador->elemento;
+		**anterior = iterador->elemento;
 		iterador->elemento = nueva_entrada->elemento;
 	}
 
@@ -75,7 +75,7 @@ hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **an
 	// funcion de lista pero le doy el head de la lista, no la lista.
 	entrada_t *lista = lista_insertar(hash->tabla[posicion], nueva_entrada, &anterior);
 
-	if (!lista) return NULL;
+	// if (!lista) return NULL;
 
 	hash->tabla[posicion] = lista;
 	// printf("%s/n", hash->tabla[posicion]->clave);
@@ -94,7 +94,7 @@ entrada_t *lista_quitar(entrada_t *head, const char *clave, void **quitado)
 		iterador = iterador->siguiente;
 	}
 
-	if (!iterador) return NULL;
+	if (!iterador) return head;
 
 	if (iterador->clave == clave) {
 		*quitado = iterador->elemento;
@@ -114,7 +114,7 @@ void *hash_quitar(hash_t *hash, const char *clave)
 
 	entrada_t *lista = lista_quitar(hash->tabla[posicion], clave, &quitado);
 
-	if (!lista) return NULL;
+	// if (!lista) return NULL;
 
 	hash->tabla[posicion] = lista;
 
@@ -170,10 +170,37 @@ size_t hash_cantidad(hash_t *hash)
 
 void hash_destruir(hash_t *hash)
 {
+	if (!!hash) free(hash);
+}
+
+entrada_t *lista_quitar_y_destruir_ultimo(entrada_t *head, void (*destructor)(void *))
+{
+	if (!head) return NULL;
+
+	if (!head->siguiente) {
+		destructor(head->elemento);
+		// destructor = destructor;
+		// free(head->elemento);
+		free(head);
+		return NULL;
+	}
+
+	head->siguiente = lista_quitar_y_destruir_ultimo(head->siguiente, destructor);
+	
+	return head;
 }
 
 void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 {
+	for (int i = 0; i < hash->capacidad; i++) {
+
+		while (hash->tabla[i] != NULL) {
+			hash->tabla[i] = lista_quitar_y_destruir_ultimo(hash->tabla[i], destructor);
+		}
+
+	}
+	free(hash->tabla);
+	hash_destruir(hash);
 }
 
 size_t hash_con_cada_clave(hash_t *hash,
@@ -181,3 +208,4 @@ size_t hash_con_cada_clave(hash_t *hash,
 						   void *aux)
 {
 	return 0;
+}
