@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define FACTOR_REHASH 2
+#define FACTOR_CARGA_MAXIMO 0.75
+
 typedef struct entrada {
 	const char *clave;
 	void *elemento;
@@ -15,10 +18,19 @@ struct hash {
 	size_t ocupados;
 };
 
-hash_t *rehash(hash_t *hash)
-{
-	return NULL;
-}
+// size_t factor_de_carga(hash_t *hash)
+// {
+// 	return hash->ocupados / hash->capacidad;
+// }
+
+// hash_t *rehash(hash_t *hash)
+// {
+// 	hash_t *nuevo_hash = hash_crear(hash->capacidad * FACTOR_REHASH);
+
+// 	hash_con_cada_clave(nuevo_hash, )
+
+// 	return NULL;
+// }
 
 hash_t *hash_crear(size_t capacidad)
 {
