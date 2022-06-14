@@ -115,6 +115,7 @@ entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, vo
 // }
 */
 
+/*
 hash_t *hash_inseRTAME_ESTA(hash_t *hash, const char *clave, void *elemento)
 {
 	size_t posicion = funcion_hash(clave) % hash->capacidad;
@@ -125,6 +126,7 @@ hash_t *hash_inseRTAME_ESTA(hash_t *hash, const char *clave, void *elemento)
 
 	return hash;
 }
+*/
 
 
 
@@ -281,7 +283,11 @@ size_t hash_cantidad(hash_t *hash)
 
 void hash_destruir(hash_t *hash)
 {
-	if (!!hash) free(hash);
+	// if (!!hash) {
+	// 	free(hash->tabla);
+	// 	free(hash);
+	// }
+	hash_destruir_todo(hash, NULL);
 }
 
 entrada_t *lista_quitar_y_destruir_ultimo(entrada_t *head, void (*destructor)(void *))
@@ -311,7 +317,8 @@ void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 
 	}
 	free(hash->tabla);
-	hash_destruir(hash);
+	free(hash);
+	// hash_destruir(hash);
 }
 
 /*
