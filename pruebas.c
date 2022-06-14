@@ -131,6 +131,34 @@ void pruebas_rehash()
 	hash_destruir_todo(hash, NULL);
 }
 
+void pruebas_de_insercion_replica_chanu()
+{
+	hash_t *hash = hash_crear(3);
+
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE1", "1", NULL), "Inserto <CLAVE1,1>");
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE2", "2", NULL), "Inserto <CLAVE2,2>");
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE3", "3", NULL), "Inserto <CLAVE3,3>");
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE4", "4", NULL), "Inserto <CLAVE4,4>");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE1"), "Busco CLAVE1");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE2"), "Busco CLAVE2");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE3"), "Busco CLAVE3");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE4"), "Busco CLAVE4");
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE1", "5", NULL), "Inserto <CLAVE1,5>");
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE2", "6", NULL), "Inserto <CLAVE2,6>");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE1"), "Busco CLAVE1");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE2"), "Busco CLAVE2");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE3"), "Busco CLAVE3");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE4"), "Busco CLAVE4");
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE1", "7", NULL), "Inserto <CLAVE1,7>");
+	pa2m_afirmar( !!hash_insertar(hash, "CLAVE2", "8", NULL), "Inserto <CLAVE2,8>");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE1"), "Busco CLAVE1");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE2"), "Busco CLAVE2");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE3"), "Busco CLAVE3");
+	pa2m_afirmar( hash_contiene(hash, "CLAVE4"), "Busco CLAVE4");
+	pa2m_afirmar( hash_cantidad(hash) == 4, "La cantidad de elementos del hash es 4.");
+
+}
+
 int main()
 {
 	pa2m_nuevo_grupo("Pruebas insercion simple.");
@@ -141,6 +169,9 @@ int main()
 
 	pa2m_nuevo_grupo("Pruebas donde se rehashea.");
 	pruebas_rehash();
+
+	pa2m_nuevo_grupo("Pruebas de inserción");
+	pruebas_de_insercion_replica_chanu();
 
 	return pa2m_mostrar_reporte();
 }

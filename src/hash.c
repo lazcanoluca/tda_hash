@@ -65,7 +65,7 @@ size_t funcion_hash(const char *clave) {
 	return (size_t)clave[0];
 }
 
-entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, void ***anterior)
+entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, void ***anterior, bool *repetido)
 {
 	if (!head) {
 		entrada_t *nueva_entrada = malloc(sizeof(entrada_t));
@@ -76,12 +76,13 @@ entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, vo
 	}
 
 	if (head->clave == clave) {
+		*repetido = true;
 		if (anterior != NULL && (*anterior) != NULL) **anterior = head->elemento;
 		head->elemento = elemento;
 		return head;
 	}
 
-	head->siguiente = lista_insertar(head->siguiente, clave, elemento, anterior);
+	head->siguiente = lista_insertar(head->siguiente, clave, elemento, anterior, repetido);
 	return head;
 }
 
@@ -134,7 +135,7 @@ hash_t *hash_inseRTAME_ESTA(hash_t *hash, const char *clave, void *elemento)
 hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **anterior)
 {
 	if ( ((float)hash->ocupados + 1) / (float)hash->capacidad >= FACTOR_CARGA_MAXIMO) {
-		printf("factor de carga: %f \n", ((float)hash->ocupados + 1) / (float)hash->capacidad);
+		printf("\n\nfactor de carga: %f \n", ((float)hash->ocupados + 1) / (float)hash->capacidad);
 
 		hash_t *nuevo_hash = hash_crear(hash->capacidad * 2);
 
@@ -165,12 +166,14 @@ hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **an
 	
 	size_t posicion = funcion_hash(clave) % hash->capacidad;
 
-	printf("a insertar: %s\n", clave);
-	hash->tabla[posicion] = lista_insertar(hash->tabla[posicion], clave, elemento, &anterior);
+	bool repetido = false;
+	printf("\na insertar: %s\n", clave);
+	hash->tabla[posicion] = lista_insertar(hash->tabla[posicion], clave, elemento, &anterior, &repetido);
 
-	if (!anterior || !(*anterior)) hash->ocupados++;
+	// if (!anterior || !(*anterior)) hash->ocupados++;
+	if (!repetido) hash->ocupados++;
 
-	printf("ocupados hash: %i\n", (int)hash_cantidad(hash));
+	printf("\nocupados hash: %i\n", (int)hash_cantidad(hash));
 	return hash;
 }
 
