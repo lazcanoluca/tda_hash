@@ -235,7 +235,7 @@ void *hash_quitar(hash_t *hash, const char *clave)
 	// if (!lista) return NULL;
 
 	hash->tabla[posicion] = lista;
-	hash->ocupados--;
+	if (quitado != NULL) hash->ocupados--;
 
 	// printf("QUITADO: %s\n", (const char *)quitado);
 	return quitado;

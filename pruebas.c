@@ -3,6 +3,7 @@
 #include "pa2m.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 // entrada_t *en_posicion(hash_t *hash, size_t posicion);
 
@@ -157,6 +158,29 @@ void pruebas_de_insercion_replica_chanu()
 	pa2m_afirmar( hash_contiene(hash, "CLAVE4"), "Busco CLAVE4");
 	pa2m_afirmar( hash_cantidad(hash) == 4, "La cantidad de elementos del hash es 4.");
 
+	hash_destruir_todo(hash, NULL);
+
+}
+
+void pruebas_de_eliminacion_replica_chanu()
+{
+	hash_t *hash = hash_crear(3);
+
+	pa2m_afirmar( hash_quitar(hash, "CLAVE_QUE_NO_EXISTE") == NULL, "Elimino una clave que no existe de un hash, devuelve NULL");
+	pa2m_afirmar( !!hash_insertar(hash, "1", "A", NULL), "Inserto <1,A>");
+	pa2m_afirmar( !!hash_insertar(hash, "1", "A", NULL), "Inserto <1,A>");
+	pa2m_afirmar( strcmp(hash_quitar(hash, "1"), "A") == 0, "Elimino la clave 1, devuelve el elemento.");
+	pa2m_afirmar( hash_quitar(hash, "1") == NULL, "Elimino la clave 1 otra vez, devuelve error.");
+	pa2m_afirmar( hash_cantidad(hash) == 0, "El tamaño del hash es 0");
+	pa2m_afirmar( hash_obtener(hash, "1") == NULL, "Obtener una clave borrada devuelve NULL.");
+	pa2m_afirmar( !!hash_insertar(hash, "1", "B", NULL), "Inserto <1,B>");
+	pa2m_afirmar( strcmp(hash_obtener(hash, "1"), "B") == 0, "Obtengo la clave 1 y devuelve B");
+	pa2m_afirmar( !!hash_insertar(hash, "4", "A", NULL), "Inserto <4,A>");
+	pa2m_afirmar( strcmp(hash_quitar(hash, "1"), "B") == 0, "Elimino la clave 1, devuelve el elemento B.");
+	pa2m_afirmar( strcmp(hash_quitar(hash, "4"), "A") == 0, "Elimino la clave 4, devuelve el elemento A.");
+	pa2m_afirmar( hash_cantidad(hash) == 0, "El tamaño del hash es 0.");
+
+	hash_destruir_todo(hash, NULL);
 }
 
 int main()
@@ -172,6 +196,9 @@ int main()
 
 	pa2m_nuevo_grupo("Pruebas de inserción");
 	pruebas_de_insercion_replica_chanu();
+
+	pa2m_nuevo_grupo("Pruebas de eliminación");
+	pruebas_de_eliminacion_replica_chanu();
 
 	return pa2m_mostrar_reporte();
 }
