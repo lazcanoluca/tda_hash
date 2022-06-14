@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #define FACTOR_REHASH 2
-#define FACTOR_CARGA_MAXIMO 0.75
+#define FACTOR_CARGA_MAXIMO 1
 
 typedef struct entrada {
 	const char *clave;
@@ -18,19 +18,37 @@ struct hash {
 	size_t ocupados;
 };
 
-// size_t factor_de_carga(hash_t *hash)
-// {
-// 	return hash->ocupados / hash->capacidad;
-// }
+float factor_de_carga(hash_t *hash)
+{
+	return (float)hash->ocupados / (float)hash->capacidad;
+}
 
+/*
 // hash_t *rehash(hash_t *hash)
 // {
-// 	hash_t *nuevo_hash = hash_crear(hash->capacidad * FACTOR_REHASH);
+// 	printf("rehashing... \n");
+// 	hash_t *nuevo_hash = hash_crear(hash->capacidad * 2);
+// 	// hash_t *retorno;
 
-// 	hash_con_cada_clave(nuevo_hash, )
+// 	for (int i = 0; i < hash->capacidad; i++) {
 
-// 	return NULL;
+// 		entrada_t *iterador = hash->tabla[i];
+
+// 		while (iterador != NULL) {
+// 			printf("a insertar: %s\n", iterador->clave);
+// 			nuevo_hash = hash_insertar(nuevo_hash, iterador->clave, iterador->elemento, NULL);
+// 			iterador = iterador->siguiente;
+// 		}
+
+// 	}
+
+// 	nuevo_hash->ocupados = hash->ocupados;
+// 	printf("ocupados nuevo hash: %i \n", (int)hash_cantidad(nuevo_hash));
+// 	// hash_destruir(hash);
+// 	return nuevo_hash;
+
 // }
+*/
 
 hash_t *hash_crear(size_t capacidad)
 {
@@ -58,7 +76,7 @@ entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, vo
 	}
 
 	if (head->clave == clave) {
-		**anterior = head->elemento;
+		if (anterior != NULL) **anterior = head->elemento;
 		head->elemento = elemento;
 		return head;
 	}
@@ -97,13 +115,60 @@ entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, vo
 // }
 */
 
-hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **anterior)
+hash_t *hash_inseRTAME_ESTA(hash_t *hash, const char *clave, void *elemento)
 {
 	size_t posicion = funcion_hash(clave) % hash->capacidad;
 
+	hash->tabla[posicion] = lista_insertar(hash->tabla[posicion], clave, elemento, NULL);
+
+	hash->ocupados++;
+
+	return hash;
+}
+
+
+
+
+hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **anterior)
+{
+	if ( ((float)hash->ocupados + 1) / (float)hash->capacidad >= FACTOR_CARGA_MAXIMO) {
+		printf("factor de carga: %f \n", ((float)hash->ocupados + 1) / (float)hash->capacidad);
+
+		hash_t *nuevo_hash = hash_crear(hash->capacidad * 2);
+
+		for (int i = 0; i < hash->capacidad; i++) {
+
+			entrada_t *iterador = hash->tabla[i];
+
+			while (iterador != NULL) {
+				// printf("a insertar: %s\n", iterador->clave);
+				nuevo_hash = hash_insertar(nuevo_hash, iterador->clave, iterador->elemento, NULL);
+				iterador = iterador->siguiente;
+			}
+
+		}
+		// free(hash->tabla);
+		entrada_t **aux = hash->tabla;
+		hash->tabla = nuevo_hash->tabla;
+		nuevo_hash->tabla = aux;
+
+		size_t aux2 = hash->capacidad;
+		hash->capacidad = nuevo_hash->capacidad;
+		nuevo_hash->capacidad = aux2;
+
+		// free(nuevo_hash->tabla);
+		// free(nuevo_hash);
+		hash_destruir_todo(nuevo_hash, NULL);
+	}
+	
+	size_t posicion = funcion_hash(clave) % hash->capacidad;
+
+	printf("a insertar: %s\n", clave);
 	hash->tabla[posicion] = lista_insertar(hash->tabla[posicion], clave, elemento, &anterior);
 
-	if (!(*anterior)) hash->ocupados++;
+	if (!anterior || !(*anterior)) hash->ocupados++;
+
+	printf("ocupados hash: %i\n", (int)hash_cantidad(hash));
 	return hash;
 }
 
