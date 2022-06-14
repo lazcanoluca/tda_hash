@@ -76,7 +76,7 @@ entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, vo
 	}
 
 	if (head->clave == clave) {
-		if (anterior != NULL) **anterior = head->elemento;
+		if (anterior != NULL && (*anterior) != NULL) **anterior = head->elemento;
 		head->elemento = elemento;
 		return head;
 	}
