@@ -1,10 +1,13 @@
 #include "hash.h"
 
+#include "xxhash.h"
+
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define FACTOR_REHASH 2
-#define FACTOR_CARGA_MAXIMO 1
+#define FACTOR_CARGA_MAXIMO 10
 
 typedef struct entrada {
 	const char *clave;
@@ -17,6 +20,26 @@ struct hash {
 	size_t capacidad;
 	size_t ocupados;
 };
+
+XXH32_hash_t hash_string(const char* string, XXH32_hash_t seed)
+{
+    // NULL pointers are only valid if the length is zero
+    size_t length = (string == NULL) ? 0 : strlen(string);
+    return XXH32(string, length, seed);
+}
+
+// size_t funcion_hash(const char *clave) {
+// 	return (size_t)hash_string(clave, 0);
+// 	// return (size_t)clave[0];
+// }
+
+size_t funcion_hash(const char* str){
+  int hash = 0;
+  int c;
+  while ((c = *str++))
+    hash = c + (hash << 6) + (hash << 16) - hash;
+	return (size_t)hash;
+}
 
 float factor_de_carga(hash_t *hash)
 {
@@ -50,6 +73,19 @@ float factor_de_carga(hash_t *hash)
 // }
 */
 
+char *duplicar_string(const char *s)
+{
+	if (!s)
+		return NULL;
+
+	char *p = malloc(strlen(s) + 1);
+	if (!p)
+		return NULL;
+
+	strcpy(p, s);
+	return p;
+}
+
 hash_t *hash_crear(size_t capacidad)
 {
 	hash_t *hash = calloc(1, sizeof(hash_t));
@@ -61,28 +97,31 @@ hash_t *hash_crear(size_t capacidad)
 	return hash;
 }
 
-size_t funcion_hash(const char *clave) {
-	return (size_t)clave[0];
-}
 
-entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, void ***anterior, bool *repetido)
+entrada_t *lista_insertar(entrada_t *head, const char *clave, void *elemento, void ***anterior, bool *repetido, size_t *ocupados)
 {
 	if (!head) {
 		entrada_t *nueva_entrada = malloc(sizeof(entrada_t));
 		nueva_entrada->clave = clave;
 		nueva_entrada->elemento = elemento;
 		nueva_entrada->siguiente = NULL;
+		if (anterior != NULL && (*anterior) != NULL) **anterior = NULL;
+		(*ocupados)++;
 		return nueva_entrada;
 	}
 
-	if (head->clave == clave) {
+	// if ((char *)head->clave == (char *)clave) {
+	if (strcmp(head->clave, clave) == 0) {
+		free((char *)clave); // acá en vez de dupliar el strng en la entrada, debería duplicarlo acá.
 		*repetido = true;
+		// printf("pasó a true\n");
+		// printf("head->clave = %p, clave = %p\n", head->clave, clave);
 		if (anterior != NULL && (*anterior) != NULL) **anterior = head->elemento;
 		head->elemento = elemento;
 		return head;
 	}
 
-	head->siguiente = lista_insertar(head->siguiente, clave, elemento, anterior, repetido);
+	head->siguiente = lista_insertar(head->siguiente, clave, elemento, anterior, repetido, ocupados);
 	return head;
 }
 
@@ -134,17 +173,19 @@ hash_t *hash_inseRTAME_ESTA(hash_t *hash, const char *clave, void *elemento)
 
 hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **anterior)
 {
-	if ( ((float)hash->ocupados + 1) / (float)hash->capacidad >= FACTOR_CARGA_MAXIMO) {
-		printf("\n\nfactor de carga: %f \n", ((float)hash->ocupados + 1) / (float)hash->capacidad);
+	if (!hash) return NULL;
 
-		hash_t *nuevo_hash = hash_crear(hash->capacidad * 2);
+	if ( ((float)hash->ocupados + 1) / (float)hash->capacidad >= FACTOR_CARGA_MAXIMO) {
+		// printf("\n\nfactor de carga: %f \n", ((float)hash->ocupados + 1) / (float)hash->capacidad);
+
+		hash_t *nuevo_hash = hash_crear(hash->capacidad * FACTOR_REHASH);
 
 		for (int i = 0; i < hash->capacidad; i++) {
 
 			entrada_t *iterador = hash->tabla[i];
 
 			while (iterador != NULL) {
-				// printf("a insertar: %s\n", iterador->clave);
+				// printf("\na insertar recursivamente: <%s, %p>\n", iterador->clave, iterador->clave);
 				nuevo_hash = hash_insertar(nuevo_hash, iterador->clave, iterador->elemento, NULL);
 				iterador = iterador->siguiente;
 			}
@@ -159,6 +200,10 @@ hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **an
 		hash->capacidad = nuevo_hash->capacidad;
 		nuevo_hash->capacidad = aux2;
 
+		size_t aux3 = hash->ocupados;
+		hash->ocupados = nuevo_hash->ocupados;
+		nuevo_hash->ocupados = aux3;
+
 		// free(nuevo_hash->tabla);
 		// free(nuevo_hash);
 		hash_destruir_todo(nuevo_hash, NULL);
@@ -167,13 +212,18 @@ hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void **an
 	size_t posicion = funcion_hash(clave) % hash->capacidad;
 
 	bool repetido = false;
-	printf("\na insertar: %s\n", clave);
-	hash->tabla[posicion] = lista_insertar(hash->tabla[posicion], clave, elemento, &anterior, &repetido);
+	// printf("pasó a false");
+	// printf("\na insertar: <%s, %p>\n", clave, clave);
+	// hash->tabla[posicion] = lista_insertar(hash->tabla[posicion], clave, elemento, &anterior, &repetido, &hash->ocupados);
+	hash->tabla[posicion] = lista_insertar(hash->tabla[posicion], duplicar_string(clave), elemento, &anterior, &repetido, &hash->ocupados);
 
 	// if (!anterior || !(*anterior)) hash->ocupados++;
-	if (!repetido) hash->ocupados++;
+	// if (!repetido) {
+	// 	printf("sumo");
+	// 	hash->ocupados++;
+	// }
 
-	printf("\nocupados hash: %i\n", (int)hash_cantidad(hash));
+	// printf("\nocupados hash: %i\n", (int)hash_cantidad(hash));
 	return hash;
 }
 
@@ -207,17 +257,19 @@ entrada_t *lista_quitar(entrada_t *head, const char *clave, void **quitado)
 	entrada_t *iterador = head;
 	entrada_t *anterior = NULL;
 
-	while (iterador != NULL && iterador->clave != clave) {
+	while (iterador != NULL && strcmp(iterador->clave, clave) != 0) {
 		anterior = iterador;
 		iterador = iterador->siguiente;
 	}
 
 	if (!iterador) return head;
 
-	if (iterador->clave == clave) {
+	// if (iterador->clave == clave) {
+	if ( strcmp(iterador->clave, clave) == 0) {
 		*quitado = iterador->elemento;
 		if (!anterior) head = iterador->siguiente;
 		else anterior->siguiente = iterador->siguiente;
+		free((char *)iterador->clave);
 		free(iterador);
 	}
 
@@ -245,7 +297,8 @@ entrada_t *recorrer_hasta_encontrar(entrada_t *head, const char *clave)
 {
 	if (!head) return NULL;
 
-	if (head->clave == clave) return head;
+	// if (head->clave == clave) return head;
+	if ( strcmp(head->clave, clave) == 0 ) return head;
 
 	return recorrer_hasta_encontrar(head->siguiente, clave);
 }
@@ -301,6 +354,7 @@ entrada_t *lista_quitar_y_destruir_ultimo(entrada_t *head, void (*destructor)(vo
 		if (destructor != NULL) destructor(head->elemento);
 		// destructor = destructor;
 		// free(head->elemento);
+		free((char *)head->clave);
 		free(head);
 		return NULL;
 	}

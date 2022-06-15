@@ -1,0 +1,479 @@
+Archivos Entregados
+===================
+
+[01;34m.[00m
+└── [  80]  [01;34msrc[00m
+    ├── [8.7K]  hash.c
+    └── [3.0K]  hash.h
+
+1 directory, 2 files
+
+Compilación y pruebas
+=====================
+
+rm -f *.o pruebas_chanutron
+gcc -std=c99 -Wall -Wconversion -Wtype-limits -pedantic -Werror -O2 -g src/*.c pruebas_chanutron.c -o pruebas_chanutron
+rm -f *.c
+valgrind --leak-check=full --track-origins=yes --show-reachable=yes --error-exitcode=2 --show-leak-kinds=all --trace-children=yes ./pruebas_chanutron
+==31918== Memcheck, a memory error detector
+==31918== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==31918== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==31918== Command: ./pruebas_chanutron
+==31918== 
+[33;1m
+Pruebas de creación y destrucción
+===================================[37;1m
+[32;1m✓ [37;1mCreo un hash con capacidad 1
+[32;1m✓ [37;1mCreo un hash con capacidad 10
+[32;1m✓ [37;1mCreo un hash con capacidad 1000
+==31919== 
+==31919== HEAP SUMMARY:
+==31919==     in use at exit: 0 bytes in 0 blocks
+==31919==   total heap usage: 6 allocs, 6 frees, 4,080 bytes allocated
+==31919== 
+==31919== All heap blocks were freed -- no leaks are possible
+==31919== 
+==31919== For lists of detected and suppressed errors, rerun with: -s
+==31919== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas de inserción
+=====================[37;1m
+
+a insertar: CLAVE1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <CLAVE1,1>
+
+a insertar: CLAVE2
+
+ocupados hash: 2
+[32;1m✓ [37;1mInserto <CLAVE2,2>
+
+
+factor de carga: 1.000000 
+
+a insertar recursivamente: CLAVE1
+
+a insertar: CLAVE1
+
+ocupados hash: 1
+
+a insertar recursivamente: CLAVE2
+
+a insertar: CLAVE2
+
+ocupados hash: 2
+
+a insertar: CLAVE3
+
+ocupados hash: 3
+[32;1m✓ [37;1mInserto <CLAVE3,3>
+
+a insertar: CLAVE4
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE4,4>
+[32;1m✓ [37;1mBusco CLAVE1
+[32;1m✓ [37;1mBusco CLAVE2
+[32;1m✓ [37;1mBusco CLAVE3
+[32;1m✓ [37;1mBusco CLAVE4
+
+a insertar: CLAVE1
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE1,5>
+
+a insertar: CLAVE2
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE2,6>
+[32;1m✓ [37;1mBusco CLAVE1
+[32;1m✓ [37;1mBusco CLAVE2
+[32;1m✓ [37;1mBusco CLAVE3
+[32;1m✓ [37;1mBusco CLAVE4
+
+a insertar: CLAVE3
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE1,7>
+
+a insertar: CLAVE4
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE2,8>
+[32;1m✓ [37;1mBusco CLAVE1
+[32;1m✓ [37;1mBusco CLAVE2
+[32;1m✓ [37;1mBusco CLAVE3
+[32;1m✓ [37;1mBusco CLAVE4
+[32;1m✓ [37;1mLa cantidad de elementos del hash es 4
+==31920== 
+==31920== HEAP SUMMARY:
+==31920==     in use at exit: 0 bytes in 0 blocks
+==31920==   total heap usage: 10 allocs, 10 frees, 132 bytes allocated
+==31920== 
+==31920== All heap blocks were freed -- no leaks are possible
+==31920== 
+==31920== For lists of detected and suppressed errors, rerun with: -s
+==31920== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas de eliminación
+=======================[37;1m
+[32;1m✓ [37;1mElimino una clave que no existe de un hash, devuelve NULL
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,A>
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,A>
+[32;1m✓ [37;1mElimino la clave 1, devuelve el elemento
+[32;1m✓ [37;1mElimino la clave 1 otra vez, devuelve error
+[32;1m✓ [37;1mEl tamaño de hash es 0
+[32;1m✓ [37;1mObtener una clave borrada devuelve NULL
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,B>
+[32;1m✓ [37;1mObtengo la clave 1 y devuelve B
+
+a insertar: 4
+
+ocupados hash: 2
+[32;1m✓ [37;1mInserto <4,A>
+[32;1m✓ [37;1mEl tamaño de hash es 2
+[32;1m✓ [37;1mElimino la clave 1, devuelve el elemento B
+[32;1m✓ [37;1mElimino la clave 4, devuelve el elemento A
+[32;1m✓ [37;1mEl tamaño de hash es 0
+==31921== 
+==31921== HEAP SUMMARY:
+==31921==     in use at exit: 0 bytes in 0 blocks
+==31921==   total heap usage: 5 allocs, 5 frees, 60 bytes allocated
+==31921== 
+==31921== All heap blocks were freed -- no leaks are possible
+==31921== 
+==31921== For lists of detected and suppressed errors, rerun with: -s
+==31921== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas de actualizacion de claves
+==================================[37;1m
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,A> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es NULL
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,B> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es A
+[32;1m✓ [37;1mObtengo 1 y vale B
+[32;1m✓ [37;1mElimino la clave 1 y devuelve B
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,B> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es NULL
+[32;1m✓ [37;1mObtengo 1 y vale B
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,C> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es B
+[32;1m✓ [37;1mObtengo 1 y vale C
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,D> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es C
+[32;1m✓ [37;1mObtengo 1 y vale D
+
+a insertar: 1
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,C> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es D
+[32;1m✓ [37;1mObtengo 1 y vale C
+==31922== 
+==31922== HEAP SUMMARY:
+==31922==     in use at exit: 0 bytes in 0 blocks
+==31922==   total heap usage: 4 allocs, 4 frees, 76 bytes allocated
+==31922== 
+==31922== All heap blocks were freed -- no leaks are possible
+==31922== 
+==31922== For lists of detected and suppressed errors, rerun with: -s
+==31922== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas con muchas inserciones/eliminaciones
+============================================[37;1m
+[33;1m
+COPIA LA CLAVE AL INSERTAR (YO TE AVISÉ)
+=========================================[37;1m
+
+a insertar: 001
+
+ocupados hash: 1
+
+a insertar: 101
+
+ocupados hash: 2
+[31;1m✗ [37;1mPude insertar 50000 claves diferentes exitosamente (no hay reemplazos)
+[31;1m✗ [37;1mLa cantidad de claves almacenadas es 50000
+[31;1m✗ [37;1mElimino 1/3 de las claves, quitar me da el elemento correcto obtener me da NULL
+[31;1m✗ [37;1mPude volver a insertar las 50000 mismas claves sin errores y cada insertar me devuelve el elemento anterior para esa clave
+[31;1m✗ [37;1mLa cantidad de claves almacenadas es 50000
+==31923== 
+==31923== HEAP SUMMARY:
+==31923==     in use at exit: 0 bytes in 0 blocks
+==31923==   total heap usage: 4 allocs, 4 frees, 48 bytes allocated
+==31923== 
+==31923== All heap blocks were freed -- no leaks are possible
+==31923== 
+==31923== For lists of detected and suppressed errors, rerun with: -s
+==31923== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas de iterador interno
+===========================[37;1m
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar: 
+
+ocupados hash: 2
+
+a insertar: 
+
+ocupados hash: 3
+
+a insertar: 
+
+ocupados hash: 4
+
+
+factor de carga: 1.000000 
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar: 
+
+ocupados hash: 2
+
+a insertar: 
+
+ocupados hash: 3
+
+a insertar: 
+
+ocupados hash: 4
+
+a insertar: 	
+
+ocupados hash: 5
+
+a insertar: 
+
+
+ocupados hash: 6
+
+a insertar: 
+
+ocupados hash: 7
+
+a insertar: 
+
+ocupados hash: 8
+
+a insertar: 
+
+ocupados hash: 9
+
+
+factor de carga: 1.000000 
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar recursivamente: 
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar: 
+
+ocupados hash: 1
+
+a insertar: 
+
+ocupados hash: 2
+
+a insertar: 
+
+ocupados hash: 3
+
+a insertar: 
+
+ocupados hash: 4
+
+a insertar: 
+
+ocupados hash: 5
+
+a insertar: 
+
+ocupados hash: 6
+
+a insertar: 
+
+ocupados hash: 7
+[32;1m✓ [37;1mInserto N elementos sin error
+[31;1m✗ [37;1mEl hash tiene tamaño N
+[31;1m✗ [37;1mEl iterador interno recorre N claves
+[31;1m✗ [37;1mLas N claves recorridas son las N insertadas
+[32;1m✓ [37;1mRecorro las primeras 5 claves
+[32;1m✓ [37;1mSe invocó la función de iteración 5 veces
+[32;1m✓ [37;1mRecorro las primeras 3 claves
+[32;1m✓ [37;1mSe invocó la función de iteración 3 veces
+==31924== 
+==31924== HEAP SUMMARY:
+==31924==     in use at exit: 0 bytes in 0 blocks
+==31924==   total heap usage: 26 allocs, 26 frees, 416 bytes allocated
+==31924== 
+==31924== All heap blocks were freed -- no leaks are possible
+==31924== 
+==31924== For lists of detected and suppressed errors, rerun with: -s
+==31924== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas NULL
+============[37;1m
+==31925== Invalid read of size 4
+==31925==    at 0x10EE8: ??? (hash.c:138)
+==31925==    by 0x12F03: pruebas_parametros_null (pruebas_chanutron.c:374)
+==31925==    by 0x1092B: main (pruebas_chanutron.c:429)
+==31925==  Address 0x8 is not stack'd, malloc'd or (recently) free'd
+==31925== 
+[31;1m
+
+ERROR MIENTRAS SE EJECUTABA LA PRUEBA: [33;1m'En un hash NULL se inserta un elemento NULL, con clave NULL, devuelve NULL'
+
+[37;1m==31925== 
+==31925== HEAP SUMMARY:
+==31925==     in use at exit: 52 bytes in 2 blocks
+==31925==   total heap usage: 2 allocs, 0 frees, 52 bytes allocated
+==31925== 
+==31925== 12 bytes in 1 blocks are still reachable in loss record 1 of 2
+==31925==    at 0x484485C: calloc (vg_replace_malloc.c:1328)
+==31925==    by 0x10A53: hash_crear (hash.c:55)
+==31925==    by 0x12ED9: pruebas_parametros_null (pruebas_chanutron.c:368)
+==31925==    by 0x1092B: main (pruebas_chanutron.c:429)
+==31925== 
+==31925== 40 bytes in 1 blocks are still reachable in loss record 2 of 2
+==31925==    at 0x484485C: calloc (vg_replace_malloc.c:1328)
+==31925==    by 0x10A5F: hash_crear (hash.c:58)
+==31925==    by 0x12ED9: pruebas_parametros_null (pruebas_chanutron.c:368)
+==31925==    by 0x1092B: main (pruebas_chanutron.c:429)
+==31925== 
+==31925== LEAK SUMMARY:
+==31925==    definitely lost: 0 bytes in 0 blocks
+==31925==    indirectly lost: 0 bytes in 0 blocks
+==31925==      possibly lost: 0 bytes in 0 blocks
+==31925==    still reachable: 52 bytes in 2 blocks
+==31925==         suppressed: 0 bytes in 0 blocks
+==31925== 
+==31925== For lists of detected and suppressed errors, rerun with: -s
+==31925== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+[37;1m
+---------------------------------
+69 pruebas corridas, 8 errores - D:
+[0m==31918== 
+==31918== HEAP SUMMARY:
+==31918==     in use at exit: 0 bytes in 0 blocks
+==31918==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==31918== 
+==31918== All heap blocks were freed -- no leaks are possible
+==31918== 
+==31918== For lists of detected and suppressed errors, rerun with: -s
+==31918== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+makefile-chanutron:8: recipe for target 'valgrind' failed
+make: *** [valgrind] Error 2

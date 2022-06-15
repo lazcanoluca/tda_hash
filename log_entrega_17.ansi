@@ -1,0 +1,5517 @@
+Archivos Entregados
+===================
+
+[01;34m.[00m
+└── [  80]  [01;34msrc[00m
+    ├── [9.4K]  hash.c
+    └── [3.0K]  hash.h
+
+1 directory, 2 files
+
+Compilación y pruebas
+=====================
+
+rm -f *.o pruebas_chanutron
+gcc -std=c99 -Wall -Wconversion -Wtype-limits -pedantic -Werror -O2 -g src/*.c pruebas_chanutron.c -o pruebas_chanutron
+rm -f *.c
+valgrind --leak-check=full --track-origins=yes --show-reachable=yes --error-exitcode=2 --show-leak-kinds=all --trace-children=yes ./pruebas_chanutron
+==3446== Memcheck, a memory error detector
+==3446== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3446== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==3446== Command: ./pruebas_chanutron
+==3446== 
+[33;1m
+Pruebas de creación y destrucción
+===================================[37;1m
+[32;1m✓ [37;1mCreo un hash con capacidad 1
+[32;1m✓ [37;1mCreo un hash con capacidad 10
+[32;1m✓ [37;1mCreo un hash con capacidad 1000
+==3447== 
+==3447== HEAP SUMMARY:
+==3447==     in use at exit: 0 bytes in 0 blocks
+==3447==   total heap usage: 6 allocs, 6 frees, 4,080 bytes allocated
+==3447== 
+==3447== All heap blocks were freed -- no leaks are possible
+==3447== 
+==3447== For lists of detected and suppressed errors, rerun with: -s
+==3447== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas de inserción
+=====================[37;1m
+pasó a false
+a insertar: <CLAVE1, 0x13764>
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <CLAVE1,1>
+pasó a false
+a insertar: <CLAVE2, 0x13780>
+
+ocupados hash: 2
+[32;1m✓ [37;1mInserto <CLAVE2,2>
+pasó a false
+a insertar: <CLAVE3, 0x1379c>
+
+ocupados hash: 3
+[32;1m✓ [37;1mInserto <CLAVE3,3>
+pasó a false
+a insertar: <CLAVE4, 0x137b8>
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE4,4>
+[32;1m✓ [37;1mBusco CLAVE1
+[32;1m✓ [37;1mBusco CLAVE2
+[32;1m✓ [37;1mBusco CLAVE3
+[32;1m✓ [37;1mBusco CLAVE4
+pasó a false
+a insertar: <CLAVE1, 0x13764>
+pasó a true
+head->clave = 0x494d0a8, clave = 0x494d288
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE1,5>
+pasó a false
+a insertar: <CLAVE2, 0x13780>
+pasó a true
+head->clave = 0x494d120, clave = 0x494d2c0
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE2,6>
+[32;1m✓ [37;1mBusco CLAVE1
+[32;1m✓ [37;1mBusco CLAVE2
+[32;1m✓ [37;1mBusco CLAVE3
+[32;1m✓ [37;1mBusco CLAVE4
+pasó a false
+a insertar: <CLAVE3, 0x1379c>
+pasó a true
+head->clave = 0x494d198, clave = 0x494d2f8
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE1,7>
+pasó a false
+a insertar: <CLAVE4, 0x137b8>
+pasó a true
+head->clave = 0x494d210, clave = 0x494d330
+
+ocupados hash: 4
+[32;1m✓ [37;1mInserto <CLAVE2,8>
+[32;1m✓ [37;1mBusco CLAVE1
+[32;1m✓ [37;1mBusco CLAVE2
+[32;1m✓ [37;1mBusco CLAVE3
+[32;1m✓ [37;1mBusco CLAVE4
+[32;1m✓ [37;1mLa cantidad de elementos del hash es 4
+==3448== 
+==3448== HEAP SUMMARY:
+==3448==     in use at exit: 56 bytes in 8 blocks
+==3448==   total heap usage: 14 allocs, 6 frees, 128 bytes allocated
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 1 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x11437: pruebas_insercion (pruebas_chanutron.c:32)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 2 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x11499: pruebas_insercion (pruebas_chanutron.c:34)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 3 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x114FD: pruebas_insercion (pruebas_chanutron.c:36)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 4 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x11563: pruebas_insercion (pruebas_chanutron.c:38)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 5 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x11739: pruebas_insercion (pruebas_chanutron.c:46)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 6 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x1179B: pruebas_insercion (pruebas_chanutron.c:48)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 7 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x11959: pruebas_insercion (pruebas_chanutron.c:56)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== 7 bytes in 1 blocks are definitely lost in loss record 8 of 8
+==3448==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3448==    by 0x10F57: duplicar_string (hash.c:59)
+==3448==    by 0x10F57: hash_insertar (hash.c:198)
+==3448==    by 0x119BF: pruebas_insercion (pruebas_chanutron.c:58)
+==3448==    by 0x109D7: main (pruebas_chanutron.c:413)
+==3448== 
+==3448== LEAK SUMMARY:
+==3448==    definitely lost: 56 bytes in 8 blocks
+==3448==    indirectly lost: 0 bytes in 0 blocks
+==3448==      possibly lost: 0 bytes in 0 blocks
+==3448==    still reachable: 0 bytes in 0 blocks
+==3448==         suppressed: 0 bytes in 0 blocks
+==3448== 
+==3448== For lists of detected and suppressed errors, rerun with: -s
+==3448== ERROR SUMMARY: 8 errors from 8 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas de eliminación
+=======================[37;1m
+[32;1m✓ [37;1mElimino una clave que no existe de un hash, devuelve NULL
+pasó a false
+a insertar: <1, 0x138c8>
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,A>
+pasó a false
+a insertar: <1, 0x138c8>
+pasó a true
+head->clave = 0x494d0a8, clave = 0x494d120
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,A>
+[32;1m✓ [37;1mElimino la clave 1, devuelve el elemento
+[32;1m✓ [37;1mElimino la clave 1 otra vez, devuelve error
+[32;1m✓ [37;1mEl tamaño de hash es 0
+[32;1m✓ [37;1mObtener una clave borrada devuelve NULL
+pasó a false
+a insertar: <1, 0x138c8>
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,B>
+[32;1m✓ [37;1mObtengo la clave 1 y devuelve B
+pasó a false
+a insertar: <4, 0x139a4>
+
+ocupados hash: 2
+[32;1m✓ [37;1mInserto <4,A>
+[32;1m✓ [37;1mEl tamaño de hash es 2
+[32;1m✓ [37;1mElimino la clave 1, devuelve el elemento B
+[32;1m✓ [37;1mElimino la clave 4, devuelve el elemento A
+[32;1m✓ [37;1mEl tamaño de hash es 0
+==3449== 
+==3449== HEAP SUMMARY:
+==3449==     in use at exit: 8 bytes in 4 blocks
+==3449==   total heap usage: 9 allocs, 5 frees, 68 bytes allocated
+==3449== 
+==3449== 2 bytes in 1 blocks are definitely lost in loss record 1 of 4
+==3449==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3449==    by 0x10F57: duplicar_string (hash.c:59)
+==3449==    by 0x10F57: hash_insertar (hash.c:198)
+==3449==    by 0x11C51: pruebas_eliminacion (pruebas_chanutron.c:87)
+==3449==    by 0x109F5: main (pruebas_chanutron.c:415)
+==3449== 
+==3449== 2 bytes in 1 blocks are definitely lost in loss record 2 of 4
+==3449==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3449==    by 0x10F57: duplicar_string (hash.c:59)
+==3449==    by 0x10F57: hash_insertar (hash.c:198)
+==3449==    by 0x11CA9: pruebas_eliminacion (pruebas_chanutron.c:89)
+==3449==    by 0x109F5: main (pruebas_chanutron.c:415)
+==3449== 
+==3449== 2 bytes in 1 blocks are definitely lost in loss record 3 of 4
+==3449==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3449==    by 0x10F57: duplicar_string (hash.c:59)
+==3449==    by 0x10F57: hash_insertar (hash.c:198)
+==3449==    by 0x11E55: pruebas_eliminacion (pruebas_chanutron.c:102)
+==3449==    by 0x109F5: main (pruebas_chanutron.c:415)
+==3449== 
+==3449== 2 bytes in 1 blocks are definitely lost in loss record 4 of 4
+==3449==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3449==    by 0x10F57: duplicar_string (hash.c:59)
+==3449==    by 0x10F57: hash_insertar (hash.c:198)
+==3449==    by 0x11F13: pruebas_eliminacion (pruebas_chanutron.c:109)
+==3449==    by 0x109F5: main (pruebas_chanutron.c:415)
+==3449== 
+==3449== LEAK SUMMARY:
+==3449==    definitely lost: 8 bytes in 4 blocks
+==3449==    indirectly lost: 0 bytes in 0 blocks
+==3449==      possibly lost: 0 bytes in 0 blocks
+==3449==    still reachable: 0 bytes in 0 blocks
+==3449==         suppressed: 0 bytes in 0 blocks
+==3449== 
+==3449== For lists of detected and suppressed errors, rerun with: -s
+==3449== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas de actualizacion de claves
+==================================[37;1m
+pasó a false
+a insertar: <1, 0x138c8>
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,A> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es NULL
+pasó a false
+a insertar: <1, 0x138c8>
+pasó a true
+head->clave = 0x494d0c0, clave = 0x494d138
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,B> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es A
+[32;1m✓ [37;1mObtengo 1 y vale B
+[32;1m✓ [37;1mElimino la clave 1 y devuelve B
+pasó a false
+a insertar: <1, 0x138c8>
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,B> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es NULL
+[32;1m✓ [37;1mObtengo 1 y vale B
+pasó a false
+a insertar: <1, 0x138c8>
+pasó a true
+head->clave = 0x494d170, clave = 0x494d1e8
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,C> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es B
+[32;1m✓ [37;1mObtengo 1 y vale C
+pasó a false
+a insertar: <1, 0x138c8>
+pasó a true
+head->clave = 0x494d170, clave = 0x494d220
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,D> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es C
+[32;1m✓ [37;1mObtengo 1 y vale D
+pasó a false
+a insertar: <1, 0x138c8>
+pasó a true
+head->clave = 0x494d170, clave = 0x494d258
+
+ocupados hash: 1
+[32;1m✓ [37;1mInserto <1,C> exitosamente
+[32;1m✓ [37;1mEl elemento anterior reemplazado en el insertar es D
+[32;1m✓ [37;1mObtengo 1 y vale C
+==3450== 
+==3450== HEAP SUMMARY:
+==3450==     in use at exit: 12 bytes in 6 blocks
+==3450==   total heap usage: 10 allocs, 4 frees, 88 bytes allocated
+==3450== 
+==3450== 2 bytes in 1 blocks are definitely lost in loss record 1 of 6
+==3450==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3450==    by 0x10F57: duplicar_string (hash.c:59)
+==3450==    by 0x10F57: hash_insertar (hash.c:198)
+==3450==    by 0x1216F: pruebas_actualizacion (pruebas_chanutron.c:147)
+==3450==    by 0x109FB: main (pruebas_chanutron.c:417)
+==3450== 
+==3450== 2 bytes in 1 blocks are definitely lost in loss record 2 of 6
+==3450==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3450==    by 0x10F57: duplicar_string (hash.c:59)
+==3450==    by 0x10F57: hash_insertar (hash.c:198)
+==3450==    by 0x1221F: pruebas_actualizacion (pruebas_chanutron.c:153)
+==3450==    by 0x109FB: main (pruebas_chanutron.c:417)
+==3450== 
+==3450== 2 bytes in 1 blocks are definitely lost in loss record 3 of 6
+==3450==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3450==    by 0x10F57: duplicar_string (hash.c:59)
+==3450==    by 0x10F57: hash_insertar (hash.c:198)
+==3450==    by 0x12381: pruebas_actualizacion (pruebas_chanutron.c:166)
+==3450==    by 0x109FB: main (pruebas_chanutron.c:417)
+==3450== 
+==3450== 2 bytes in 1 blocks are definitely lost in loss record 4 of 6
+==3450==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3450==    by 0x10F57: duplicar_string (hash.c:59)
+==3450==    by 0x10F57: hash_insertar (hash.c:198)
+==3450==    by 0x1247D: pruebas_actualizacion (pruebas_chanutron.c:176)
+==3450==    by 0x109FB: main (pruebas_chanutron.c:417)
+==3450== 
+==3450== 2 bytes in 1 blocks are definitely lost in loss record 5 of 6
+==3450==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3450==    by 0x10F57: duplicar_string (hash.c:59)
+==3450==    by 0x10F57: hash_insertar (hash.c:198)
+==3450==    by 0x1258F: pruebas_actualizacion (pruebas_chanutron.c:186)
+==3450==    by 0x109FB: main (pruebas_chanutron.c:417)
+==3450== 
+==3450== 2 bytes in 1 blocks are definitely lost in loss record 6 of 6
+==3450==    at 0x483E704: malloc (vg_replace_malloc.c:381)
+==3450==    by 0x10F57: duplicar_string (hash.c:59)
+==3450==    by 0x10F57: hash_insertar (hash.c:198)
+==3450==    by 0x12695: pruebas_actualizacion (pruebas_chanutron.c:196)
+==3450==    by 0x109FB: main (pruebas_chanutron.c:417)
+==3450== 
+==3450== LEAK SUMMARY:
+==3450==    definitely lost: 12 bytes in 6 blocks
+==3450==    indirectly lost: 0 bytes in 0 blocks
+==3450==      possibly lost: 0 bytes in 0 blocks
+==3450==    still reachable: 0 bytes in 0 blocks
+==3450==         suppressed: 0 bytes in 0 blocks
+==3450== 
+==3450== For lists of detected and suppressed errors, rerun with: -s
+==3450== ERROR SUMMARY: 6 errors from 6 contexts (suppressed: 0 from 0)
+[33;1m
+Pruebas con muchas inserciones/eliminaciones
+============================================[37;1m
+[33;1m
+COPIA LA CLAVE AL INSERTAR (YO TE AVISÉ)
+=========================================[37;1m
+pasó a false
+a insertar: <001, 0xbdecf920>
+
+ocupados hash: 1
+pasó a false
+a insertar: <101, 0xbdecf920>
+
+ocupados hash: 2
+pasó a false
+a insertar: <201, 0xbdecf920>
+
+ocupados hash: 3
+pasó a false
+a insertar: <301, 0xbdecf920>
+
+ocupados hash: 4
+pasó a false
+a insertar: <401, 0xbdecf920>
+
+ocupados hash: 5
+pasó a false
+a insertar: <501, 0xbdecf920>
+
+ocupados hash: 6
+pasó a false
+a insertar: <601, 0xbdecf920>
+
+ocupados hash: 7
+pasó a false
+a insertar: <701, 0xbdecf920>
+
+ocupados hash: 8
+pasó a false
+a insertar: <801, 0xbdecf920>
+
+ocupados hash: 9
+pasó a false
+a insertar: <901, 0xbdecf920>
+
+ocupados hash: 10
+pasó a false
+a insertar: <:01, 0xbdecf920>
+
+ocupados hash: 11
+pasó a false
+a insertar: <;01, 0xbdecf920>
+
+ocupados hash: 12
+pasó a false
+a insertar: <<01, 0xbdecf920>
+
+ocupados hash: 13
+pasó a false
+a insertar: <=01, 0xbdecf920>
+
+ocupados hash: 14
+pasó a false
+a insertar: <>01, 0xbdecf920>
+
+ocupados hash: 15
+pasó a false
+a insertar: <?01, 0xbdecf920>
+
+ocupados hash: 16
+pasó a false
+a insertar: <@01, 0xbdecf920>
+
+ocupados hash: 17
+pasó a false
+a insertar: <A01, 0xbdecf920>
+
+ocupados hash: 18
+pasó a false
+a insertar: <B01, 0xbdecf920>
+
+ocupados hash: 19
+pasó a false
+a insertar: <C01, 0xbdecf920>
+
+ocupados hash: 20
+pasó a false
+a insertar: <D01, 0xbdecf920>
+
+ocupados hash: 21
+pasó a false
+a insertar: <E01, 0xbdecf920>
+
+ocupados hash: 22
+pasó a false
+a insertar: <F01, 0xbdecf920>
+
+ocupados hash: 23
+pasó a false
+a insertar: <G01, 0xbdecf920>
+
+ocupados hash: 24
+pasó a false
+a insertar: <H01, 0xbdecf920>
+
+ocupados hash: 25
+pasó a false
+a insertar: <I01, 0xbdecf920>
+
+ocupados hash: 26
+pasó a false
+a insertar: <J01, 0xbdecf920>
+
+ocupados hash: 27
+pasó a false
+a insertar: <K01, 0xbdecf920>
+
+ocupados hash: 28
+pasó a false
+a insertar: <L01, 0xbdecf920>
+
+ocupados hash: 29
+pasó a false
+a insertar: <M01, 0xbdecf920>
+
+ocupados hash: 30
+pasó a false
+a insertar: <N01, 0xbdecf920>
+
+ocupados hash: 31
+pasó a false
+a insertar: <O01, 0xbdecf920>
+
+ocupados hash: 32
+pasó a false
+a insertar: <P01, 0xbdecf920>
+
+ocupados hash: 33
+pasó a false
+a insertar: <Q01, 0xbdecf920>
+
+ocupados hash: 34
+pasó a false
+a insertar: <R01, 0xbdecf920>
+
+ocupados hash: 35
+pasó a false
+a insertar: <S01, 0xbdecf920>
+
+ocupados hash: 36
+pasó a false
+a insertar: <T01, 0xbdecf920>
+
+ocupados hash: 37
+pasó a false
+a insertar: <U01, 0xbdecf920>
+
+ocupados hash: 38
+pasó a false
+a insertar: <V01, 0xbdecf920>
+
+ocupados hash: 39
+pasó a false
+a insertar: <W01, 0xbdecf920>
+
+ocupados hash: 40
+pasó a false
+a insertar: <X01, 0xbdecf920>
+
+ocupados hash: 41
+pasó a false
+a insertar: <Y01, 0xbdecf920>
+
+ocupados hash: 42
+pasó a false
+a insertar: <Z01, 0xbdecf920>
+
+ocupados hash: 43
+pasó a false
+a insertar: <[01, 0xbdecf920>
+
+ocupados hash: 44
+pasó a false
+a insertar: <\01, 0xbdecf920>
+
+ocupados hash: 45
+pasó a false
+a insertar: <]01, 0xbdecf920>
+
+ocupados hash: 46
+pasó a false
+a insertar: <^01, 0xbdecf920>
+
+ocupados hash: 47
+pasó a false
+a insertar: <_01, 0xbdecf920>
+
+ocupados hash: 48
+pasó a false
+a insertar: <`01, 0xbdecf920>
+
+ocupados hash: 49
+pasó a false
+a insertar: <a01, 0xbdecf920>
+
+ocupados hash: 50
+pasó a false
+a insertar: <b01, 0xbdecf920>
+
+ocupados hash: 51
+pasó a false
+a insertar: <c01, 0xbdecf920>
+
+ocupados hash: 52
+pasó a false
+a insertar: <d01, 0xbdecf920>
+
+ocupados hash: 53
+pasó a false
+a insertar: <e01, 0xbdecf920>
+
+ocupados hash: 54
+pasó a false
+a insertar: <f01, 0xbdecf920>
+
+ocupados hash: 55
+pasó a false
+a insertar: <g01, 0xbdecf920>
+
+ocupados hash: 56
+pasó a false
+a insertar: <h01, 0xbdecf920>
+
+ocupados hash: 57
+pasó a false
+a insertar: <i01, 0xbdecf920>
+
+ocupados hash: 58
+pasó a false
+a insertar: <j01, 0xbdecf920>
+
+ocupados hash: 59
+
+
+factor de carga: 20.000000 
+
+a insertar recursivamente: <001, 0x494d0a8>
+pasó a false
+a insertar: <001, 0x494d0a8>
+
+ocupados hash: 1
+
+a insertar recursivamente: <301, 0x494d210>
+pasó a false
+a insertar: <301, 0x494d210>
+
+ocupados hash: 2
+
+a insertar recursivamente: <601, 0x494d378>
+pasó a false
+a insertar: <601, 0x494d378>
+
+ocupados hash: 3
+
+a insertar recursivamente: <901, 0x494d4e0>
+pasó a false
+a insertar: <901, 0x494d4e0>
+
+ocupados hash: 4
+
+a insertar recursivamente: <<01, 0x494d648>
+pasó a false
+a insertar: <<01, 0x494d648>
+
+ocupados hash: 5
+
+a insertar recursivamente: <?01, 0x494d7b0>
+pasó a false
+a insertar: <?01, 0x494d7b0>
+
+ocupados hash: 6
+
+a insertar recursivamente: <B01, 0x494d918>
+pasó a false
+a insertar: <B01, 0x494d918>
+
+ocupados hash: 7
+
+a insertar recursivamente: <E01, 0x494da80>
+pasó a false
+a insertar: <E01, 0x494da80>
+
+ocupados hash: 8
+
+a insertar recursivamente: <H01, 0x494dbe8>
+pasó a false
+a insertar: <H01, 0x494dbe8>
+
+ocupados hash: 9
+
+a insertar recursivamente: <K01, 0x494dd50>
+pasó a false
+a insertar: <K01, 0x494dd50>
+
+ocupados hash: 10
+
+a insertar recursivamente: <N01, 0x494deb8>
+pasó a false
+a insertar: <N01, 0x494deb8>
+
+ocupados hash: 11
+
+a insertar recursivamente: <Q01, 0x494e020>
+pasó a false
+a insertar: <Q01, 0x494e020>
+
+ocupados hash: 12
+
+a insertar recursivamente: <T01, 0x494e188>
+pasó a false
+a insertar: <T01, 0x494e188>
+
+ocupados hash: 13
+
+a insertar recursivamente: <W01, 0x494e2f0>
+pasó a false
+a insertar: <W01, 0x494e2f0>
+
+ocupados hash: 14
+
+a insertar recursivamente: <Z01, 0x494e458>
+pasó a false
+a insertar: <Z01, 0x494e458>
+
+ocupados hash: 15
+
+a insertar recursivamente: <]01, 0x494e5c0>
+pasó a false
+a insertar: <]01, 0x494e5c0>
+
+ocupados hash: 16
+
+a insertar recursivamente: <`01, 0x494e728>
+pasó a false
+a insertar: <`01, 0x494e728>
+
+ocupados hash: 17
+
+a insertar recursivamente: <c01, 0x494e890>
+pasó a false
+a insertar: <c01, 0x494e890>
+
+ocupados hash: 18
+
+a insertar recursivamente: <f01, 0x494e9f8>
+pasó a false
+a insertar: <f01, 0x494e9f8>
+
+ocupados hash: 19
+
+a insertar recursivamente: <i01, 0x494eb60>
+pasó a false
+a insertar: <i01, 0x494eb60>
+
+ocupados hash: 20
+
+a insertar recursivamente: <101, 0x494d120>
+pasó a false
+a insertar: <101, 0x494d120>
+
+ocupados hash: 21
+
+a insertar recursivamente: <401, 0x494d288>
+pasó a false
+a insertar: <401, 0x494d288>
+
+ocupados hash: 22
+
+a insertar recursivamente: <701, 0x494d3f0>
+pasó a false
+a insertar: <701, 0x494d3f0>
+
+ocupados hash: 23
+
+a insertar recursivamente: <:01, 0x494d558>
+pasó a false
+a insertar: <:01, 0x494d558>
+
+ocupados hash: 24
+
+a insertar recursivamente: <=01, 0x494d6c0>
+pasó a false
+a insertar: <=01, 0x494d6c0>
+
+ocupados hash: 25
+
+a insertar recursivamente: <@01, 0x494d828>
+pasó a false
+a insertar: <@01, 0x494d828>
+
+ocupados hash: 26
+
+a insertar recursivamente: <C01, 0x494d990>
+pasó a false
+a insertar: <C01, 0x494d990>
+
+ocupados hash: 27
+
+a insertar recursivamente: <F01, 0x494daf8>
+pasó a false
+a insertar: <F01, 0x494daf8>
+
+ocupados hash: 28
+
+a insertar recursivamente: <I01, 0x494dc60>
+pasó a false
+a insertar: <I01, 0x494dc60>
+
+ocupados hash: 29
+
+a insertar recursivamente: <L01, 0x494ddc8>
+pasó a false
+a insertar: <L01, 0x494ddc8>
+
+ocupados hash: 30
+
+a insertar recursivamente: <O01, 0x494df30>
+pasó a false
+a insertar: <O01, 0x494df30>
+
+ocupados hash: 31
+
+a insertar recursivamente: <R01, 0x494e098>
+pasó a false
+a insertar: <R01, 0x494e098>
+
+ocupados hash: 32
+
+a insertar recursivamente: <U01, 0x494e200>
+pasó a false
+a insertar: <U01, 0x494e200>
+
+ocupados hash: 33
+
+a insertar recursivamente: <X01, 0x494e368>
+pasó a false
+a insertar: <X01, 0x494e368>
+
+ocupados hash: 34
+
+a insertar recursivamente: <[01, 0x494e4d0>
+pasó a false
+a insertar: <[01, 0x494e4d0>
+
+ocupados hash: 35
+
+a insertar recursivamente: <^01, 0x494e638>
+pasó a false
+a insertar: <^01, 0x494e638>
+
+ocupados hash: 36
+
+a insertar recursivamente: <a01, 0x494e7a0>
+pasó a false
+a insertar: <a01, 0x494e7a0>
+
+ocupados hash: 37
+
+a insertar recursivamente: <d01, 0x494e908>
+pasó a false
+a insertar: <d01, 0x494e908>
+
+ocupados hash: 38
+
+a insertar recursivamente: <g01, 0x494ea70>
+pasó a false
+a insertar: <g01, 0x494ea70>
+
+ocupados hash: 39
+
+a insertar recursivamente: <j01, 0x494ebd8>
+pasó a false
+a insertar: <j01, 0x494ebd8>
+
+ocupados hash: 40
+
+a insertar recursivamente: <201, 0x494d198>
+pasó a false
+a insertar: <201, 0x494d198>
+
+ocupados hash: 41
+
+a insertar recursivamente: <501, 0x494d300>
+pasó a false
+a insertar: <501, 0x494d300>
+
+ocupados hash: 42
+
+a insertar recursivamente: <801, 0x494d468>
+pasó a false
+a insertar: <801, 0x494d468>
+
+ocupados hash: 43
+
+a insertar recursivamente: <;01, 0x494d5d0>
+pasó a false
+a insertar: <;01, 0x494d5d0>
+
+ocupados hash: 44
+
+a insertar recursivamente: <>01, 0x494d738>
+pasó a false
+a insertar: <>01, 0x494d738>
+
+ocupados hash: 45
+
+a insertar recursivamente: <A01, 0x494d8a0>
+pasó a false
+a insertar: <A01, 0x494d8a0>
+
+ocupados hash: 46
+
+a insertar recursivamente: <D01, 0x494da08>
+pasó a false
+a insertar: <D01, 0x494da08>
+
+ocupados hash: 47
+
+a insertar recursivamente: <G01, 0x494db70>
+pasó a false
+a insertar: <G01, 0x494db70>
+
+ocupados hash: 48
+
+a insertar recursivamente: <J01, 0x494dcd8>
+pasó a false
+a insertar: <J01, 0x494dcd8>
+
+ocupados hash: 49
+
+a insertar recursivamente: <M01, 0x494de40>
+pasó a false
+a insertar: <M01, 0x494de40>
+
+ocupados hash: 50
+
+a insertar recursivamente: <P01, 0x494dfa8>
+pasó a false
+a insertar: <P01, 0x494dfa8>
+
+ocupados hash: 51
+
+a insertar recursivamente: <S01, 0x494e110>
+pasó a false
+a insertar: <S01, 0x494e110>
+
+ocupados hash: 52
+
+a insertar recursivamente: <V01, 0x494e278>
+pasó a false
+a insertar: <V01, 0x494e278>
+
+ocupados hash: 53
+
+a insertar recursivamente: <Y01, 0x494e3e0>
+pasó a false
+a insertar: <Y01, 0x494e3e0>
+
+ocupados hash: 54
+
+a insertar recursivamente: <\01, 0x494e548>
+pasó a false
+a insertar: <\01, 0x494e548>
+
+ocupados hash: 55
+
+a insertar recursivamente: <_01, 0x494e6b0>
+pasó a false
+a insertar: <_01, 0x494e6b0>
+
+ocupados hash: 56
+
+a insertar recursivamente: <b01, 0x494e818>
+pasó a false
+a insertar: <b01, 0x494e818>
+
+ocupados hash: 57
+
+a insertar recursivamente: <e01, 0x494e980>
+pasó a false
+a insertar: <e01, 0x494e980>
+
+ocupados hash: 58
+
+a insertar recursivamente: <h01, 0x494eae8>
+pasó a false
+a insertar: <h01, 0x494eae8>
+
+ocupados hash: 59
+pasó a false
+a insertar: <k01, 0xbdecf920>
+
+ocupados hash: 60
+pasó a false
+a insertar: <l01, 0xbdecf920>
+
+ocupados hash: 61
+pasó a false
+a insertar: <m01, 0xbdecf920>
+
+ocupados hash: 62
+pasó a false
+a insertar: <n01, 0xbdecf920>
+
+ocupados hash: 63
+pasó a false
+a insertar: <o01, 0xbdecf920>
+
+ocupados hash: 64
+pasó a false
+a insertar: <p01, 0xbdecf920>
+
+ocupados hash: 65
+pasó a false
+a insertar: <q01, 0xbdecf920>
+
+ocupados hash: 66
+pasó a false
+a insertar: <r01, 0xbdecf920>
+
+ocupados hash: 67
+pasó a false
+a insertar: <s01, 0xbdecf920>
+
+ocupados hash: 68
+pasó a false
+a insertar: <t01, 0xbdecf920>
+
+ocupados hash: 69
+pasó a false
+a insertar: <u01, 0xbdecf920>
+
+ocupados hash: 70
+pasó a false
+a insertar: <v01, 0xbdecf920>
+
+ocupados hash: 71
+pasó a false
+a insertar: <w01, 0xbdecf920>
+
+ocupados hash: 72
+pasó a false
+a insertar: <x01, 0xbdecf920>
+
+ocupados hash: 73
+pasó a false
+a insertar: <y01, 0xbdecf920>
+
+ocupados hash: 74
+pasó a false
+a insertar: <z01, 0xbdecf920>
+
+ocupados hash: 75
+pasó a false
+a insertar: <011, 0xbdecf920>
+
+ocupados hash: 76
+pasó a false
+a insertar: <111, 0xbdecf920>
+
+ocupados hash: 77
+pasó a false
+a insertar: <211, 0xbdecf920>
+
+ocupados hash: 78
+pasó a false
+a insertar: <311, 0xbdecf920>
+
+ocupados hash: 79
+pasó a false
+a insertar: <411, 0xbdecf920>
+
+ocupados hash: 80
+pasó a false
+a insertar: <511, 0xbdecf920>
+
+ocupados hash: 81
+pasó a false
+a insertar: <611, 0xbdecf920>
+
+ocupados hash: 82
+pasó a false
+a insertar: <711, 0xbdecf920>
+
+ocupados hash: 83
+pasó a false
+a insertar: <811, 0xbdecf920>
+
+ocupados hash: 84
+pasó a false
+a insertar: <911, 0xbdecf920>
+
+ocupados hash: 85
+pasó a false
+a insertar: <:11, 0xbdecf920>
+
+ocupados hash: 86
+pasó a false
+a insertar: <;11, 0xbdecf920>
+
+ocupados hash: 87
+pasó a false
+a insertar: <<11, 0xbdecf920>
+
+ocupados hash: 88
+pasó a false
+a insertar: <=11, 0xbdecf920>
+
+ocupados hash: 89
+pasó a false
+a insertar: <>11, 0xbdecf920>
+
+ocupados hash: 90
+pasó a false
+a insertar: <?11, 0xbdecf920>
+
+ocupados hash: 91
+pasó a false
+a insertar: <@11, 0xbdecf920>
+
+ocupados hash: 92
+pasó a false
+a insertar: <A11, 0xbdecf920>
+
+ocupados hash: 93
+pasó a false
+a insertar: <B11, 0xbdecf920>
+
+ocupados hash: 94
+pasó a false
+a insertar: <C11, 0xbdecf920>
+
+ocupados hash: 95
+pasó a false
+a insertar: <D11, 0xbdecf920>
+
+ocupados hash: 96
+pasó a false
+a insertar: <E11, 0xbdecf920>
+
+ocupados hash: 97
+pasó a false
+a insertar: <F11, 0xbdecf920>
+
+ocupados hash: 98
+pasó a false
+a insertar: <G11, 0xbdecf920>
+
+ocupados hash: 99
+pasó a false
+a insertar: <H11, 0xbdecf920>
+
+ocupados hash: 100
+pasó a false
+a insertar: <I11, 0xbdecf920>
+
+ocupados hash: 101
+pasó a false
+a insertar: <J11, 0xbdecf920>
+
+ocupados hash: 102
+pasó a false
+a insertar: <K11, 0xbdecf920>
+
+ocupados hash: 103
+pasó a false
+a insertar: <L11, 0xbdecf920>
+
+ocupados hash: 104
+pasó a false
+a insertar: <M11, 0xbdecf920>
+
+ocupados hash: 105
+pasó a false
+a insertar: <N11, 0xbdecf920>
+
+ocupados hash: 106
+pasó a false
+a insertar: <O11, 0xbdecf920>
+
+ocupados hash: 107
+pasó a false
+a insertar: <P11, 0xbdecf920>
+
+ocupados hash: 108
+pasó a false
+a insertar: <Q11, 0xbdecf920>
+
+ocupados hash: 109
+pasó a false
+a insertar: <R11, 0xbdecf920>
+
+ocupados hash: 110
+pasó a false
+a insertar: <S11, 0xbdecf920>
+
+ocupados hash: 111
+pasó a false
+a insertar: <T11, 0xbdecf920>
+
+ocupados hash: 112
+pasó a false
+a insertar: <U11, 0xbdecf920>
+
+ocupados hash: 113
+pasó a false
+a insertar: <V11, 0xbdecf920>
+
+ocupados hash: 114
+pasó a false
+a insertar: <W11, 0xbdecf920>
+
+ocupados hash: 115
+pasó a false
+a insertar: <X11, 0xbdecf920>
+
+ocupados hash: 116
+pasó a false
+a insertar: <Y11, 0xbdecf920>
+
+ocupados hash: 117
+pasó a false
+a insertar: <Z11, 0xbdecf920>
+
+ocupados hash: 118
+pasó a false
+a insertar: <[11, 0xbdecf920>
+
+ocupados hash: 119
+
+
+factor de carga: 20.000000 
+
+a insertar recursivamente: <001, 0x494ecd8>
+pasó a false
+a insertar: <001, 0x494ecd8>
+
+ocupados hash: 1
+
+a insertar recursivamente: <601, 0x494edc8>
+pasó a false
+a insertar: <601, 0x494edc8>
+
+ocupados hash: 2
+
+a insertar recursivamente: <<01, 0x494eeb8>
+pasó a false
+a insertar: <<01, 0x494eeb8>
+
+ocupados hash: 3
+
+a insertar recursivamente: <B01, 0x494efa8>
+pasó a false
+a insertar: <B01, 0x494efa8>
+
+ocupados hash: 4
+
+a insertar recursivamente: <H01, 0x494f098>
+pasó a false
+a insertar: <H01, 0x494f098>
+
+ocupados hash: 5
+
+a insertar recursivamente: <N01, 0x494f188>
+pasó a false
+a insertar: <N01, 0x494f188>
+
+ocupados hash: 6
+
+a insertar recursivamente: <T01, 0x494f278>
+pasó a false
+a insertar: <T01, 0x494f278>
+
+ocupados hash: 7
+
+a insertar recursivamente: <Z01, 0x494f368>
+pasó a false
+a insertar: <Z01, 0x494f368>
+
+ocupados hash: 8
+
+a insertar recursivamente: <`01, 0x494f458>
+pasó a false
+a insertar: <`01, 0x494f458>
+
+ocupados hash: 9
+
+a insertar recursivamente: <f01, 0x494f548>
+pasó a false
+a insertar: <f01, 0x494f548>
+
+ocupados hash: 10
+
+a insertar recursivamente: <l01, 0x49508f8>
+pasó a false
+a insertar: <l01, 0x49508f8>
+
+ocupados hash: 11
+
+a insertar recursivamente: <r01, 0x4950bc8>
+pasó a false
+a insertar: <r01, 0x4950bc8>
+
+ocupados hash: 12
+
+a insertar recursivamente: <x01, 0x4950e98>
+pasó a false
+a insertar: <x01, 0x4950e98>
+
+ocupados hash: 13
+
+a insertar recursivamente: <011, 0x4951000>
+pasó a false
+a insertar: <011, 0x4951000>
+
+ocupados hash: 14
+
+a insertar recursivamente: <611, 0x49512d0>
+pasó a false
+a insertar: <611, 0x49512d0>
+
+ocupados hash: 15
+
+a insertar recursivamente: <<11, 0x49515a0>
+pasó a false
+a insertar: <<11, 0x49515a0>
+
+ocupados hash: 16
+
+a insertar recursivamente: <B11, 0x4951870>
+pasó a false
+a insertar: <B11, 0x4951870>
+
+ocupados hash: 17
+
+a insertar recursivamente: <H11, 0x4951b40>
+pasó a false
+a insertar: <H11, 0x4951b40>
+
+ocupados hash: 18
+
+a insertar recursivamente: <N11, 0x4951e10>
+pasó a false
+a insertar: <N11, 0x4951e10>
+
+ocupados hash: 19
+
+a insertar recursivamente: <T11, 0x49520e0>
+pasó a false
+a insertar: <T11, 0x49520e0>
+
+ocupados hash: 20
+
+a insertar recursivamente: <Z11, 0x49523b0>
+pasó a false
+a insertar: <Z11, 0x49523b0>
+
+ocupados hash: 21
+
+a insertar recursivamente: <101, 0x494f638>
+pasó a false
+a insertar: <101, 0x494f638>
+
+ocupados hash: 22
+
+a insertar recursivamente: <701, 0x494f728>
+pasó a false
+a insertar: <701, 0x494f728>
+
+ocupados hash: 23
+
+a insertar recursivamente: <=01, 0x494f818>
+pasó a false
+a insertar: <=01, 0x494f818>
+
+ocupados hash: 24
+
+a insertar recursivamente: <C01, 0x494f908>
+pasó a false
+a insertar: <C01, 0x494f908>
+
+ocupados hash: 25
+
+a insertar recursivamente: <I01, 0x494f9f8>
+pasó a false
+a insertar: <I01, 0x494f9f8>
+
+ocupados hash: 26
+
+a insertar recursivamente: <O01, 0x494fae8>
+pasó a false
+a insertar: <O01, 0x494fae8>
+
+ocupados hash: 27
+
+a insertar recursivamente: <U01, 0x494fbd8>
+pasó a false
+a insertar: <U01, 0x494fbd8>
+
+ocupados hash: 28
+
+a insertar recursivamente: <[01, 0x494fcc8>
+pasó a false
+a insertar: <[01, 0x494fcc8>
+
+ocupados hash: 29
+
+a insertar recursivamente: <a01, 0x494fdb8>
+pasó a false
+a insertar: <a01, 0x494fdb8>
+
+ocupados hash: 30
+
+a insertar recursivamente: <g01, 0x494fea8>
+pasó a false
+a insertar: <g01, 0x494fea8>
+
+ocupados hash: 31
+
+a insertar recursivamente: <m01, 0x4950970>
+pasó a false
+a insertar: <m01, 0x4950970>
+
+ocupados hash: 32
+
+a insertar recursivamente: <s01, 0x4950c40>
+pasó a false
+a insertar: <s01, 0x4950c40>
+
+ocupados hash: 33
+
+a insertar recursivamente: <y01, 0x4950f10>
+pasó a false
+a insertar: <y01, 0x4950f10>
+
+ocupados hash: 34
+
+a insertar recursivamente: <111, 0x4951078>
+pasó a false
+a insertar: <111, 0x4951078>
+
+ocupados hash: 35
+
+a insertar recursivamente: <711, 0x4951348>
+pasó a false
+a insertar: <711, 0x4951348>
+
+ocupados hash: 36
+
+a insertar recursivamente: <=11, 0x4951618>
+pasó a false
+a insertar: <=11, 0x4951618>
+
+ocupados hash: 37
+
+a insertar recursivamente: <C11, 0x49518e8>
+pasó a false
+a insertar: <C11, 0x49518e8>
+
+ocupados hash: 38
+
+a insertar recursivamente: <I11, 0x4951bb8>
+pasó a false
+a insertar: <I11, 0x4951bb8>
+
+ocupados hash: 39
+
+a insertar recursivamente: <O11, 0x4951e88>
+pasó a false
+a insertar: <O11, 0x4951e88>
+
+ocupados hash: 40
+
+a insertar recursivamente: <U11, 0x4952158>
+pasó a false
+a insertar: <U11, 0x4952158>
+
+ocupados hash: 41
+
+a insertar recursivamente: <[11, 0x4952428>
+pasó a false
+a insertar: <[11, 0x4952428>
+
+ocupados hash: 42
+
+a insertar recursivamente: <201, 0x494ff98>
+pasó a false
+a insertar: <201, 0x494ff98>
+
+ocupados hash: 43
+
+a insertar recursivamente: <801, 0x4950088>
+pasó a false
+a insertar: <801, 0x4950088>
+
+ocupados hash: 44
+
+a insertar recursivamente: <>01, 0x4950178>
+pasó a false
+a insertar: <>01, 0x4950178>
+
+ocupados hash: 45
+
+a insertar recursivamente: <D01, 0x4950268>
+pasó a false
+a insertar: <D01, 0x4950268>
+
+ocupados hash: 46
+
+a insertar recursivamente: <J01, 0x4950358>
+pasó a false
+a insertar: <J01, 0x4950358>
+
+ocupados hash: 47
+
+a insertar recursivamente: <P01, 0x4950448>
+pasó a false
+a insertar: <P01, 0x4950448>
+
+ocupados hash: 48
+
+a insertar recursivamente: <V01, 0x4950538>
+pasó a false
+a insertar: <V01, 0x4950538>
+
+ocupados hash: 49
+
+a insertar recursivamente: <\01, 0x4950628>
+pasó a false
+a insertar: <\01, 0x4950628>
+
+ocupados hash: 50
+
+a insertar recursivamente: <b01, 0x4950718>
+pasó a false
+a insertar: <b01, 0x4950718>
+
+ocupados hash: 51
+
+a insertar recursivamente: <h01, 0x4950808>
+pasó a false
+a insertar: <h01, 0x4950808>
+
+ocupados hash: 52
+
+a insertar recursivamente: <n01, 0x49509e8>
+pasó a false
+a insertar: <n01, 0x49509e8>
+
+ocupados hash: 53
+
+a insertar recursivamente: <t01, 0x4950cb8>
+pasó a false
+a insertar: <t01, 0x4950cb8>
+
+ocupados hash: 54
+
+a insertar recursivamente: <z01, 0x4950f88>
+pasó a false
+a insertar: <z01, 0x4950f88>
+
+ocupados hash: 55
+
+a insertar recursivamente: <211, 0x49510f0>
+pasó a false
+a insertar: <211, 0x49510f0>
+
+ocupados hash: 56
+
+a insertar recursivamente: <811, 0x49513c0>
+pasó a false
+a insertar: <811, 0x49513c0>
+
+ocupados hash: 57
+
+a insertar recursivamente: <>11, 0x4951690>
+pasó a false
+a insertar: <>11, 0x4951690>
+
+ocupados hash: 58
+
+a insertar recursivamente: <D11, 0x4951960>
+pasó a false
+a insertar: <D11, 0x4951960>
+
+ocupados hash: 59
+
+a insertar recursivamente: <J11, 0x4951c30>
+pasó a false
+a insertar: <J11, 0x4951c30>
+
+ocupados hash: 60
+
+a insertar recursivamente: <P11, 0x4951f00>
+pasó a false
+a insertar: <P11, 0x4951f00>
+
+ocupados hash: 61
+
+a insertar recursivamente: <V11, 0x49521d0>
+pasó a false
+a insertar: <V11, 0x49521d0>
+
+ocupados hash: 62
+
+a insertar recursivamente: <301, 0x494ed50>
+pasó a false
+a insertar: <301, 0x494ed50>
+
+ocupados hash: 63
+
+a insertar recursivamente: <901, 0x494ee40>
+pasó a false
+a insertar: <901, 0x494ee40>
+
+ocupados hash: 64
+
+a insertar recursivamente: <?01, 0x494ef30>
+pasó a false
+a insertar: <?01, 0x494ef30>
+
+ocupados hash: 65
+
+a insertar recursivamente: <E01, 0x494f020>
+pasó a false
+a insertar: <E01, 0x494f020>
+
+ocupados hash: 66
+
+a insertar recursivamente: <K01, 0x494f110>
+pasó a false
+a insertar: <K01, 0x494f110>
+
+ocupados hash: 67
+
+a insertar recursivamente: <Q01, 0x494f200>
+pasó a false
+a insertar: <Q01, 0x494f200>
+
+ocupados hash: 68
+
+a insertar recursivamente: <W01, 0x494f2f0>
+pasó a false
+a insertar: <W01, 0x494f2f0>
+
+ocupados hash: 69
+
+a insertar recursivamente: <]01, 0x494f3e0>
+pasó a false
+a insertar: <]01, 0x494f3e0>
+
+ocupados hash: 70
+
+a insertar recursivamente: <c01, 0x494f4d0>
+pasó a false
+a insertar: <c01, 0x494f4d0>
+
+ocupados hash: 71
+
+a insertar recursivamente: <i01, 0x494f5c0>
+pasó a false
+a insertar: <i01, 0x494f5c0>
+
+ocupados hash: 72
+
+a insertar recursivamente: <o01, 0x4950a60>
+pasó a false
+a insertar: <o01, 0x4950a60>
+
+ocupados hash: 73
+
+a insertar recursivamente: <u01, 0x4950d30>
+pasó a false
+a insertar: <u01, 0x4950d30>
+
+ocupados hash: 74
+
+a insertar recursivamente: <311, 0x4951168>
+pasó a false
+a insertar: <311, 0x4951168>
+
+ocupados hash: 75
+
+a insertar recursivamente: <911, 0x4951438>
+pasó a false
+a insertar: <911, 0x4951438>
+
+ocupados hash: 76
+
+a insertar recursivamente: <?11, 0x4951708>
+pasó a false
+a insertar: <?11, 0x4951708>
+
+ocupados hash: 77
+
+a insertar recursivamente: <E11, 0x49519d8>
+pasó a false
+a insertar: <E11, 0x49519d8>
+
+ocupados hash: 78
+
+a insertar recursivamente: <K11, 0x4951ca8>
+pasó a false
+a insertar: <K11, 0x4951ca8>
+
+ocupados hash: 79
+
+a insertar recursivamente: <Q11, 0x4951f78>
+pasó a false
+a insertar: <Q11, 0x4951f78>
+
+ocupados hash: 80
+
+a insertar recursivamente: <W11, 0x4952248>
+pasó a false
+a insertar: <W11, 0x4952248>
+
+ocupados hash: 81
+
+a insertar recursivamente: <401, 0x494f6b0>
+pasó a false
+a insertar: <401, 0x494f6b0>
+
+ocupados hash: 82
+
+a insertar recursivamente: <:01, 0x494f7a0>
+pasó a false
+a insertar: <:01, 0x494f7a0>
+
+ocupados hash: 83
+
+a insertar recursivamente: <@01, 0x494f890>
+pasó a false
+a insertar: <@01, 0x494f890>
+
+ocupados hash: 84
+
+a insertar recursivamente: <F01, 0x494f980>
+pasó a false
+a insertar: <F01, 0x494f980>
+
+ocupados hash: 85
+
+a insertar recursivamente: <L01, 0x494fa70>
+pasó a false
+a insertar: <L01, 0x494fa70>
+
+ocupados hash: 86
+
+a insertar recursivamente: <R01, 0x494fb60>
+pasó a false
+a insertar: <R01, 0x494fb60>
+
+ocupados hash: 87
+
+a insertar recursivamente: <X01, 0x494fc50>
+pasó a false
+a insertar: <X01, 0x494fc50>
+
+ocupados hash: 88
+
+a insertar recursivamente: <^01, 0x494fd40>
+pasó a false
+a insertar: <^01, 0x494fd40>
+
+ocupados hash: 89
+
+a insertar recursivamente: <d01, 0x494fe30>
+pasó a false
+a insertar: <d01, 0x494fe30>
+
+ocupados hash: 90
+
+a insertar recursivamente: <j01, 0x494ff20>
+pasó a false
+a insertar: <j01, 0x494ff20>
+
+ocupados hash: 91
+
+a insertar recursivamente: <p01, 0x4950ad8>
+pasó a false
+a insertar: <p01, 0x4950ad8>
+
+ocupados hash: 92
+
+a insertar recursivamente: <v01, 0x4950da8>
+pasó a false
+a insertar: <v01, 0x4950da8>
+
+ocupados hash: 93
+
+a insertar recursivamente: <411, 0x49511e0>
+pasó a false
+a insertar: <411, 0x49511e0>
+
+ocupados hash: 94
+
+a insertar recursivamente: <:11, 0x49514b0>
+pasó a false
+a insertar: <:11, 0x49514b0>
+
+ocupados hash: 95
+
+a insertar recursivamente: <@11, 0x4951780>
+pasó a false
+a insertar: <@11, 0x4951780>
+
+ocupados hash: 96
+
+a insertar recursivamente: <F11, 0x4951a50>
+pasó a false
+a insertar: <F11, 0x4951a50>
+
+ocupados hash: 97
+
+a insertar recursivamente: <L11, 0x4951d20>
+pasó a false
+a insertar: <L11, 0x4951d20>
+
+ocupados hash: 98
+
+a insertar recursivamente: <R11, 0x4951ff0>
+pasó a false
+a insertar: <R11, 0x4951ff0>
+
+ocupados hash: 99
+
+a insertar recursivamente: <X11, 0x49522c0>
+pasó a false
+a insertar: <X11, 0x49522c0>
+
+ocupados hash: 100
+
+a insertar recursivamente: <501, 0x4950010>
+pasó a false
+a insertar: <501, 0x4950010>
+
+ocupados hash: 101
+
+a insertar recursivamente: <;01, 0x4950100>
+pasó a false
+a insertar: <;01, 0x4950100>
+
+ocupados hash: 102
+
+a insertar recursivamente: <A01, 0x49501f0>
+pasó a false
+a insertar: <A01, 0x49501f0>
+
+ocupados hash: 103
+
+a insertar recursivamente: <G01, 0x49502e0>
+pasó a false
+a insertar: <G01, 0x49502e0>
+
+ocupados hash: 104
+
+a insertar recursivamente: <M01, 0x49503d0>
+pasó a false
+a insertar: <M01, 0x49503d0>
+
+ocupados hash: 105
+
+a insertar recursivamente: <S01, 0x49504c0>
+pasó a false
+a insertar: <S01, 0x49504c0>
+
+ocupados hash: 106
+
+a insertar recursivamente: <Y01, 0x49505b0>
+pasó a false
+a insertar: <Y01, 0x49505b0>
+
+ocupados hash: 107
+
+a insertar recursivamente: <_01, 0x49506a0>
+pasó a false
+a insertar: <_01, 0x49506a0>
+
+ocupados hash: 108
+
+a insertar recursivamente: <e01, 0x4950790>
+pasó a false
+a insertar: <e01, 0x4950790>
+
+ocupados hash: 109
+
+a insertar recursivamente: <k01, 0x4950880>
+pasó a false
+a insertar: <k01, 0x4950880>
+
+ocupados hash: 110
+
+a insertar recursivamente: <q01, 0x4950b50>
+pasó a false
+a insertar: <q01, 0x4950b50>
+
+ocupados hash: 111
+
+a insertar recursivamente: <w01, 0x4950e20>
+pasó a false
+a insertar: <w01, 0x4950e20>
+
+ocupados hash: 112
+
+a insertar recursivamente: <511, 0x4951258>
+pasó a false
+a insertar: <511, 0x4951258>
+
+ocupados hash: 113
+
+a insertar recursivamente: <;11, 0x4951528>
+pasó a false
+a insertar: <;11, 0x4951528>
+
+ocupados hash: 114
+
+a insertar recursivamente: <A11, 0x49517f8>
+pasó a false
+a insertar: <A11, 0x49517f8>
+
+ocupados hash: 115
+
+a insertar recursivamente: <G11, 0x4951ac8>
+pasó a false
+a insertar: <G11, 0x4951ac8>
+
+ocupados hash: 116
+
+a insertar recursivamente: <M11, 0x4951d98>
+pasó a false
+a insertar: <M11, 0x4951d98>
+
+ocupados hash: 117
+
+a insertar recursivamente: <S11, 0x4952068>
+pasó a false
+a insertar: <S11, 0x4952068>
+
+ocupados hash: 118
+
+a insertar recursivamente: <Y11, 0x4952338>
+pasó a false
+a insertar: <Y11, 0x4952338>
+
+ocupados hash: 119
+pasó a false
+a insertar: <\11, 0xbdecf920>
+
+ocupados hash: 120
+pasó a false
+a insertar: <]11, 0xbdecf920>
+
+ocupados hash: 121
+pasó a false
+a insertar: <^11, 0xbdecf920>
+
+ocupados hash: 122
+pasó a false
+a insertar: <_11, 0xbdecf920>
+
+ocupados hash: 123
+pasó a false
+a insertar: <`11, 0xbdecf920>
+
+ocupados hash: 124
+pasó a false
+a insertar: <a11, 0xbdecf920>
+
+ocupados hash: 125
+pasó a false
+a insertar: <b11, 0xbdecf920>
+
+ocupados hash: 126
+pasó a false
+a insertar: <c11, 0xbdecf920>
+
+ocupados hash: 127
+pasó a false
+a insertar: <d11, 0xbdecf920>
+
+ocupados hash: 128
+pasó a false
+a insertar: <e11, 0xbdecf920>
+
+ocupados hash: 129
+pasó a false
+a insertar: <f11, 0xbdecf920>
+
+ocupados hash: 130
+pasó a false
+a insertar: <g11, 0xbdecf920>
+
+ocupados hash: 131
+pasó a false
+a insertar: <h11, 0xbdecf920>
+
+ocupados hash: 132
+pasó a false
+a insertar: <i11, 0xbdecf920>
+
+ocupados hash: 133
+pasó a false
+a insertar: <j11, 0xbdecf920>
+
+ocupados hash: 134
+pasó a false
+a insertar: <k11, 0xbdecf920>
+
+ocupados hash: 135
+pasó a false
+a insertar: <l11, 0xbdecf920>
+
+ocupados hash: 136
+pasó a false
+a insertar: <m11, 0xbdecf920>
+
+ocupados hash: 137
+pasó a false
+a insertar: <n11, 0xbdecf920>
+
+ocupados hash: 138
+pasó a false
+a insertar: <o11, 0xbdecf920>
+
+ocupados hash: 139
+pasó a false
+a insertar: <p11, 0xbdecf920>
+
+ocupados hash: 140
+pasó a false
+a insertar: <q11, 0xbdecf920>
+
+ocupados hash: 141
+pasó a false
+a insertar: <r11, 0xbdecf920>
+
+ocupados hash: 142
+pasó a false
+a insertar: <s11, 0xbdecf920>
+
+ocupados hash: 143
+pasó a false
+a insertar: <t11, 0xbdecf920>
+
+ocupados hash: 144
+pasó a false
+a insertar: <u11, 0xbdecf920>
+
+ocupados hash: 145
+pasó a false
+a insertar: <v11, 0xbdecf920>
+
+ocupados hash: 146
+pasó a false
+a insertar: <w11, 0xbdecf920>
+
+ocupados hash: 147
+pasó a false
+a insertar: <x11, 0xbdecf920>
+
+ocupados hash: 148
+pasó a false
+a insertar: <y11, 0xbdecf920>
+
+ocupados hash: 149
+pasó a false
+a insertar: <z11, 0xbdecf920>
+
+ocupados hash: 150
+pasó a false
+a insertar: <021, 0xbdecf920>
+
+ocupados hash: 151
+pasó a false
+a insertar: <121, 0xbdecf920>
+
+ocupados hash: 152
+pasó a false
+a insertar: <221, 0xbdecf920>
+
+ocupados hash: 153
+pasó a false
+a insertar: <321, 0xbdecf920>
+
+ocupados hash: 154
+pasó a false
+a insertar: <421, 0xbdecf920>
+
+ocupados hash: 155
+pasó a false
+a insertar: <521, 0xbdecf920>
+
+ocupados hash: 156
+pasó a false
+a insertar: <621, 0xbdecf920>
+
+ocupados hash: 157
+pasó a false
+a insertar: <721, 0xbdecf920>
+
+ocupados hash: 158
+pasó a false
+a insertar: <821, 0xbdecf920>
+
+ocupados hash: 159
+pasó a false
+a insertar: <921, 0xbdecf920>
+
+ocupados hash: 160
+pasó a false
+a insertar: <:21, 0xbdecf920>
+
+ocupados hash: 161
+pasó a false
+a insertar: <;21, 0xbdecf920>
+
+ocupados hash: 162
+pasó a false
+a insertar: <<21, 0xbdecf920>
+
+ocupados hash: 163
+pasó a false
+a insertar: <=21, 0xbdecf920>
+
+ocupados hash: 164
+pasó a false
+a insertar: <>21, 0xbdecf920>
+
+ocupados hash: 165
+pasó a false
+a insertar: <?21, 0xbdecf920>
+
+ocupados hash: 166
+pasó a false
+a insertar: <@21, 0xbdecf920>
+
+ocupados hash: 167
+pasó a false
+a insertar: <A21, 0xbdecf920>
+
+ocupados hash: 168
+pasó a false
+a insertar: <B21, 0xbdecf920>
+
+ocupados hash: 169
+pasó a false
+a insertar: <C21, 0xbdecf920>
+
+ocupados hash: 170
+pasó a false
+a insertar: <D21, 0xbdecf920>
+
+ocupados hash: 171
+pasó a false
+a insertar: <E21, 0xbdecf920>
+
+ocupados hash: 172
+pasó a false
+a insertar: <F21, 0xbdecf920>
+
+ocupados hash: 173
+pasó a false
+a insertar: <G21, 0xbdecf920>
+
+ocupados hash: 174
+pasó a false
+a insertar: <H21, 0xbdecf920>
+
+ocupados hash: 175
+pasó a false
+a insertar: <I21, 0xbdecf920>
+
+ocupados hash: 176
+pasó a false
+a insertar: <J21, 0xbdecf920>
+
+ocupados hash: 177
+pasó a false
+a insertar: <K21, 0xbdecf920>
+
+ocupados hash: 178
+pasó a false
+a insertar: <L21, 0xbdecf920>
+
+ocupados hash: 179
+pasó a false
+a insertar: <M21, 0xbdecf920>
+
+ocupados hash: 180
+pasó a false
+a insertar: <N21, 0xbdecf920>
+
+ocupados hash: 181
+pasó a false
+a insertar: <O21, 0xbdecf920>
+
+ocupados hash: 182
+pasó a false
+a insertar: <P21, 0xbdecf920>
+
+ocupados hash: 183
+pasó a false
+a insertar: <Q21, 0xbdecf920>
+
+ocupados hash: 184
+pasó a false
+a insertar: <R21, 0xbdecf920>
+
+ocupados hash: 185
+pasó a false
+a insertar: <S21, 0xbdecf920>
+
+ocupados hash: 186
+pasó a false
+a insertar: <T21, 0xbdecf920>
+
+ocupados hash: 187
+pasó a false
+a insertar: <U21, 0xbdecf920>
+
+ocupados hash: 188
+pasó a false
+a insertar: <V21, 0xbdecf920>
+
+ocupados hash: 189
+pasó a false
+a insertar: <W21, 0xbdecf920>
+
+ocupados hash: 190
+pasó a false
+a insertar: <X21, 0xbdecf920>
+
+ocupados hash: 191
+pasó a false
+a insertar: <Y21, 0xbdecf920>
+
+ocupados hash: 192
+pasó a false
+a insertar: <Z21, 0xbdecf920>
+
+ocupados hash: 193
+pasó a false
+a insertar: <[21, 0xbdecf920>
+
+ocupados hash: 194
+pasó a false
+a insertar: <\21, 0xbdecf920>
+
+ocupados hash: 195
+pasó a false
+a insertar: <]21, 0xbdecf920>
+
+ocupados hash: 196
+pasó a false
+a insertar: <^21, 0xbdecf920>
+
+ocupados hash: 197
+pasó a false
+a insertar: <_21, 0xbdecf920>
+
+ocupados hash: 198
+pasó a false
+a insertar: <`21, 0xbdecf920>
+
+ocupados hash: 199
+pasó a false
+a insertar: <a21, 0xbdecf920>
+
+ocupados hash: 200
+pasó a false
+a insertar: <b21, 0xbdecf920>
+
+ocupados hash: 201
+pasó a false
+a insertar: <c21, 0xbdecf920>
+
+ocupados hash: 202
+pasó a false
+a insertar: <d21, 0xbdecf920>
+
+ocupados hash: 203
+pasó a false
+a insertar: <e21, 0xbdecf920>
+
+ocupados hash: 204
+pasó a false
+a insertar: <f21, 0xbdecf920>
+
+ocupados hash: 205
+pasó a false
+a insertar: <g21, 0xbdecf920>
+
+ocupados hash: 206
+pasó a false
+a insertar: <h21, 0xbdecf920>
+
+ocupados hash: 207
+pasó a false
+a insertar: <i21, 0xbdecf920>
+
+ocupados hash: 208
+pasó a false
+a insertar: <j21, 0xbdecf920>
+
+ocupados hash: 209
+pasó a false
+a insertar: <k21, 0xbdecf920>
+
+ocupados hash: 210
+pasó a false
+a insertar: <l21, 0xbdecf920>
+
+ocupados hash: 211
+pasó a false
+a insertar: <m21, 0xbdecf920>
+
+ocupados hash: 212
+pasó a false
+a insertar: <n21, 0xbdecf920>
+
+ocupados hash: 213
+pasó a false
+a insertar: <o21, 0xbdecf920>
+
+ocupados hash: 214
+pasó a false
+a insertar: <p21, 0xbdecf920>
+
+ocupados hash: 215
+pasó a false
+a insertar: <q21, 0xbdecf920>
+
+ocupados hash: 216
+pasó a false
+a insertar: <r21, 0xbdecf920>
+
+ocupados hash: 217
+pasó a false
+a insertar: <s21, 0xbdecf920>
+
+ocupados hash: 218
+pasó a false
+a insertar: <t21, 0xbdecf920>
+
+ocupados hash: 219
+pasó a false
+a insertar: <u21, 0xbdecf920>
+
+ocupados hash: 220
+pasó a false
+a insertar: <v21, 0xbdecf920>
+
+ocupados hash: 221
+pasó a false
+a insertar: <w21, 0xbdecf920>
+
+ocupados hash: 222
+pasó a false
+a insertar: <x21, 0xbdecf920>
+
+ocupados hash: 223
+pasó a false
+a insertar: <y21, 0xbdecf920>
+
+ocupados hash: 224
+pasó a false
+a insertar: <z21, 0xbdecf920>
+
+ocupados hash: 225
+pasó a false
+a insertar: <031, 0xbdecf920>
+
+ocupados hash: 226
+pasó a false
+a insertar: <131, 0xbdecf920>
+
+ocupados hash: 227
+pasó a false
+a insertar: <231, 0xbdecf920>
+
+ocupados hash: 228
+pasó a false
+a insertar: <331, 0xbdecf920>
+
+ocupados hash: 229
+pasó a false
+a insertar: <431, 0xbdecf920>
+
+ocupados hash: 230
+pasó a false
+a insertar: <531, 0xbdecf920>
+
+ocupados hash: 231
+pasó a false
+a insertar: <631, 0xbdecf920>
+
+ocupados hash: 232
+pasó a false
+a insertar: <731, 0xbdecf920>
+
+ocupados hash: 233
+pasó a false
+a insertar: <831, 0xbdecf920>
+
+ocupados hash: 234
+pasó a false
+a insertar: <931, 0xbdecf920>
+
+ocupados hash: 235
+pasó a false
+a insertar: <:31, 0xbdecf920>
+
+ocupados hash: 236
+pasó a false
+a insertar: <;31, 0xbdecf920>
+
+ocupados hash: 237
+pasó a false
+a insertar: <<31, 0xbdecf920>
+
+ocupados hash: 238
+pasó a false
+a insertar: <=31, 0xbdecf920>
+
+ocupados hash: 239
+
+
+factor de carga: 20.000000 
+
+a insertar recursivamente: <001, 0x4952540>
+pasó a false
+a insertar: <001, 0x4952540>
+
+ocupados hash: 1
+
+a insertar recursivamente: <<01, 0x4952630>
+pasó a false
+a insertar: <<01, 0x4952630>
+
+ocupados hash: 2
+
+a insertar recursivamente: <H01, 0x4952720>
+pasó a false
+a insertar: <H01, 0x4952720>
+
+ocupados hash: 3
+
+a insertar recursivamente: <T01, 0x4952810>
+pasó a false
+a insertar: <T01, 0x4952810>
+
+ocupados hash: 4
+
+a insertar recursivamente: <`01, 0x4952900>
+pasó a false
+a insertar: <`01, 0x4952900>
+
+ocupados hash: 5
+
+a insertar recursivamente: <l01, 0x49529f0>
+pasó a false
+a insertar: <l01, 0x49529f0>
+
+ocupados hash: 6
+
+a insertar recursivamente: <x01, 0x4952ae0>
+pasó a false
+a insertar: <x01, 0x4952ae0>
+
+ocupados hash: 7
+
+a insertar recursivamente: <011, 0x4952b58>
+pasó a false
+a insertar: <011, 0x4952b58>
+
+ocupados hash: 8
+
+a insertar recursivamente: <<11, 0x4952c48>
+pasó a false
+a insertar: <<11, 0x4952c48>
+
+ocupados hash: 9
+
+a insertar recursivamente: <H11, 0x4952d38>
+pasó a false
+a insertar: <H11, 0x4952d38>
+
+ocupados hash: 10
+
+a insertar recursivamente: <T11, 0x4952e28>
+pasó a false
+a insertar: <T11, 0x4952e28>
+
+ocupados hash: 11
+
+a insertar recursivamente: <`11, 0x4955ee8>
+pasó a false
+a insertar: <`11, 0x4955ee8>
+
+ocupados hash: 12
+
+a insertar recursivamente: <l11, 0x4956488>
+pasó a false
+a insertar: <l11, 0x4956488>
+
+ocupados hash: 13
+
+a insertar recursivamente: <x11, 0x4956a28>
+pasó a false
+a insertar: <x11, 0x4956a28>
+
+ocupados hash: 14
+
+a insertar recursivamente: <021, 0x4956b90>
+pasó a false
+a insertar: <021, 0x4956b90>
+
+ocupados hash: 15
+
+a insertar recursivamente: <<21, 0x4957130>
+pasó a false
+a insertar: <<21, 0x4957130>
+
+ocupados hash: 16
+
+a insertar recursivamente: <H21, 0x49576d0>
+pasó a false
+a insertar: <H21, 0x49576d0>
+
+ocupados hash: 17
+
+a insertar recursivamente: <T21, 0x4957c70>
+pasó a false
+a insertar: <T21, 0x4957c70>
+
+ocupados hash: 18
+
+a insertar recursivamente: <`21, 0x4958210>
+pasó a false
+a insertar: <`21, 0x4958210>
+
+ocupados hash: 19
+
+a insertar recursivamente: <l21, 0x49587b0>
+pasó a false
+a insertar: <l21, 0x49587b0>
+
+ocupados hash: 20
+
+a insertar recursivamente: <x21, 0x4958d50>
+pasó a false
+a insertar: <x21, 0x4958d50>
+
+ocupados hash: 21
+
+a insertar recursivamente: <031, 0x4958eb8>
+pasó a false
+a insertar: <031, 0x4958eb8>
+
+ocupados hash: 22
+
+a insertar recursivamente: <<31, 0x4959458>
+pasó a false
+a insertar: <<31, 0x4959458>
+
+ocupados hash: 23
+
+a insertar recursivamente: <101, 0x4952f18>
+pasó a false
+a insertar: <101, 0x4952f18>
+
+ocupados hash: 24
+
+a insertar recursivamente: <=01, 0x4953008>
+pasó a false
+a insertar: <=01, 0x4953008>
+
+ocupados hash: 25
+
+a insertar recursivamente: <I01, 0x49530f8>
+pasó a false
+a insertar: <I01, 0x49530f8>
+
+ocupados hash: 26
+
+a insertar recursivamente: <U01, 0x49531e8>
+pasó a false
+a insertar: <U01, 0x49531e8>
+
+ocupados hash: 27
+
+a insertar recursivamente: <a01, 0x49532d8>
+pasó a false
+a insertar: <a01, 0x49532d8>
+
+ocupados hash: 28
+
+a insertar recursivamente: <m01, 0x49533c8>
+pasó a false
+a insertar: <m01, 0x49533c8>
+
+ocupados hash: 29
+
+a insertar recursivamente: <y01, 0x49534b8>
+pasó a false
+a insertar: <y01, 0x49534b8>
+
+ocupados hash: 30
+
+a insertar recursivamente: <111, 0x4953530>
+pasó a false
+a insertar: <111, 0x4953530>
+
+ocupados hash: 31
+
+a insertar recursivamente: <=11, 0x4953620>
+pasó a false
+a insertar: <=11, 0x4953620>
+
+ocupados hash: 32
+
+a insertar recursivamente: <I11, 0x4953710>
+pasó a false
+a insertar: <I11, 0x4953710>
+
+ocupados hash: 33
+
+a insertar recursivamente: <U11, 0x4953800>
+pasó a false
+a insertar: <U11, 0x4953800>
+
+ocupados hash: 34
+
+a insertar recursivamente: <a11, 0x4955f60>
+pasó a false
+a insertar: <a11, 0x4955f60>
+
+ocupados hash: 35
+
+a insertar recursivamente: <m11, 0x4956500>
+pasó a false
+a insertar: <m11, 0x4956500>
+
+ocupados hash: 36
+
+a insertar recursivamente: <y11, 0x4956aa0>
+pasó a false
+a insertar: <y11, 0x4956aa0>
+
+ocupados hash: 37
+
+a insertar recursivamente: <121, 0x4956c08>
+pasó a false
+a insertar: <121, 0x4956c08>
+
+ocupados hash: 38
+
+a insertar recursivamente: <=21, 0x49571a8>
+pasó a false
+a insertar: <=21, 0x49571a8>
+
+ocupados hash: 39
+
+a insertar recursivamente: <I21, 0x4957748>
+pasó a false
+a insertar: <I21, 0x4957748>
+
+ocupados hash: 40
+
+a insertar recursivamente: <U21, 0x4957ce8>
+pasó a false
+a insertar: <U21, 0x4957ce8>
+
+ocupados hash: 41
+
+a insertar recursivamente: <a21, 0x4958288>
+pasó a false
+a insertar: <a21, 0x4958288>
+
+ocupados hash: 42
+
+a insertar recursivamente: <m21, 0x4958828>
+pasó a false
+a insertar: <m21, 0x4958828>
+
+ocupados hash: 43
+
+a insertar recursivamente: <y21, 0x4958dc8>
+pasó a false
+a insertar: <y21, 0x4958dc8>
+
+ocupados hash: 44
+
+a insertar recursivamente: <131, 0x4958f30>
+pasó a false
+a insertar: <131, 0x4958f30>
+
+ocupados hash: 45
+
+a insertar recursivamente: <=31, 0x49594d0>
+pasó a false
+a insertar: <=31, 0x49594d0>
+
+ocupados hash: 46
+
+a insertar recursivamente: <201, 0x49538f0>
+pasó a false
+a insertar: <201, 0x49538f0>
+
+ocupados hash: 47
+
+a insertar recursivamente: <>01, 0x49539e0>
+pasó a false
+a insertar: <>01, 0x49539e0>
+
+ocupados hash: 48
+
+a insertar recursivamente: <J01, 0x4953ad0>
+pasó a false
+a insertar: <J01, 0x4953ad0>
+
+ocupados hash: 49
+
+a insertar recursivamente: <V01, 0x4953bc0>
+pasó a false
+a insertar: <V01, 0x4953bc0>
+
+ocupados hash: 50
+
+a insertar recursivamente: <b01, 0x4953cb0>
+pasó a false
+a insertar: <b01, 0x4953cb0>
+
+ocupados hash: 51
+
+a insertar recursivamente: <n01, 0x4953da0>
+pasó a false
+a insertar: <n01, 0x4953da0>
+
+ocupados hash: 52
+
+a insertar recursivamente: <z01, 0x4953e90>
+pasó a false
+a insertar: <z01, 0x4953e90>
+
+ocupados hash: 53
+
+a insertar recursivamente: <211, 0x4953f08>
+pasó a false
+a insertar: <211, 0x4953f08>
+
+ocupados hash: 54
+
+a insertar recursivamente: <>11, 0x4953ff8>
+pasó a false
+a insertar: <>11, 0x4953ff8>
+
+ocupados hash: 55
+
+a insertar recursivamente: <J11, 0x49540e8>
+pasó a false
+a insertar: <J11, 0x49540e8>
+
+ocupados hash: 56
+
+a insertar recursivamente: <V11, 0x49541d8>
+pasó a false
+a insertar: <V11, 0x49541d8>
+
+ocupados hash: 57
+
+a insertar recursivamente: <b11, 0x4955fd8>
+pasó a false
+a insertar: <b11, 0x4955fd8>
+
+ocupados hash: 58
+
+a insertar recursivamente: <n11, 0x4956578>
+pasó a false
+a insertar: <n11, 0x4956578>
+
+ocupados hash: 59
+
+a insertar recursivamente: <z11, 0x4956b18>
+pasó a false
+a insertar: <z11, 0x4956b18>
+
+ocupados hash: 60
+
+a insertar recursivamente: <221, 0x4956c80>
+pasó a false
+a insertar: <221, 0x4956c80>
+
+ocupados hash: 61
+
+a insertar recursivamente: <>21, 0x4957220>
+pasó a false
+a insertar: <>21, 0x4957220>
+
+ocupados hash: 62
+
+a insertar recursivamente: <J21, 0x49577c0>
+pasó a false
+a insertar: <J21, 0x49577c0>
+
+ocupados hash: 63
+
+a insertar recursivamente: <V21, 0x4957d60>
+pasó a false
+a insertar: <V21, 0x4957d60>
+
+ocupados hash: 64
+
+a insertar recursivamente: <b21, 0x4958300>
+pasó a false
+a insertar: <b21, 0x4958300>
+
+ocupados hash: 65
+
+a insertar recursivamente: <n21, 0x49588a0>
+pasó a false
+a insertar: <n21, 0x49588a0>
+
+ocupados hash: 66
+
+a insertar recursivamente: <z21, 0x4958e40>
+pasó a false
+a insertar: <z21, 0x4958e40>
+
+ocupados hash: 67
+
+a insertar recursivamente: <231, 0x4958fa8>
+pasó a false
+a insertar: <231, 0x4958fa8>
+
+ocupados hash: 68
+
+a insertar recursivamente: <301, 0x4954250>
+pasó a false
+a insertar: <301, 0x4954250>
+
+ocupados hash: 69
+
+a insertar recursivamente: <?01, 0x4954340>
+pasó a false
+a insertar: <?01, 0x4954340>
+
+ocupados hash: 70
+
+a insertar recursivamente: <K01, 0x4954430>
+pasó a false
+a insertar: <K01, 0x4954430>
+
+ocupados hash: 71
+
+a insertar recursivamente: <W01, 0x4954520>
+pasó a false
+a insertar: <W01, 0x4954520>
+
+ocupados hash: 72
+
+a insertar recursivamente: <c01, 0x4954610>
+pasó a false
+a insertar: <c01, 0x4954610>
+
+ocupados hash: 73
+
+a insertar recursivamente: <o01, 0x4954700>
+pasó a false
+a insertar: <o01, 0x4954700>
+
+ocupados hash: 74
+
+a insertar recursivamente: <311, 0x49547f0>
+pasó a false
+a insertar: <311, 0x49547f0>
+
+ocupados hash: 75
+
+a insertar recursivamente: <?11, 0x49548e0>
+pasó a false
+a insertar: <?11, 0x49548e0>
+
+ocupados hash: 76
+
+a insertar recursivamente: <K11, 0x49549d0>
+pasó a false
+a insertar: <K11, 0x49549d0>
+
+ocupados hash: 77
+
+a insertar recursivamente: <W11, 0x4954ac0>
+pasó a false
+a insertar: <W11, 0x4954ac0>
+
+ocupados hash: 78
+
+a insertar recursivamente: <c11, 0x4956050>
+pasó a false
+a insertar: <c11, 0x4956050>
+
+ocupados hash: 79
+
+a insertar recursivamente: <o11, 0x49565f0>
+pasó a false
+a insertar: <o11, 0x49565f0>
+
+ocupados hash: 80
+
+a insertar recursivamente: <321, 0x4956cf8>
+pasó a false
+a insertar: <321, 0x4956cf8>
+
+ocupados hash: 81
+
+a insertar recursivamente: <?21, 0x4957298>
+pasó a false
+a insertar: <?21, 0x4957298>
+
+ocupados hash: 82
+
+a insertar recursivamente: <K21, 0x4957838>
+pasó a false
+a insertar: <K21, 0x4957838>
+
+ocupados hash: 83
+
+a insertar recursivamente: <W21, 0x4957dd8>
+pasó a false
+a insertar: <W21, 0x4957dd8>
+
+ocupados hash: 84
+
+a insertar recursivamente: <c21, 0x4958378>
+pasó a false
+a insertar: <c21, 0x4958378>
+
+ocupados hash: 85
+
+a insertar recursivamente: <o21, 0x4958918>
+pasó a false
+a insertar: <o21, 0x4958918>
+
+ocupados hash: 86
+
+a insertar recursivamente: <331, 0x4959020>
+pasó a false
+a insertar: <331, 0x4959020>
+
+ocupados hash: 87
+
+a insertar recursivamente: <401, 0x4954b38>
+pasó a false
+a insertar: <401, 0x4954b38>
+
+ocupados hash: 88
+
+a insertar recursivamente: <@01, 0x4954c28>
+pasó a false
+a insertar: <@01, 0x4954c28>
+
+ocupados hash: 89
+
+a insertar recursivamente: <L01, 0x4954d18>
+pasó a false
+a insertar: <L01, 0x4954d18>
+
+ocupados hash: 90
+
+a insertar recursivamente: <X01, 0x4954e08>
+pasó a false
+a insertar: <X01, 0x4954e08>
+
+ocupados hash: 91
+
+a insertar recursivamente: <d01, 0x4954ef8>
+pasó a false
+a insertar: <d01, 0x4954ef8>
+
+ocupados hash: 92
+
+a insertar recursivamente: <p01, 0x4954fe8>
+pasó a false
+a insertar: <p01, 0x4954fe8>
+
+ocupados hash: 93
+
+a insertar recursivamente: <411, 0x49550d8>
+pasó a false
+a insertar: <411, 0x49550d8>
+
+ocupados hash: 94
+
+a insertar recursivamente: <@11, 0x49551c8>
+pasó a false
+a insertar: <@11, 0x49551c8>
+
+ocupados hash: 95
+
+a insertar recursivamente: <L11, 0x49552b8>
+pasó a false
+a insertar: <L11, 0x49552b8>
+
+ocupados hash: 96
+
+a insertar recursivamente: <X11, 0x49553a8>
+pasó a false
+a insertar: <X11, 0x49553a8>
+
+ocupados hash: 97
+
+a insertar recursivamente: <d11, 0x49560c8>
+pasó a false
+a insertar: <d11, 0x49560c8>
+
+ocupados hash: 98
+
+a insertar recursivamente: <p11, 0x4956668>
+pasó a false
+a insertar: <p11, 0x4956668>
+
+ocupados hash: 99
+
+a insertar recursivamente: <421, 0x4956d70>
+pasó a false
+a insertar: <421, 0x4956d70>
+
+ocupados hash: 100
+
+a insertar recursivamente: <@21, 0x4957310>
+pasó a false
+a insertar: <@21, 0x4957310>
+
+ocupados hash: 101
+
+a insertar recursivamente: <L21, 0x49578b0>
+pasó a false
+a insertar: <L21, 0x49578b0>
+
+ocupados hash: 102
+
+a insertar recursivamente: <X21, 0x4957e50>
+pasó a false
+a insertar: <X21, 0x4957e50>
+
+ocupados hash: 103
+
+a insertar recursivamente: <d21, 0x49583f0>
+pasó a false
+a insertar: <d21, 0x49583f0>
+
+ocupados hash: 104
+
+a insertar recursivamente: <p21, 0x4958990>
+pasó a false
+a insertar: <p21, 0x4958990>
+
+ocupados hash: 105
+
+a insertar recursivamente: <431, 0x4959098>
+pasó a false
+a insertar: <431, 0x4959098>
+
+ocupados hash: 106
+
+a insertar recursivamente: <501, 0x4955420>
+pasó a false
+a insertar: <501, 0x4955420>
+
+ocupados hash: 107
+
+a insertar recursivamente: <A01, 0x4955510>
+pasó a false
+a insertar: <A01, 0x4955510>
+
+ocupados hash: 108
+
+a insertar recursivamente: <M01, 0x4955600>
+pasó a false
+a insertar: <M01, 0x4955600>
+
+ocupados hash: 109
+
+a insertar recursivamente: <Y01, 0x49556f0>
+pasó a false
+a insertar: <Y01, 0x49556f0>
+
+ocupados hash: 110
+
+a insertar recursivamente: <e01, 0x49557e0>
+pasó a false
+a insertar: <e01, 0x49557e0>
+
+ocupados hash: 111
+
+a insertar recursivamente: <q01, 0x49558d0>
+pasó a false
+a insertar: <q01, 0x49558d0>
+
+ocupados hash: 112
+
+a insertar recursivamente: <511, 0x49559c0>
+pasó a false
+a insertar: <511, 0x49559c0>
+
+ocupados hash: 113
+
+a insertar recursivamente: <A11, 0x4955ab0>
+pasó a false
+a insertar: <A11, 0x4955ab0>
+
+ocupados hash: 114
+
+a insertar recursivamente: <M11, 0x4955ba0>
+pasó a false
+a insertar: <M11, 0x4955ba0>
+
+ocupados hash: 115
+
+a insertar recursivamente: <Y11, 0x4955c90>
+pasó a false
+a insertar: <Y11, 0x4955c90>
+
+ocupados hash: 116
+
+a insertar recursivamente: <e11, 0x4956140>
+pasó a false
+a insertar: <e11, 0x4956140>
+
+ocupados hash: 117
+
+a insertar recursivamente: <q11, 0x49566e0>
+pasó a false
+a insertar: <q11, 0x49566e0>
+
+ocupados hash: 118
+
+a insertar recursivamente: <521, 0x4956de8>
+pasó a false
+a insertar: <521, 0x4956de8>
+
+ocupados hash: 119
+
+a insertar recursivamente: <A21, 0x4957388>
+pasó a false
+a insertar: <A21, 0x4957388>
+
+ocupados hash: 120
+
+a insertar recursivamente: <M21, 0x4957928>
+pasó a false
+a insertar: <M21, 0x4957928>
+
+ocupados hash: 121
+
+a insertar recursivamente: <Y21, 0x4957ec8>
+pasó a false
+a insertar: <Y21, 0x4957ec8>
+
+ocupados hash: 122
+
+a insertar recursivamente: <e21, 0x4958468>
+pasó a false
+a insertar: <e21, 0x4958468>
+
+ocupados hash: 123
+
+a insertar recursivamente: <q21, 0x4958a08>
+pasó a false
+a insertar: <q21, 0x4958a08>
+
+ocupados hash: 124
+
+a insertar recursivamente: <531, 0x4959110>
+pasó a false
+a insertar: <531, 0x4959110>
+
+ocupados hash: 125
+
+a insertar recursivamente: <601, 0x49525b8>
+pasó a false
+a insertar: <601, 0x49525b8>
+
+ocupados hash: 126
+
+a insertar recursivamente: <B01, 0x49526a8>
+pasó a false
+a insertar: <B01, 0x49526a8>
+
+ocupados hash: 127
+
+a insertar recursivamente: <N01, 0x4952798>
+pasó a false
+a insertar: <N01, 0x4952798>
+
+ocupados hash: 128
+
+a insertar recursivamente: <Z01, 0x4952888>
+pasó a false
+a insertar: <Z01, 0x4952888>
+
+ocupados hash: 129
+
+a insertar recursivamente: <f01, 0x4952978>
+pasó a false
+a insertar: <f01, 0x4952978>
+
+ocupados hash: 130
+
+a insertar recursivamente: <r01, 0x4952a68>
+pasó a false
+a insertar: <r01, 0x4952a68>
+
+ocupados hash: 131
+
+a insertar recursivamente: <611, 0x4952bd0>
+pasó a false
+a insertar: <611, 0x4952bd0>
+
+ocupados hash: 132
+
+a insertar recursivamente: <B11, 0x4952cc0>
+pasó a false
+a insertar: <B11, 0x4952cc0>
+
+ocupados hash: 133
+
+a insertar recursivamente: <N11, 0x4952db0>
+pasó a false
+a insertar: <N11, 0x4952db0>
+
+ocupados hash: 134
+
+a insertar recursivamente: <Z11, 0x4952ea0>
+pasó a false
+a insertar: <Z11, 0x4952ea0>
+
+ocupados hash: 135
+
+a insertar recursivamente: <f11, 0x49561b8>
+pasó a false
+a insertar: <f11, 0x49561b8>
+
+ocupados hash: 136
+
+a insertar recursivamente: <r11, 0x4956758>
+pasó a false
+a insertar: <r11, 0x4956758>
+
+ocupados hash: 137
+
+a insertar recursivamente: <621, 0x4956e60>
+pasó a false
+a insertar: <621, 0x4956e60>
+
+ocupados hash: 138
+
+a insertar recursivamente: <B21, 0x4957400>
+pasó a false
+a insertar: <B21, 0x4957400>
+
+ocupados hash: 139
+
+a insertar recursivamente: <N21, 0x49579a0>
+pasó a false
+a insertar: <N21, 0x49579a0>
+
+ocupados hash: 140
+
+a insertar recursivamente: <Z21, 0x4957f40>
+pasó a false
+a insertar: <Z21, 0x4957f40>
+
+ocupados hash: 141
+
+a insertar recursivamente: <f21, 0x49584e0>
+pasó a false
+a insertar: <f21, 0x49584e0>
+
+ocupados hash: 142
+
+a insertar recursivamente: <r21, 0x4958a80>
+pasó a false
+a insertar: <r21, 0x4958a80>
+
+ocupados hash: 143
+
+a insertar recursivamente: <631, 0x4959188>
+pasó a false
+a insertar: <631, 0x4959188>
+
+ocupados hash: 144
+
+a insertar recursivamente: <701, 0x4952f90>
+pasó a false
+a insertar: <701, 0x4952f90>
+
+ocupados hash: 145
+
+a insertar recursivamente: <C01, 0x4953080>
+pasó a false
+a insertar: <C01, 0x4953080>
+
+ocupados hash: 146
+
+a insertar recursivamente: <O01, 0x4953170>
+pasó a false
+a insertar: <O01, 0x4953170>
+
+ocupados hash: 147
+
+a insertar recursivamente: <[01, 0x4953260>
+pasó a false
+a insertar: <[01, 0x4953260>
+
+ocupados hash: 148
+
+a insertar recursivamente: <g01, 0x4953350>
+pasó a false
+a insertar: <g01, 0x4953350>
+
+ocupados hash: 149
+
+a insertar recursivamente: <s01, 0x4953440>
+pasó a false
+a insertar: <s01, 0x4953440>
+
+ocupados hash: 150
+
+a insertar recursivamente: <711, 0x49535a8>
+pasó a false
+a insertar: <711, 0x49535a8>
+
+ocupados hash: 151
+
+a insertar recursivamente: <C11, 0x4953698>
+pasó a false
+a insertar: <C11, 0x4953698>
+
+ocupados hash: 152
+
+a insertar recursivamente: <O11, 0x4953788>
+pasó a false
+a insertar: <O11, 0x4953788>
+
+ocupados hash: 153
+
+a insertar recursivamente: <[11, 0x4953878>
+pasó a false
+a insertar: <[11, 0x4953878>
+
+ocupados hash: 154
+
+a insertar recursivamente: <g11, 0x4956230>
+pasó a false
+a insertar: <g11, 0x4956230>
+
+ocupados hash: 155
+
+a insertar recursivamente: <s11, 0x49567d0>
+pasó a false
+a insertar: <s11, 0x49567d0>
+
+ocupados hash: 156
+
+a insertar recursivamente: <721, 0x4956ed8>
+pasó a false
+a insertar: <721, 0x4956ed8>
+
+ocupados hash: 157
+
+a insertar recursivamente: <C21, 0x4957478>
+pasó a false
+a insertar: <C21, 0x4957478>
+
+ocupados hash: 158
+
+a insertar recursivamente: <O21, 0x4957a18>
+pasó a false
+a insertar: <O21, 0x4957a18>
+
+ocupados hash: 159
+
+a insertar recursivamente: <[21, 0x4957fb8>
+pasó a false
+a insertar: <[21, 0x4957fb8>
+
+ocupados hash: 160
+
+a insertar recursivamente: <g21, 0x4958558>
+pasó a false
+a insertar: <g21, 0x4958558>
+
+ocupados hash: 161
+
+a insertar recursivamente: <s21, 0x4958af8>
+pasó a false
+a insertar: <s21, 0x4958af8>
+
+ocupados hash: 162
+
+a insertar recursivamente: <731, 0x4959200>
+pasó a false
+a insertar: <731, 0x4959200>
+
+ocupados hash: 163
+
+a insertar recursivamente: <801, 0x4953968>
+pasó a false
+a insertar: <801, 0x4953968>
+
+ocupados hash: 164
+
+a insertar recursivamente: <D01, 0x4953a58>
+pasó a false
+a insertar: <D01, 0x4953a58>
+
+ocupados hash: 165
+
+a insertar recursivamente: <P01, 0x4953b48>
+pasó a false
+a insertar: <P01, 0x4953b48>
+
+ocupados hash: 166
+
+a insertar recursivamente: <\01, 0x4953c38>
+pasó a false
+a insertar: <\01, 0x4953c38>
+
+ocupados hash: 167
+
+a insertar recursivamente: <h01, 0x4953d28>
+pasó a false
+a insertar: <h01, 0x4953d28>
+
+ocupados hash: 168
+
+a insertar recursivamente: <t01, 0x4953e18>
+pasó a false
+a insertar: <t01, 0x4953e18>
+
+ocupados hash: 169
+
+a insertar recursivamente: <811, 0x4953f80>
+pasó a false
+a insertar: <811, 0x4953f80>
+
+ocupados hash: 170
+
+a insertar recursivamente: <D11, 0x4954070>
+pasó a false
+a insertar: <D11, 0x4954070>
+
+ocupados hash: 171
+
+a insertar recursivamente: <P11, 0x4954160>
+pasó a false
+a insertar: <P11, 0x4954160>
+
+ocupados hash: 172
+
+a insertar recursivamente: <\11, 0x4955d08>
+pasó a false
+a insertar: <\11, 0x4955d08>
+
+ocupados hash: 173
+
+a insertar recursivamente: <h11, 0x49562a8>
+pasó a false
+a insertar: <h11, 0x49562a8>
+
+ocupados hash: 174
+
+a insertar recursivamente: <t11, 0x4956848>
+pasó a false
+a insertar: <t11, 0x4956848>
+
+ocupados hash: 175
+
+a insertar recursivamente: <821, 0x4956f50>
+pasó a false
+a insertar: <821, 0x4956f50>
+
+ocupados hash: 176
+
+a insertar recursivamente: <D21, 0x49574f0>
+pasó a false
+a insertar: <D21, 0x49574f0>
+
+ocupados hash: 177
+
+a insertar recursivamente: <P21, 0x4957a90>
+pasó a false
+a insertar: <P21, 0x4957a90>
+
+ocupados hash: 178
+
+a insertar recursivamente: <\21, 0x4958030>
+pasó a false
+a insertar: <\21, 0x4958030>
+
+ocupados hash: 179
+
+a insertar recursivamente: <h21, 0x49585d0>
+pasó a false
+a insertar: <h21, 0x49585d0>
+
+ocupados hash: 180
+
+a insertar recursivamente: <t21, 0x4958b70>
+pasó a false
+a insertar: <t21, 0x4958b70>
+
+ocupados hash: 181
+
+a insertar recursivamente: <831, 0x4959278>
+pasó a false
+a insertar: <831, 0x4959278>
+
+ocupados hash: 182
+
+a insertar recursivamente: <901, 0x49542c8>
+pasó a false
+a insertar: <901, 0x49542c8>
+
+ocupados hash: 183
+
+a insertar recursivamente: <E01, 0x49543b8>
+pasó a false
+a insertar: <E01, 0x49543b8>
+
+ocupados hash: 184
+
+a insertar recursivamente: <Q01, 0x49544a8>
+pasó a false
+a insertar: <Q01, 0x49544a8>
+
+ocupados hash: 185
+
+a insertar recursivamente: <]01, 0x4954598>
+pasó a false
+a insertar: <]01, 0x4954598>
+
+ocupados hash: 186
+
+a insertar recursivamente: <i01, 0x4954688>
+pasó a false
+a insertar: <i01, 0x4954688>
+
+ocupados hash: 187
+
+a insertar recursivamente: <u01, 0x4954778>
+pasó a false
+a insertar: <u01, 0x4954778>
+
+ocupados hash: 188
+
+a insertar recursivamente: <911, 0x4954868>
+pasó a false
+a insertar: <911, 0x4954868>
+
+ocupados hash: 189
+
+a insertar recursivamente: <E11, 0x4954958>
+pasó a false
+a insertar: <E11, 0x4954958>
+
+ocupados hash: 190
+
+a insertar recursivamente: <Q11, 0x4954a48>
+pasó a false
+a insertar: <Q11, 0x4954a48>
+
+ocupados hash: 191
+
+a insertar recursivamente: <]11, 0x4955d80>
+pasó a false
+a insertar: <]11, 0x4955d80>
+
+ocupados hash: 192
+
+a insertar recursivamente: <i11, 0x4956320>
+pasó a false
+a insertar: <i11, 0x4956320>
+
+ocupados hash: 193
+
+a insertar recursivamente: <u11, 0x49568c0>
+pasó a false
+a insertar: <u11, 0x49568c0>
+
+ocupados hash: 194
+
+a insertar recursivamente: <921, 0x4956fc8>
+pasó a false
+a insertar: <921, 0x4956fc8>
+
+ocupados hash: 195
+
+a insertar recursivamente: <E21, 0x4957568>
+pasó a false
+a insertar: <E21, 0x4957568>
+
+ocupados hash: 196
+
+a insertar recursivamente: <Q21, 0x4957b08>
+pasó a false
+a insertar: <Q21, 0x4957b08>
+
+ocupados hash: 197
+
+a insertar recursivamente: <]21, 0x49580a8>
+pasó a false
+a insertar: <]21, 0x49580a8>
+
+ocupados hash: 198
+
+a insertar recursivamente: <i21, 0x4958648>
+pasó a false
+a insertar: <i21, 0x4958648>
+
+ocupados hash: 199
+
+a insertar recursivamente: <u21, 0x4958be8>
+pasó a false
+a insertar: <u21, 0x4958be8>
+
+ocupados hash: 200
+
+a insertar recursivamente: <931, 0x49592f0>
+pasó a false
+a insertar: <931, 0x49592f0>
+
+ocupados hash: 201
+
+a insertar recursivamente: <:01, 0x4954bb0>
+pasó a false
+a insertar: <:01, 0x4954bb0>
+
+ocupados hash: 202
+
+a insertar recursivamente: <F01, 0x4954ca0>
+pasó a false
+a insertar: <F01, 0x4954ca0>
+
+ocupados hash: 203
+
+a insertar recursivamente: <R01, 0x4954d90>
+pasó a false
+a insertar: <R01, 0x4954d90>
+
+ocupados hash: 204
+
+a insertar recursivamente: <^01, 0x4954e80>
+pasó a false
+a insertar: <^01, 0x4954e80>
+
+ocupados hash: 205
+
+a insertar recursivamente: <j01, 0x4954f70>
+pasó a false
+a insertar: <j01, 0x4954f70>
+
+ocupados hash: 206
+
+a insertar recursivamente: <v01, 0x4955060>
+pasó a false
+a insertar: <v01, 0x4955060>
+
+ocupados hash: 207
+
+a insertar recursivamente: <:11, 0x4955150>
+pasó a false
+a insertar: <:11, 0x4955150>
+
+ocupados hash: 208
+
+a insertar recursivamente: <F11, 0x4955240>
+pasó a false
+a insertar: <F11, 0x4955240>
+
+ocupados hash: 209
+
+a insertar recursivamente: <R11, 0x4955330>
+pasó a false
+a insertar: <R11, 0x4955330>
+
+ocupados hash: 210
+
+a insertar recursivamente: <^11, 0x4955df8>
+pasó a false
+a insertar: <^11, 0x4955df8>
+
+ocupados hash: 211
+
+a insertar recursivamente: <j11, 0x4956398>
+pasó a false
+a insertar: <j11, 0x4956398>
+
+ocupados hash: 212
+
+a insertar recursivamente: <v11, 0x4956938>
+pasó a false
+a insertar: <v11, 0x4956938>
+
+ocupados hash: 213
+
+a insertar recursivamente: <:21, 0x4957040>
+pasó a false
+a insertar: <:21, 0x4957040>
+
+ocupados hash: 214
+
+a insertar recursivamente: <F21, 0x49575e0>
+pasó a false
+a insertar: <F21, 0x49575e0>
+
+ocupados hash: 215
+
+a insertar recursivamente: <R21, 0x4957b80>
+pasó a false
+a insertar: <R21, 0x4957b80>
+
+ocupados hash: 216
+
+a insertar recursivamente: <^21, 0x4958120>
+pasó a false
+a insertar: <^21, 0x4958120>
+
+ocupados hash: 217
+
+a insertar recursivamente: <j21, 0x49586c0>
+pasó a false
+a insertar: <j21, 0x49586c0>
+
+ocupados hash: 218
+
+a insertar recursivamente: <v21, 0x4958c60>
+pasó a false
+a insertar: <v21, 0x4958c60>
+
+ocupados hash: 219
+
+a insertar recursivamente: <:31, 0x4959368>
+pasó a false
+a insertar: <:31, 0x4959368>
+
+ocupados hash: 220
+
+a insertar recursivamente: <;01, 0x4955498>
+pasó a false
+a insertar: <;01, 0x4955498>
+
+ocupados hash: 221
+
+a insertar recursivamente: <G01, 0x4955588>
+pasó a false
+a insertar: <G01, 0x4955588>
+
+ocupados hash: 222
+
+a insertar recursivamente: <S01, 0x4955678>
+pasó a false
+a insertar: <S01, 0x4955678>
+
+ocupados hash: 223
+
+a insertar recursivamente: <_01, 0x4955768>
+pasó a false
+a insertar: <_01, 0x4955768>
+
+ocupados hash: 224
+
+a insertar recursivamente: <k01, 0x4955858>
+pasó a false
+a insertar: <k01, 0x4955858>
+
+ocupados hash: 225
+
+a insertar recursivamente: <w01, 0x4955948>
+pasó a false
+a insertar: <w01, 0x4955948>
+
+ocupados hash: 226
+
+a insertar recursivamente: <;11, 0x4955a38>
+pasó a false
+a insertar: <;11, 0x4955a38>
+
+ocupados hash: 227
+
+a insertar recursivamente: <G11, 0x4955b28>
+pasó a false
+a insertar: <G11, 0x4955b28>
+
+ocupados hash: 228
+
+a insertar recursivamente: <S11, 0x4955c18>
+pasó a false
+a insertar: <S11, 0x4955c18>
+
+ocupados hash: 229
+
+a insertar recursivamente: <_11, 0x4955e70>
+pasó a false
+a insertar: <_11, 0x4955e70>
+
+ocupados hash: 230
+
+a insertar recursivamente: <k11, 0x4956410>
+pasó a false
+a insertar: <k11, 0x4956410>
+
+ocupados hash: 231
+
+a insertar recursivamente: <w11, 0x49569b0>
+pasó a false
+a insertar: <w11, 0x49569b0>
+
+ocupados hash: 232
+
+a insertar recursivamente: <;21, 0x49570b8>
+pasó a false
+a insertar: <;21, 0x49570b8>
+
+ocupados hash: 233
+
+a insertar recursivamente: <G21, 0x4957658>
+pasó a false
+a insertar: <G21, 0x4957658>
+
+ocupados hash: 234
+
+a insertar recursivamente: <S21, 0x4957bf8>
+pasó a false
+a insertar: <S21, 0x4957bf8>
+
+ocupados hash: 235
+
+a insertar recursivamente: <_21, 0x4958198>
+pasó a false
+a insertar: <_21, 0x4958198>
+
+ocupados hash: 236
+
+a insertar recursivamente: <k21, 0x4958738>
+pasó a false
+a insertar: <k21, 0x4958738>
+
+ocupados hash: 237
+
+a insertar recursivamente: <w21, 0x4958cd8>
+pasó a false
+a insertar: <w21, 0x4958cd8>
+
+ocupados hash: 238
+
+a insertar recursivamente: <;31, 0x49593e0>
+pasó a false
+a insertar: <;31, 0x49593e0>
+
+ocupados hash: 239
+pasó a false
+a insertar: <>31, 0xbdecf920>
+
+ocupados hash: 240
+pasó a false
+a insertar: <?31, 0xbdecf920>
+
+ocupados hash: 241
+pasó a false
+a insertar: <@31, 0xbdecf920>
+
+ocupados hash: 242
+pasó a false
+a insertar: <A31, 0xbdecf920>
+
+ocupados hash: 243
+pasó a false
+a insertar: <B31, 0xbdecf920>
+
+ocupados hash: 244
+pasó a false
+a insertar: <C31, 0xbdecf920>
+
+ocupados hash: 245
+pasó a false
+a insertar: <D31, 0xbdecf920>
+
+ocupados hash: 246
+pasó a false
+a insertar: <E31, 0xbdecf920>
+
+ocupados hash: 247
+pasó a false
+a insertar: <F31, 0xbdecf920>
+
+ocupados hash: 248
+pasó a false
+a insertar: <G31, 0xbdecf920>
+
+ocupados hash: 249
+pasó a false
+a insertar: <H31, 0xbdecf920>
+
+ocupados hash: 250
+pasó a false
+a insertar: <I31, 0xbdecf920>
+
+ocupados hash: 251
+pasó a false
+a insertar: <J31, 0xbdecf920>
+
+ocupados hash: 252
+pasó a false
+a insertar: <K31, 0xbdecf920>
+
+ocupados hash: 253
+pasó a false
+a insertar: <L31, 0xbdecf920>
+
+ocupados hash: 254
+pasó a false
+a insertar: <M31, 0xbdecf920>
+
+ocupados hash: 255
+pasó a false
+a insertar: <N31, 0xbdecf920>
+
+ocupados hash: 256
+pasó a false
+a insertar: <O31, 0xbdecf920>
+
+ocupados hash: 257
+pasó a false
+a insertar: <P31, 0xbdecf920>
+
+ocupados hash: 258
+pasó a false
+a insertar: <Q31, 0xbdecf920>
+
+ocupados hash: 259
+pasó a false
+a insertar: <R31, 0xbdecf920>
+
+ocupados hash: 260
+pasó a false
+a insertar: <S31, 0xbdecf920>
+
+ocupados hash: 261
+pasó a false
+a insertar: <T31, 0xbdecf920>
+
+ocupados hash: 262
+pasó a false
+a insertar: <U31, 0xbdecf920>
+
+ocupados hash: 263
+pasó a false
+a insertar: <V31, 0xbdecf920>
+
+ocupados hash: 264
+pasó a false
+a insertar: <W31, 0xbdecf920>
+
+ocupados hash: 265
+pasó a false
+a insertar: <X31, 0xbdecf920>
+
+ocupados hash: 266
+pasó a false
+a insertar: <Y31, 0xbdecf920>
+
+ocupados hash: 267
+pasó a false
+a insertar: <Z31, 0xbdecf920>
+
+ocupados hash: 268
+pasó a false
+a insertar: <[31, 0xbdecf920>
+
+ocupados hash: 269
+pasó a false
+a insertar: <\31, 0xbdecf920>
+
+ocupados hash: 270
+pasó a false
+a insertar: <]31, 0xbdecf920>
+
+ocupados hash: 271
+pasó a false
+a insertar: <^31, 0xbdecf920>
+
+ocupados hash: 272
+pasó a false
+a insertar: <_31, 0xbdecf920>
+
+ocupados hash: 273
+pasó a false
+a insertar: <`31, 0xbdecf920>
+
+ocupados hash: 274
+pasó a false
+a insertar: <a31, 0xbdecf920>
+
+ocupados hash: 275
+pasó a false
+a insertar: <b31, 0xbdecf920>
+
+ocupados hash: 276
+pasó a false
+a insertar: <c31, 0xbdecf920>
+
+ocupados hash: 277
+pasó a false
+a insertar: <d31, 0xbdecf920>
+
+ocupados hash: 278
+pasó a false
+a insertar: <e31, 0xbdecf920>
+
+ocupados hash: 279
+pasó a false
+a insertar: <f31, 0xbdecf920>
+
+ocupados hash: 280
+pasó a false
+a insertar: <g31, 0xbdecf920>
+
+ocupados hash: 281
+pasó a false
+a insertar: <h31, 0xbdecf920>
+
+ocupados hash: 282
+pasó a false
+a insertar: <i31, 0xbdecf920>
+
+ocupados hash: 283
+pasó a false
+a insertar: <j31, 0xbdecf920>
+
+ocupados hash: 284
+pasó a false
+a insertar: <k31, 0xbdecf920>
+
+ocupados hash: 285
+pasó a false
+a insertar: <l31, 0xbdecf920>
+
+ocupados hash: 286
+pasó a false
+a insertar: <m31, 0xbdecf920>
+
+ocupados hash: 287
+pasó a false
+a insertar: <n31, 0xbdecf920>
+
+ocupados hash: 288
+pasó a false
+a insertar: <o31, 0xbdecf920>
+
+ocupados hash: 289
+pasó a false
+a insertar: <p31, 0xbdecf920>
+
+ocupados hash: 290
+pasó a false
+a insertar: <q31, 0xbdecf920>
+
+ocupados hash: 291
+pasó a false
+a insertar: <r31, 0xbdecf920>
+
+ocupados hash: 292
+pasó a false
+a insertar: <s31, 0xbdecf920>
+
+ocupados hash: 293
+pasó a false
+a insertar: <t31, 0xbdecf920>
+
+ocupados hash: 294
+pasó a false
+a insertar: <u31, 0xbdecf920>
+
+ocupados hash: 295
+pasó a false
+a insertar: <v31, 0xbdecf920>
+
+ocupados hash: 296
+pasó a false
+a insertar: <w31, 0xbdecf920>
+
+ocupados hash: 297
+pasó a false
+a insertar: <x31, 0xbdecf920>
+
+ocupados hash: 298
+pasó a false
+a insertar: <y31, 0xbdecf920>
+
+ocupados hash: 299
+pasó a false
+a insertar: <z31, 0xbdecf920>
+
+ocupados hash: 300
+pasó a false
+a insertar: <041, 0xbdecf920>
+
+ocupados hash: 301
+pasó a false
+a insertar: <141, 0xbdecf920>
+
+ocupados hash: 302
+pasó a false
+a insertar: <241, 0xbdecf920>
+
+ocupados hash: 303
+pasó a false
+a insertar: <341, 0xbdecf920>
+
+ocupados hash: 304
+pasó a false
+a insertar: <441, 0xbdecf920>
+
+ocupados hash: 305
+pasó a false
+a insertar: <541, 0xbdecf920>
+
+ocupados hash: 306
+pasó a false
+a insertar: <641, 0xbdecf920>
+
+ocupados hash: 307
+pasó a false
+a insertar: <741, 0xbdecf920>
+
+ocupados hash: 308
+pasó a false
+a insertar: <841, 0xbdecf920>
+
+ocupados hash: 309
+pasó a false
+a insertar: <941, 0xbdecf920>
+
+ocupados hash: 310
+pasó a false
+a insertar: <:41, 0xbdecf920>
+
+ocupados hash: 311
+pasó a false
+a insertar: <;41, 0xbdecf920>
+
+ocupados hash: 312
+pasó a false
+a insertar: <<41, 0xbdecf920>
+
+ocupados hash: 313
+pasó a false
+a insertar: <=41, 0xbdecf920>
+
+ocupados hash: 314
+pasó a false
+a insertar: <>41, 0xbdecf920>
+
+ocupados hash: 315
+pasó a false
+a insertar: <?41, 0xbdecf920>
+
+ocupados hash: 316
+pasó a false
+a insertar: <@41, 0xbdecf920>
+
+ocupados hash: 317
+pasó a false
+a insertar: <A41, 0xbdecf920>
+
+ocupados hash: 318
+pasó a false
+a insertar: <B41, 0xbdecf920>
+
+ocupados hash: 319
+pasó a false
+a insertar: <C41, 0xbdecf920>
+
+ocupados hash: 320
+pasó a false
+a insertar: <D41, 0xbdecf920>
+
+ocupados hash: 321
+pasó a false
+a insertar: <E41, 0xbdecf920>
+
+ocupados hash: 322
+pasó a false
+a insertar: <F41, 0xbdecf920>
+
+ocupados hash: 323
+pasó a false
+a insertar: <G41, 0xbdecf920>
+
+ocupados hash: 324
+pasó a false
+a insertar: <H41, 0xbdecf920>
+
+ocupados hash: 325
+pasó a false
+a insertar: <I41, 0xbdecf920>
+
+ocupados hash: 326
+pasó a false
+a insertar: <J41, 0xbdecf920>
+
+ocupados hash: 327
+pasó a false
+a insertar: <K41, 0xbdecf920>
+
+ocupados hash: 328
+pasó a false
+a insertar: <L41, 0xbdecf920>
+
+ocupados hash: 329
+pasó a false
+a insertar: <M41, 0xbdecf920>
+
+ocupados hash: 330
+pasó a false
+a insertar: <N41, 0xbdecf920>
+
+ocupados hash: 331
+pasó a false
+a insertar: <O41, 0xbdecf920>
+
+ocupados hash: 332
+pasó a false
+a insertar: <P41, 0xbdecf920>
+
+ocupados hash: 333
+pasó a false
+a insertar: <Q41, 0xbdecf920>
+
+ocupados hash: 334
+pasó a false
+a insertar: <R41, 0xbdecf920>
+
+ocupados hash: 335
+pasó a false
+a insertar: <S41, 0xbdecf920>
+
+ocupados hash: 336
+pasó a false
+a insertar: <T41, 0xbdecf920>
+
+ocupados hash: 337
+pasó a false
+a insertar: <U41, 0xbdecf920>
+
+ocupados hash: 338
+pasó a false
+a insertar: <V41, 0xbdecf920>
+
+ocupados hash: 339
+pasó a false
+a insertar: <W41, 0xbdecf920>
+
+ocupados hash: 340
+pasó a false
+a insertar: <X41, 0xbdecf920>
+
+ocupados hash: 341
+pasó a false
+a insertar: <Y41, 0xbdecf920>
+
+ocupados hash: 342
+pasó a false
+a insertar: <Z41, 0xbdecf920>
+
+ocupados hash: 343
+pasó a false
+a insertar: <[41, 0xbdecf920>
+
+ocupados hash: 344
+pasó a false
+a insertar: <\41, 0xbdecf920>
+
+ocupados hash: 345
+pasó a false
+a insertar: <]41, 0xbdecf920>
+
+ocupados hash: 346
+pasó a false
+a insertar: <^41, 0xbdecf920>
+
+ocupados hash: 347
+pasó a false
+a insertar: <_41, 0xbdecf920>
+
+ocupados hash: 348
+pasó a false
+a insertar: <`41, 0xbdecf920>
+
+ocupados hash: 349
+pasó a false
+a insertar: <a41, 0xbdecf920>
+
+ocupados hash: 350
+pasó a false
+a insertar: <b41, 0xbdecf920>
+
+ocupados hash: 351
+pasó a false
+a insertar: <c41, 0xbdecf920>
+
+ocupados hash: 352
+pasó a false
+a insertar: <d41, 0xbdecf920>
+
+ocupados hash: 353
+pasó a false
+a insertar: <e41, 0xbdecf920>
+
+ocupados hash: 354
+pasó a false
+a insertar: <f41, 0xbdecf920>
+
+ocupados hash: 355
+pasó a false
+a insertar: <g41, 0xbdecf920>
+
+ocupados hash: 356
+pasó a false
+a insertar: <h41, 0xbdecf920>
+
+ocupados hash: 357
+pasó a false
+a insertar: <i41, 0xbdecf920>
+
+ocupados hash: 358
+pasó a false
+a insertar: <j41, 0xbdecf920>
+
+ocupados hash: 359
+pasó a false
+a insertar: <k41, 0xbdecf920>
+
+ocupados hash: 360
+pasó a false
+a insertar: <l41, 0xbdecf920>
+
+ocupados hash: 361
+pasó a false
+a insertar: <m41, 0xbdecf920>
+
+ocupados hash: 362
+pasó a false
+a insertar: <n41, 0xbdecf920>
+
+ocupados hash: 363
+pasó a false
+a insertar: <o41, 0xbdecf920>
+
+ocupados hash: 364
+pasó a false
+a insertar: <p41, 0xbdecf920>
+
+ocupados hash: 365
+pasó a false
+a insertar: <q41, 0xbdecf920>
+
+ocupados hash: 366
+pasó a false
+a insertar: <r41, 0xbdecf920>
+
+ocupados hash: 367
+pasó a false
+a insertar: <s41, 0xbdecf920>
+
+ocupados hash: 368
+pasó a false
+a insertar: <t41, 0xbdecf920>
+
+ocupados hash: 369
+pasó a false
+a insertar: <u41, 0xbdecf920>
+
+ocupados hash: 370
+pasó a false
+a insertar: <v41, 0xbdecf920>
+
+ocupados hash: 371
+pasó a false
+a insertar: <w41, 0xbdecf920>
+
+ocupados hash: 372
+pasó a false
+a insertar: <x41, 0xbdecf920>
+
+ocupados hash: 373
+pasó a false
+a insertar: <y41, 0xbdecf920>
+
+ocupados hash: 374
+pasó a false
+a insertar: <z41, 0xbdecf920>
+
+ocupados hash: 375
+pasó a false
+a insertar: <051, 0xbdecf920>
+
+ocupados hash: 376
+pasó a false
+a insertar: <151, 0xbdecf920>
+
+ocupados hash: 377
+pasó a false
+a insertar: <251, 0xbdecf920>
+
+ocupados hash: 378
+pasó a false
+a insertar: <351, 0xbdecf920>
+
+ocupados hash: 379
+pasó a false
+a insertar: <451, 0xbdecf920>
+
+ocupados hash: 380
+pasó a false
+a insertar: <551, 0xbdecf920>
+
+ocupados hash: 381
+pasó a false
+a insertar: <651, 0xbdecf920>
+
+ocupados hash: 382
+pasó a false
+a insertar: <751, 0xbdecf920>
+
+ocupados hash: 383
+pasó a false
+a insertar: <851, 0xbdecf920>
+
+ocupados hash: 384
+pasó a false
+a insertar: <951, 0xbdecf920>
+
+ocupados hash: 385
+pasó a false
+a insertar: <:51, 0xbdecf920>
+
+ocupados hash: 386
+pasó a false
+a insertar: <;51, 0xbdecf920>
+
+ocupados hash: 387
+pasó a false
+a insertar: <<51, 0xbdecf920>
+
+ocupados hash: 388
+pasó a false
+a insertar: <=51, 0xbdecf920>
+
+ocupados hash: 389
+pasó a false
+a insertar: <>51, 0xbdecf920>
+
+ocupados hash: 390
+pasó a false
+a insertar: <?51, 0xbdecf920>
+
+ocupados hash: 391
+pasó a false
+a insertar: <@51, 0xbdecf920>
+
+ocupados hash: 392
+pasó a false
+a insertar: <A51, 0xbdecf920>
+
+ocupados hash: 393
+pasó a false
+a insertar: <B51, 0xbdecf920>
+
+ocupados hash: 394
+pasó a false
+a insertar: <C51, 0xbdecf920>
+
+ocupados hash: 395
+pasó a false
+a insertar: <D51, 0xbdecf920>
+
+ocupados hash: 396
+pasó a false
+a insertar: <E51, 0xbdecf920>
+
+ocupados hash: 397
+pasó a false
+a insertar: <F51, 0xbdecf920>
+
+ocupados hash: 398
+pasó a false
+a insertar: <G51, 0xbdecf920>
+
+ocupados hash: 399
+pasó a false
+a insertar: <H51, 0xbdecf920>
+
+ocupados hash: 400
+pasó a false
+a insertar: <I51, 0xbdecf920>
+
+ocupados hash: 401
+pasó a false
+a insertar: <J51, 0xbdecf920>
+
+ocupados hash: 402
+pasó a false
+a insertar: <K51, 0xbdecf920>
+
+ocupados hash: 403
+pasó a false
+a insertar: <L51, 0xbdecf920>
+
+ocupados hash: 404
+pasó a false
+a insertar: <M51, 0xbdecf920>
+
+ocupados hash: 405
+pasó a false
+a insertar: <N51, 0xbdecf920>
+
+ocupados hash: 406
+pasó a false
+a insertar: <O51, 0xbdecf920>
+
+ocupados hash: 407
+pasó a false
+a insertar: <P51, 0xbdecf920>
+
+ocupados hash: 408
+pasó a false
+a insertar: <Q51, 0xbdecf920>
+
+ocupados hash: 409
+pasó a false
+a insertar: <R51, 0xbdecf920>
+
+ocupados hash: 410
+pasó a false
+a insertar: <S51, 0xbdecf920>
+
+ocupados hash: 411
+pasó a false
+a insertar: <T51, 0xbdecf920>
+
+ocupados hash: 412
+pasó a false
+a insertar: <U51, 0xbdecf920>
+
+ocupados hash: 413
+pasó a false
+a insertar: <V51, 0xbdecf920>
+
+ocupados hash: 414
+pasó a false
+a insertar: <W51, 0xbdecf920>
+
+ocupados hash: 415
+pasó a false
+a insertar: <X51, 0xbdecf920>
+
+ocupados hash: 416
+pasó a false
+a insertar: <Y51, 0xbdecf920>
+
+ocupados hash: 417
+pasó a false
+a insertar: <Z51, 0xbdecf920>
+
+ocupados hash: 418
+pasó a false
+a insertar: <[51, 0xbdecf920>
+
+ocupados hash: 419
+pasó a false
+a insertar: <\51, 0xbdecf920>
+
+ocupados hash: 420
+pasó a false
+a insertar: <]51, 0xbdecf920>
+
+ocupados hash: 421
+pasó a false
+a insertar: <^51, 0xbdecf920>
+
+ocupados hash: 422
+pasó a false
+a insertar: <_51, 0xbdecf920>
+
+ocupados hash: 423
+pasó a false
+a insertar: <`51, 0xbdecf920>
+
+ocupados hash: 424
+pasó a false
+a insertar: <a51, 0xbdecf920>
+
+ocupados hash: 425
+pasó a false
+a insertar: <b51, 0xbdecf920>
+
+ocupados hash: 426
+pasó a false
+a insertar: <c51, 0xbdecf920>
+
+ocupados hash: 427
+pasó a false
+a insertar: <d51, 0xbdecf920>
+
+ocupados hash: 428
+pasó a false
+a insertar: <e51, 0xbdecf920>
+
+ocupados hash: 429
+pasó a false
+a insertar: <f51, 0xbdecf920>
+
+ocupados hash: 430
+pasó a false
+a insertar: <g51, 0xbdecf920>
+
+ocupados hash: 431
+pasó a false
+a insertar: <h51, 0xbdecf920>
+
+ocupados hash: 432
+pasó a false
+a insertar: <i51, 0xbdecf920>
+
+ocupados hash: 433
+pasó a false
+a insertar: <j51, 0xbdecf920>
+
+ocupados hash: 434
+pasó a false
+a insertar: <k51, 0xbdecf920>
+
+ocupados hash: 435
+pasó a false
+a insertar: <l51, 0xbdecf920>
+
+ocupados hash: 436
+pasó a false
+a insertar: <m51, 0xbdecf920>
+
+ocupados hash: 437
+pasó a false
+a insertar: <n51, 0xbdecf920>
+
+ocupados hash: 438
+pasó a false
+a insertar: <o51, 0xbdecf920>
+
+ocupados hash: 439
+pasó a false
+a insertar: <p51, 0xbdecf920>
+
+ocupados hash: 440
+pasó a false
+a insertar: <q51, 0xbdecf920>
+
+ocupados hash: 441
+pasó a false
+a insertar: <r51, 0xbdecf920>
+
+ocupados hash: 442
+pasó a false
+a insertar: <s51, 0xbdecf920>
+
+ocupados hash: 443
+pasó a false
+a insertar: <t51, 0xbdecf920>
+
+ocupados hash: 444
+pasó a false
+a insertar: <u51, 0xbdecf920>
+
+ocupados hash: 445
+pasó a false
+a insertar: <v51, 0xbdecf920>
+
+ocupados hash: 446
+pasó a false
+a insertar: <w51, 0xbdecf920>
+
+ocupados hash: 447
+pasó a false
+a insertar: <x51, 0xbdecf920>
+
+ocupados hash: 448
+pasó a false
+a insertar: <y51, 0xbdecf920>
+
+ocupados hash: 449
+pasó a false
+a insertar: <z51, 0xbdecf920>
+
+ocupados hash: 450
+pasó a false
+a insertar: <061, 0xbdecf920>
+
+ocupados hash: 451
+pasó a false
+a insertar: <161, 0xbdecf920>
+
+ocupados hash: 452
+pasó a false
+a insertar: <261, 0xbdecf920>
+
+ocupados hash: 453
+pasó a false
+a insertar: <361, 0xbdecf920>
+
+ocupados hash: 454
+pasó a false
+a insertar: <461, 0xbdecf920>
+
+ocupados hash: 455
+pasó a false
+a insertar: <561, 0xbdecf920>
+
+ocupados hash: 456
+pasó a false
+a insertar: <661, 0xbdecf920>
+
+ocupados hash: 457
+pasó a false
+a insertar: <761, 0xbdecf920>
+
+ocupados hash: 458
+pasó a false
+a insertar: <861, 0xbdecf920>
+
+ocupados hash: 459
+pasó a false
+a insertar: <961, 0xbdecf920>
+
+ocupados hash: 460
+pasó a false
+a insertar: <:61, 0xbdecf920>
+
+ocupados hash: 461
+pasó a false
+a insertar: <;61, 0xbdecf920>
+
+ocupados hash: 462
+pasó a false
+a insertar: <<61, 0xbdecf920>
+
+ocupados hash: 463
+pasó a false
+a insertar: <=61, 0xbdecf920>
+
+ocupados hash: 464
+pasó a false
+a insertar: <>61, 0xbdecf920>
+
+ocupados hash: 465
+pasó a false
+a insertar: <?61, 0xbdecf920>
+
+ocupados hash: 466
+pasó a false
+a insertar: <@61, 0xbdecf920>
+
+ocupados hash: 467
+pasó a false
+a insertar: <A61, 0xbdecf920>
+
+ocupados hash: 468
+pasó a false
+a insertar: <B61, 0xbdecf920>
+
+ocupados hash: 469
+pasó a false
+a insertar: <C61, 0xbdecf920>
+
+ocupados hash: 470
+pasó a false
+a insertar: <D61, 0xbdecf920>
+
+ocupados hash: 471
+pasó a false
+a insertar: <E61, 0xbdecf920>
+
+ocupados hash: 472
+pasó a false
+a insertar: <F61, 0xbdecf920>
+
+ocupados hash: 473
+pasó a false
+a insertar: <G61, 0xbdecf920>
+
+ocupados hash: 474
+pasó a false
+a insertar: <H61, 0xbdecf920>
+
+ocupados hash: 475
+pasó a false
+a insertar: <I61, 0xbdecf920>
+
+ocupados hash: 476
+pasó a false
+a insertar: <J61, 0xbdecf920>
+
+ocupados hash: 477
+pasó a false
+a insertar: <K61, 0xbdecf920>
+
+ocupados hash: 478
+pasó a false
+a insertar: <L61, 0xbdecf920>
+
+ocupados hash: 479
+
+
+factor de carga: 20.000000 
+
+a insertar recursivamente: <001, 0x4959618>
+pasó a false
+a insertar: <001, 0x4959618>
+
+ocupados hash: 1
+
+a insertar recursivamente: <H01, 0x4959708>
+pasó a false
+a insertar: <H01, 0x4959708>
+
+ocupados hash: 2
+
+a insertar recursivamente: <`01, 0x49597f8>
+pasó a false
+a insertar: <`01, 0x49597f8>
+
+ocupados hash: 3
+
+a insertar recursivamente: <x01, 0x49598e8>
+pasó a false
+a insertar: <x01, 0x49598e8>
+
+ocupados hash: 4
+
+a insertar recursivamente: <011, 0x4959960>
+pasó a false
+a insertar: <011, 0x4959960>
+
+ocupados hash: 5
+
+a insertar recursivamente: <H11, 0x4959a50>
+pasó a false
+a insertar: <H11, 0x4959a50>
+
+ocupados hash: 6
+
+a insertar recursivamente: <`11, 0x4959b40>
+pasó a false
+a insertar: <`11, 0x4959b40>
+
+ocupados hash: 7
+
+a insertar recursivamente: <x11, 0x4959c30>
+pasó a false
+a insertar: <x11, 0x4959c30>
+
+ocupados hash: 8
+
+a insertar recursivamente: <021, 0x4959ca8>
+pasó a false
+a insertar: <021, 0x4959ca8>
+
+ocupados hash: 9
+
+a insertar recursivamente: <H21, 0x4959d98>
+pasó a false
+a insertar: <H21, 0x4959d98>
+
+ocupados hash: 10
+
+a insertar recursivamente: <`21, 0x4959e88>
+pasó a false
+a insertar: <`21, 0x4959e88>
+
+ocupados hash: 11
+
+a insertar recursivamente: <x21, 0x4959f78>
+pasó a false
+a insertar: <x21, 0x4959f78>
+
+ocupados hash: 12
+
+a insertar recursivamente: <031, 0x4959ff0>
+pasó a false
+a insertar: <031, 0x4959ff0>
+
+ocupados hash: 13
+
+a insertar recursivamente: <H31, 0x4960ad0>
+pasó a false
+a insertar: <H31, 0x4960ad0>
+
+ocupados hash: 14
+
+a insertar recursivamente: <`31, 0x4961610>
+pasó a false
+a insertar: <`31, 0x4961610>
+
+ocupados hash: 15
+
+a insertar recursivamente: <x31, 0x4962150>
+pasó a false
+a insertar: <x31, 0x4962150>
+
+ocupados hash: 16
+
+a insertar recursivamente: <041, 0x49622b8>
+pasó a false
+a insertar: <041, 0x49622b8>
+
+ocupados hash: 17
+
+a insertar recursivamente: <H41, 0x4962df8>
+pasó a false
+a insertar: <H41, 0x4962df8>
+
+ocupados hash: 18
+
+a insertar recursivamente: <`41, 0x4963938>
+pasó a false
+a insertar: <`41, 0x4963938>
+
+ocupados hash: 19
+
+a insertar recursivamente: <x41, 0x4964478>
+pasó a false
+a insertar: <x41, 0x4964478>
+
+ocupados hash: 20
+
+a insertar recursivamente: <051, 0x49645e0>
+pasó a false
+a insertar: <051, 0x49645e0>
+
+ocupados hash: 21
+
+a insertar recursivamente: <H51, 0x4965120>
+pasó a false
+a insertar: <H51, 0x4965120>
+
+ocupados hash: 22
+
+a insertar recursivamente: <`51, 0x4965c60>
+pasó a false
+a insertar: <`51, 0x4965c60>
+
+ocupados hash: 23
+
+a insertar recursivamente: <x51, 0x49667a0>
+pasó a false
+a insertar: <x51, 0x49667a0>
+
+ocupados hash: 24
+
+a insertar recursivamente: <061, 0x4966908>
+pasó a false
+a insertar: <061, 0x4966908>
+
+ocupados hash: 25
+
+a insertar recursivamente: <H61, 0x4967448>
+pasó a false
+a insertar: <H61, 0x4967448>
+
+ocupados hash: 26
+
+a insertar recursivamente: <101, 0x495a0e0>
+pasó a false
+a insertar: <101, 0x495a0e0>
+
+ocupados hash: 27
+
+a insertar recursivamente: <I01, 0x495a1d0>
+pasó a false
+a insertar: <I01, 0x495a1d0>
+
+ocupados hash: 28
+
+a insertar recursivamente: <a01, 0x495a2c0>
+pasó a false
+a insertar: <a01, 0x495a2c0>
+
+ocupados hash: 29
+
+a insertar recursivamente: <y01, 0x495a3b0>
+pasó a false
+a insertar: <y01, 0x495a3b0>
+
+ocupados hash: 30
+
+a insertar recursivamente: <111, 0x495a428>
+pasó a false
+a insertar: <111, 0x495a428>
+
+ocupados hash: 31
+
+a insertar recursivamente: <I11, 0x495a518>
+pasó a false
+a insertar: <I11, 0x495a518>
+
+ocupados hash: 32
+
+a insertar recursivamente: <a11, 0x495a608>
+pasó a false
+a insertar: <a11, 0x495a608>
+
+ocupados hash: 33
+
+a insertar recursivamente: <y11, 0x495a6f8>
+pasó a false
+a insertar: <y11, 0x495a6f8>
+
+ocupados hash: 34
+
+a insertar recursivamente: <121, 0x495a770>
+pasó a false
+a insertar: <121, 0x495a770>
+
+ocupados hash: 35
+
+a insertar recursivamente: <I21, 0x495a860>
+pasó a false
+a insertar: <I21, 0x495a860>
+
+ocupados hash: 36
+
+a insertar recursivamente: <a21, 0x495a950>
+pasó a false
+a insertar: <a21, 0x495a950>
+
+ocupados hash: 37
+
+a insertar recursivamente: <y21, 0x495aa40>
+pasó a false
+a insertar: <y21, 0x495aa40>
+
+ocupados hash: 38
+
+a insertar recursivamente: <131, 0x495aab8>
+pasó a false
+a insertar: <131, 0x495aab8>
+
+ocupados hash: 39
+
+a insertar recursivamente: <I31, 0x4960b48>
+pasó a false
+a insertar: <I31, 0x4960b48>
+
+ocupados hash: 40
+
+a insertar recursivamente: <a31, 0x4961688>
+pasó a false
+a insertar: <a31, 0x4961688>
+
+ocupados hash: 41
+
+a insertar recursivamente: <y31, 0x49621c8>
+pasó a false
+a insertar: <y31, 0x49621c8>
+
+ocupados hash: 42
+
+a insertar recursivamente: <141, 0x4962330>
+pasó a false
+a insertar: <141, 0x4962330>
+
+ocupados hash: 43
+
+a insertar recursivamente: <I41, 0x4962e70>
+pasó a false
+a insertar: <I41, 0x4962e70>
+
+ocupados hash: 44
+
+a insertar recursivamente: <a41, 0x49639b0>
+pasó a false
+a insertar: <a41, 0x49639b0>
+
+ocupados hash: 45
+
+a insertar recursivamente: <y41, 0x49644f0>
+pasó a false
+a insertar: <y41, 0x49644f0>
+
+ocupados hash: 46
+
+a insertar recursivamente: <151, 0x4964658>
+pasó a false
+a insertar: <151, 0x4964658>
+
+ocupados hash: 47
+
+a insertar recursivamente: <I51, 0x4965198>
+pasó a false
+a insertar: <I51, 0x4965198>
+
+ocupados hash: 48
+
+a insertar recursivamente: <a51, 0x4965cd8>
+pasó a false
+a insertar: <a51, 0x4965cd8>
+
+ocupados hash: 49
+
+a insertar recursivamente: <y51, 0x4966818>
+pasó a false
+a insertar: <y51, 0x4966818>
+
+ocupados hash: 50
+
+a insertar recursivamente: <161, 0x4966980>
+pasó a false
+a insertar: <161, 0x4966980>
+
+ocupados hash: 51
+
+a insertar recursivamente: <I61, 0x49674c0>
+pasó a false
+a insertar: <I61, 0x49674c0>
+
+ocupados hash: 52
+
+a insertar recursivamente: <201, 0x495aba8>
+pasó a false
+a insertar: <201, 0x495aba8>
+
+ocupados hash: 53
+
+a insertar recursivamente: <J01, 0x495ac98>
+pasó a false
+a insertar: <J01, 0x495ac98>
+
+ocupados hash: 54
+
+a insertar recursivamente: <b01, 0x495ad88>
+pasó a false
+a insertar: <b01, 0x495ad88>
+
+ocupados hash: 55
+
+a insertar recursivamente: <z01, 0x495ae78>
+pasó a false
+a insertar: <z01, 0x495ae78>
+
+ocupados hash: 56
+
+a insertar recursivamente: <211, 0x495aef0>
+pasó a false
+a insertar: <211, 0x495aef0>
+
+ocupados hash: 57
+
+a insertar recursivamente: <J11, 0x495afe0>
+pasó a false
+a insertar: <J11, 0x495afe0>
+
+ocupados hash: 58
+
+a insertar recursivamente: <b11, 0x495b0d0>
+pasó a false
+a insertar: <b11, 0x495b0d0>
+
+ocupados hash: 59
+
+a insertar recursivamente: <z11, 0x495b1c0>
+pasó a false
+a insertar: <z11, 0x495b1c0>
+
+ocupados hash: 60
+
+a insertar recursivamente: <221, 0x495b238>
+pasó a false
+a insertar: <221, 0x495b238>
+
+ocupados hash: 61
+
+a insertar recursivamente: <J21, 0x495b328>
+pasó a false
+a insertar: <J21, 0x495b328>
+
+ocupados hash: 62
+
+a insertar recursivamente: <b21, 0x495b418>
+pasó a false
+a insertar: <b21, 0x495b418>
+
+ocupados hash: 63
+
+a insertar recursivamente: <z21, 0x495b508>
+pasó a false
+a insertar: <z21, 0x495b508>
+
+ocupados hash: 64
+
+a insertar recursivamente: <231, 0x495b580>
+pasó a false
+a insertar: <231, 0x495b580>
+
+ocupados hash: 65
+
+a insertar recursivamente: <J31, 0x4960bc0>
+pasó a false
+a insertar: <J31, 0x4960bc0>
+
+ocupados hash: 66
+
+a insertar recursivamente: <b31, 0x4961700>
+pasó a false
+a insertar: <b31, 0x4961700>
+
+ocupados hash: 67
+
+a insertar recursivamente: <z31, 0x4962240>
+pasó a false
+a insertar: <z31, 0x4962240>
+
+ocupados hash: 68
+
+a insertar recursivamente: <241, 0x49623a8>
+pasó a false
+a insertar: <241, 0x49623a8>
+
+ocupados hash: 69
+
+a insertar recursivamente: <J41, 0x4962ee8>
+pasó a false
+a insertar: <J41, 0x4962ee8>
+
+ocupados hash: 70
+
+a insertar recursivamente: <b41, 0x4963a28>
+pasó a false
+a insertar: <b41, 0x4963a28>
+
+ocupados hash: 71
+
+a insertar recursivamente: <z41, 0x4964568>
+pasó a false
+a insertar: <z41, 0x4964568>
+
+ocupados hash: 72
+
+a insertar recursivamente: <251, 0x49646d0>
+pasó a false
+a insertar: <251, 0x49646d0>
+
+ocupados hash: 73
+
+a insertar recursivamente: <J51, 0x4965210>
+pasó a false
+a insertar: <J51, 0x4965210>
+
+ocupados hash: 74
+
+a insertar recursivamente: <b51, 0x4965d50>
+pasó a false
+a insertar: <b51, 0x4965d50>
+
+ocupados hash: 75
+
+a insertar recursivamente: <z51, 0x4966890>
+pasó a false
+a insertar: <z51, 0x4966890>
+
+ocupados hash: 76
+
+a insertar recursivamente: <261, 0x49669f8>
+pasó a false
+a insertar: <261, 0x49669f8>
+
+ocupados hash: 77
+
+a insertar recursivamente: <J61, 0x4967538>
+pasó a false
+a insertar: <J61, 0x4967538>
+
+ocupados hash: 78
+
+a insertar recursivamente: <301, 0x495b5f8>
+pasó a false
+a insertar: <301, 0x495b5f8>
+
+ocupados hash: 79
+
+a insertar recursivamente: <K01, 0x495b6e8>
+pasó a false
+a insertar: <K01, 0x495b6e8>
+
+ocupados hash: 80
+
+a insertar recursivamente: <c01, 0x495b7d8>
+pasó a false
+a insertar: <c01, 0x495b7d8>
+
+ocupados hash: 81
+
+a insertar recursivamente: <311, 0x495b8c8>
+pasó a false
+a insertar: <311, 0x495b8c8>
+
+ocupados hash: 82
+
+a insertar recursivamente: <K11, 0x495b9b8>
+pasó a false
+a insertar: <K11, 0x495b9b8>
+
+ocupados hash: 83
+
+a insertar recursivamente: <c11, 0x495baa8>
+pasó a false
+a insertar: <c11, 0x495baa8>
+
+ocupados hash: 84
+
+a insertar recursivamente: <321, 0x495bb98>
+pasó a false
+a insertar: <321, 0x495bb98>
+
+ocupados hash: 85
+
+a insertar recursivamente: <K21, 0x495bc88>
+pasó a false
+a insertar: <K21, 0x495bc88>
+
+ocupados hash: 86
+
+a insertar recursivamente: <c21, 0x495bd78>
+pasó a false
+a insertar: <c21, 0x495bd78>
+
+ocupados hash: 87
+
+a insertar recursivamente: <331, 0x495be68>
+pasó a false
+a insertar: <331, 0x495be68>
+
+ocupados hash: 88
+
+a insertar recursivamente: <K31, 0x4960c38>
+pasó a false
+a insertar: <K31, 0x4960c38>
+
+ocupados hash: 89
+
+a insertar recursivamente: <c31, 0x4961778>
+pasó a false
+a insertar: <c31, 0x4961778>
+
+ocupados hash: 90
+
+a insertar recursivamente: <341, 0x4962420>
+pasó a false
+a insertar: <341, 0x4962420>
+
+ocupados hash: 91
+
+a insertar recursivamente: <K41, 0x4962f60>
+pasó a false
+a insertar: <K41, 0x4962f60>
+
+ocupados hash: 92
+
+a insertar recursivamente: <c41, 0x4963aa0>
+pasó a false
+a insertar: <c41, 0x4963aa0>
+
+ocupados hash: 93
+
+a insertar recursivamente: <351, 0x4964748>
+pasó a false
+a insertar: <351, 0x4964748>
+
+ocupados hash: 94
+
+a insertar recursivamente: <K51, 0x4965288>
+pasó a false
+a insertar: <K51, 0x4965288>
+
+ocupados hash: 95
+
+a insertar recursivamente: <c51, 0x4965dc8>
+pasó a false
+a insertar: <c51, 0x4965dc8>
+
+ocupados hash: 96
+
+a insertar recursivamente: <361, 0x4966a70>
+pasó a false
+a insertar: <361, 0x4966a70>
+
+ocupados hash: 97
+
+a insertar recursivamente: <K61, 0x49675b0>
+pasó a false
+a insertar: <K61, 0x49675b0>
+
+ocupados hash: 98
+
+a insertar recursivamente: <401, 0x495bee0>
+pasó a false
+a insertar: <401, 0x495bee0>
+
+ocupados hash: 99
+
+a insertar recursivamente: <L01, 0x495bfd0>
+pasó a false
+a insertar: <L01, 0x495bfd0>
+
+ocupados hash: 100
+
+a insertar recursivamente: <d01, 0x495c0c0>
+pasó a false
+a insertar: <d01, 0x495c0c0>
+
+ocupados hash: 101
+
+a insertar recursivamente: <411, 0x495c1b0>
+pasó a false
+a insertar: <411, 0x495c1b0>
+
+ocupados hash: 102
+
+a insertar recursivamente: <L11, 0x495c2a0>
+pasó a false
+a insertar: <L11, 0x495c2a0>
+
+ocupados hash: 103
+
+a insertar recursivamente: <d11, 0x495c390>
+pasó a false
+a insertar: <d11, 0x495c390>
+
+ocupados hash: 104
+
+a insertar recursivamente: <421, 0x495c480>
+pasó a false
+a insertar: <421, 0x495c480>
+
+ocupados hash: 105
+
+a insertar recursivamente: <L21, 0x495c570>
+pasó a false
+a insertar: <L21, 0x495c570>
+
+ocupados hash: 106
+
+a insertar recursivamente: <d21, 0x495c660>
+pasó a false
+a insertar: <d21, 0x495c660>
+
+ocupados hash: 107
+
+a insertar recursivamente: <431, 0x495c750>
+pasó a false
+a insertar: <431, 0x495c750>
+
+ocupados hash: 108
+
+a insertar recursivamente: <L31, 0x4960cb0>
+pasó a false
+a insertar: <L31, 0x4960cb0>
+
+ocupados hash: 109
+
+a insertar recursivamente: <d31, 0x49617f0>
+pasó a false
+a insertar: <d31, 0x49617f0>
+
+ocupados hash: 110
+
+a insertar recursivamente: <441, 0x4962498>
+pasó a false
+a insertar: <441, 0x4962498>
+
+ocupados hash: 111
+
+a insertar recursivamente: <L41, 0x4962fd8>
+pasó a false
+a insertar: <L41, 0x4962fd8>
+
+ocupados hash: 112
+
+a insertar recursivamente: <d41, 0x4963b18>
+pasó a false
+a insertar: <d41, 0x4963b18>
+
+ocupados hash: 113
+
+a insertar recursivamente: <451, 0x49647c0>
+pasó a false
+a insertar: <451, 0x49647c0>
+
+ocupados hash: 114
+
+a insertar recursivamente: <L51, 0x4965300>
+pasó a false
+a insertar: <L51, 0x4965300>
+
+ocupados hash: 115
+
+a insertar recursivamente: <d51, 0x4965e40>
+pasó a false
+a insertar: <d51, 0x4965e40>
+
+ocupados hash: 116
+
+a insertar recursivamente: <461, 0x4966ae8>
+pasó a false
+a insertar: <461, 0x4966ae8>
+
+ocupados hash: 117
+
+a insertar recursivamente: <L61, 0x4967628>
+pasó a false
+a insertar: <L61, 0x4967628>
+
+ocupados hash: 118
+
+a insertar recursivamente: <501, 0x495c7c8>
+pasó a false
+a insertar: <501, 0x495c7c8>
+
+ocupados hash: 119
+
+a insertar recursivamente: <M01, 0x495c8b8>
+pasó a false
+a insertar: <M01, 0x495c8b8>
+
+ocupados hash: 120
+
+a insertar recursivamente: <e01, 0x495c9a8>
+pasó a false
+a insertar: <e01, 0x49
