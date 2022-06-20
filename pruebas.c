@@ -1,6 +1,4 @@
 #include "src/hash.h"
-// #include "src/hashDOS.h"
-// #include "src/hash.c" // BORRAR DESPUES
 #include "pa2m.h"
 
 #include <stdlib.h>
@@ -114,7 +112,7 @@ void pruebas_rehash()
 }
 */
 
-void pruebas_de_insercion_replica_chanu()
+void pruebas_de_insercion()
 {
 	hash_t *hash = hash_crear(3);
 
@@ -144,7 +142,7 @@ void pruebas_de_insercion_replica_chanu()
 
 }
 
-void pruebas_de_eliminacion_replica_chanu()
+void pruebas_de_eliminacion()
 {
 	hash_t *hash = hash_crear(3);
 
@@ -165,7 +163,7 @@ void pruebas_de_eliminacion_replica_chanu()
 	hash_destruir_todo(hash, NULL);
 }
 
-void pruebas_de_actualizacion_de_claves_replica_chanu()
+void pruebas_de_actualizacion_de_claves()
 {
 	hash_t *hash = hash_crear(3);
 	void *anterior = NULL;
@@ -174,9 +172,6 @@ void pruebas_de_actualizacion_de_claves_replica_chanu()
 	pa2m_afirmar( anterior == NULL, "El elemento anterior reemplazado en el insertar es NULL.");
 	pa2m_afirmar( !!hash_insertar(hash, "1", "B", &anterior), "Inserto <1,B> exitosamente");
 	pa2m_afirmar( strcmp((char *)anterior, "A") == 0, "El elemento anterior reemplazado en el insertar es A.");
-	// pa2m_afirmar( (char *)anterior == 'A', "El elemento anterior reemplazado en el insertar es A.");
-	// printf("%s", *(char *)anterior);
-	// pa2m_afirmar( printf("%c\n", *(char *)anterior), "A");
 	pa2m_afirmar( strcmp(hash_obtener(hash, "1"), "B") == 0, "Obtengo 1 y vale B");
 	pa2m_afirmar( strcmp(hash_quitar(hash, "1"), "B") == 0, "Elimino la clave 1 y devuelve B.");
 	pa2m_afirmar( !!hash_insertar(hash, "1", "B", &anterior), "Inserto <1,B> exitosamente");
@@ -194,7 +189,7 @@ void pruebas_de_actualizacion_de_claves_replica_chanu()
 
 }
 
-void pruebas_in_el()
+void pruebas_insercion_eliminacion_reinsercion()
 {
 	hash_t *hash = hash_crear(3);
 
@@ -216,7 +211,7 @@ void pruebas_in_el()
 	hash_destruir(hash);
 }
 
-void pruebas_con_muchas_inserciones_eliminaciones_replica_chanu()
+void pruebas_muchas_inserciones_y_eliminaciones()
 {
 	hash_t *hash = hash_crear(10);
 
@@ -267,94 +262,6 @@ void pruebas_con_muchas_inserciones_eliminaciones_replica_chanu()
 	free(vector_elementos);
 }
 
-void pruebas_de_iterador_interno_replica_chanu()
-{
-	hash_t *hash = hash_crear(5);
-
-	// hash_insertar(hash, "\001", "A", NULL);
-	// hash_insertar(hash, "\002", "B", NULL);
-	// hash_insertar(hash, "\003", "C", NULL);
-	// hash_insertar(hash, "\004", "D", NULL);
-	// hash_insertar(hash, "\005", "E", NULL);
-	// hash_insertar(hash, "", "E", NULL);
-
-	hash_insertar(hash, "\001", "A", NULL);
-	hash_insertar(hash, "\002", "B", NULL);
-	hash_insertar(hash, "\003", "C", NULL);
-	hash_insertar(hash, "\004", "D", NULL);
-	hash_insertar(hash, "\005", "E", NULL);
-	hash_insertar(hash, "\006", "J", NULL);
-	hash_insertar(hash, "\008", "K", NULL);
-	hash_insertar(hash, "\010", "L", NULL);
-	hash_insertar(hash, "\011", "N", NULL);
-	hash_insertar(hash, "\012", "O", NULL);
-	hash_insertar(hash, "\013", "P", NULL);
-	hash_insertar(hash, "\014", "P", NULL);
-	hash_insertar(hash, "\015", "P", NULL);
-	hash_insertar(hash, "\016", "P", NULL);
-	hash_insertar(hash, "\017", "P", NULL);
-	hash_insertar(hash, "\020", "P", NULL);
-	hash_insertar(hash, "\021", "P", NULL);
-	hash_insertar(hash, "\022", "P", NULL);
-	hash_insertar(hash, "\023", "P", NULL);
-	hash_insertar(hash, "\024", "P", NULL);
-
-	hash_insertar(hash, "1", "A", NULL);
-	hash_insertar(hash, "2", "B", NULL);
-	hash_insertar(hash, "3", "C", NULL);
-	hash_insertar(hash, "4", "D", NULL);
-	hash_insertar(hash, "5", "E", NULL);
-	hash_insertar(hash, "6", "J", NULL);
-	hash_insertar(hash, "7", "K", NULL);
-	hash_insertar(hash, "8", "L", NULL);
-	hash_insertar(hash, "9", "N", NULL);
-	hash_insertar(hash, "10", "O", NULL);
-	hash_insertar(hash, "11", "P", NULL);
-	hash_insertar(hash, "12", "P", NULL);
-	hash_insertar(hash, "13", "P", NULL);
-	hash_insertar(hash, "14", "P", NULL);
-	hash_insertar(hash, "15", "P", NULL);
-	hash_insertar(hash, "16", "P", NULL);
-	hash_insertar(hash, "17", "P", NULL);
-	hash_insertar(hash, "18", "P", NULL);
-	hash_insertar(hash, "19", "P", NULL);
-	hash_insertar(hash, "20", "P", NULL);
-
-
-	// hash_insertar(hash, "", "A", NULL);
-	// hash_insertar(hash, "", "B", NULL);
-	// hash_insertar(hash, "", "C", NULL);
-	// hash_insertar(hash, "", "D", NULL);
-	// hash_insertar(hash, "", "E", NULL);
-	// hash_insertar(hash, "", "J", NULL);
-	// hash_insertar(hash, "", "K", NULL);
-	// hash_insertar(hash, "", "L", NULL);
-	// hash_insertar(hash, "\010", "N", NULL);
-	// hash_insertar(hash, "", "O", NULL);
-	// hash_insertar(hash, "\011", "P", NULL);
-	// hash_insertar(hash, "", "P", NULL);
-	// hash_insertar(hash, "", "P", NULL);
-	// hash_insertar(hash, "", "P", NULL);
-	// hash_insertar(hash, "", "P", NULL);
-	// hash_insertar(hash, "", "P", NULL);
-	// hash_insertar(hash, "", "P", NULL);
-	// hash_insertar(hash, "", "P", NULL);
-
-
-	// const char *clave1 = "\001";
-	// const char *clave2 = "\002";
-	// const char *clave3 = "\0hola";
-
-	// pa2m_afirmar( strcmp((const char *)clave1, (const char *)clave2) == 0, "lol");
-	// pa2m_afirmar( clave1 == clave2, "lol");
-
-	pa2m_afirmar( hash_cantidad(hash) == 40, "El hash tiene tamaño 40.");
-	// printf("%i", (int)hash_cantidad(hash));
-
-	hash_destruir_todo(hash, NULL);
-}
-
-
 int main()
 {
 	pa2m_nuevo_grupo("Pruebas insercion simple.");
@@ -363,26 +270,22 @@ int main()
 	pa2m_nuevo_grupo("Pruebas inserciones repetidas.");
 	pruebas_insercion_con_claves_repetidas();
 
-	// // pa2m_nuevo_grupo("Pruebas donde se rehashea.");
-	// // pruebas_rehash();
-
 	pa2m_nuevo_grupo("Pruebas de inserción");
-	pruebas_de_insercion_replica_chanu();
+	pruebas_de_insercion();
 
 	pa2m_nuevo_grupo("Pruebas de eliminación");
-	pruebas_de_eliminacion_replica_chanu();
+	pruebas_de_eliminacion();
 
 	pa2m_nuevo_grupo("Pruebas de actualización de claves.");
-	pruebas_de_actualizacion_de_claves_replica_chanu();
+	pruebas_de_actualizacion_de_claves();
 
-	// pa2m_nuevo_grupo("Pruebas de iterador interno");
-	// pruebas_de_iterador_interno_replica_chanu();
+	pa2m_nuevo_grupo("Pruebas inserciones, eliminaciones y reinserciones");
+	pruebas_insercion_eliminacion_reinsercion();
 
 	pa2m_nuevo_grupo("Pruebas muchas inserciones y eliminaciones");
-	pruebas_con_muchas_inserciones_eliminaciones_replica_chanu();
+	pruebas_muchas_inserciones_y_eliminaciones();
 
-	pa2m_nuevo_grupo("jfg");
-	pruebas_in_el();
+	
 
 	return pa2m_mostrar_reporte();
 }

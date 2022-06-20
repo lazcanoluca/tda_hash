@@ -182,11 +182,17 @@ void destruir_tabla(entrada_t **tabla, size_t capacidad, void (*destructor)(void
 hash_t *hash_crear(size_t capacidad)
 {
     hash_t *hash = calloc(1, sizeof(hash_t));
-    if (!hash) return NULL;
+    if (!hash)
+        return NULL;
     
     hash->capacidad = capacidad < CAPACIDAD_MIN_HASH ? CAPACIDAD_MIN_HASH : capacidad;
 
     entrada_t **tabla = calloc(hash->capacidad, sizeof(entrada_t *));
+    if (!tabla) {
+        hash_destruir(hash);
+        return NULL;
+    }
+
     hash->tabla = tabla;
 
     return hash;

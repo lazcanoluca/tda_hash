@@ -10,329 +10,408 @@
 #define CAPACIDAD_MIN_HASH 3
 
 typedef struct entrada {
-    char *clave;
-    void *elemento;
-    struct entrada *siguiente;
+        char *clave;
+        void *elemento;
+        struct entrada *siguiente;
 } entrada_t;
 
 typedef struct lista {
-    entrada_t *head;
-    entrada_t *tail;
-    size_t cantidad;
+        entrada_t *head;
+        entrada_t *tail;
+        size_t cantidad;
 } lista_t;
 
 struct hash {
-    lista_t *tabla;
-    size_t capacidad;
-    size_t ocupados;
+        lista_t *tabla;
+        size_t capacidad;
+        size_t ocupados;
 };
 
-
+/*
+ * Hashea un string dado, donde el puntero no puede ser nulo.
+ * 
+ * Devuelve un número size_t.
+ */
 size_t funcion_hash(const char *str)
 {
-    unsigned long hash = 5381;
-    int c;
-    while ((c = *str++))
-        hash = ((hash << 5) + hash) + (unsigned long)c;
-    return hash;
-    // return (size_t)str[0];
+        unsigned long hash = 5381;
+        int c;
+
+        while ((c = *str++))
+                hash = ((hash << 5) + hash) + (unsigned long)c;
+
+        return hash;
 }
 
+/*
+ * Recibe un string y devuelve una copia, asignándole memoria. En caso de ser nulo,
+ * devuelve NULL.
+ */
 char *duplicar_string(const char *s)
 {
-	if (!s)
-		return NULL;
+        if (!s)
+                return NULL;
 
-	char *p = malloc(strlen(s) + 1);
-	if (!p)
-		return NULL;
+        char *p = malloc(strlen(s) + 1);
+        if (!p)
+                return NULL;
 
-	strcpy(p, s);
-	return p;
+        strcpy(p, s);
+        return p;
 }
 
+/*
+ * Crea una nueva entrada con una clave y un elemento. Si la clave es un puntero nulo,
+ * devuelve NULL. Sino, asigna memoria y devuelve la dirección de la nueva entrada.
+ */
 entrada_t *nueva_entrada(const char *clave, void *elemento)
 {
-    if (!clave) return NULL;
-    entrada_t *nueva_entrada = malloc(sizeof(entrada_t));
-    nueva_entrada->clave = duplicar_string(clave);
-    nueva_entrada->elemento = elemento;
-    nueva_entrada->siguiente = NULL;
-    return nueva_entrada;
+        if (!clave)
+                return NULL;
+
+        entrada_t *nueva_entrada = malloc(sizeof(entrada_t));
+        if (!nueva_entrada)
+                return NULL;
+
+        nueva_entrada->clave = duplicar_string(clave);
+        nueva_entrada->elemento = elemento;
+        nueva_entrada->siguiente = NULL;
+
+        return nueva_entrada;
 }
 
+/*
+ * Dado un hash no nulo, devuelve true si se debe rehashear según las condiciones explicitadas,
+ * sino false.
+ * Si el hash es nulo, devuelve false.
+*/
 bool debo_rehash(hash_t *hash)
 {  
-    if (!hash) return false;
-    return ( hash_cantidad(hash) >= (double)hash->capacidad * FACTOR_CARGA_MAX )
-           ? true : false;
+        if (!hash)
+                return false;
+
+        return ( hash_cantidad(hash) >= (double)hash->capacidad * FACTOR_CARGA_MAX )
+                ? true : false;
 }
 
+/*
+ * Dada una lista, itera sobre cada elemento, ejecutando la función pasada si no es nula sobre cada
+ * elemento. Devuelve true si la función nunca devolvió false, o false cuando la función devuelva
+ * false para algún elemento. Actualiza la cantidad de elementos iterados en el contador pasado.
+ */
 bool iterador(lista_t lista, bool (*f)(const char *clave, void *valor, void *aux), void *aux, size_t *contador)
 {
-	entrada_t *iterador = lista.head;
-	
-	while (iterador != NULL) {
-		(*contador)++;
-		if ( !f(iterador->clave, iterador->elemento, aux) ) return false;
-		iterador = iterador->siguiente;
-	}
+        entrada_t *iterador = lista.head;
 
-	return true;
-}
+        while (iterador != NULL) {
+                (*contador)++;
 
-bool bool_lista_encontrar_elemento(lista_t lista, const char *clave)
-{
-    entrada_t *iterador = lista.head;
+                if ( !f(iterador->clave, iterador->elemento, aux) )
+                        return false;
 
-    while ( iterador != NULL && strcmp(iterador->clave, clave) != 0 ) {
-        iterador = iterador->siguiente;
-    }
+                iterador = iterador->siguiente;
+        }
 
-    if (!iterador) return false;
-
-    if ( strcmp(iterador->clave, clave) == 0) {
         return true;
-    }
-
-    return false;
 }
 
+/*
+ * Dada una lista y una clave no nula, devuelve true si el elemento está en la lista, y false
+ * si no lo está.
+ */
+bool lista_contiene_elemento(lista_t lista, const char *clave)
+{
+        entrada_t *iterador = lista.head;
+
+        while ( iterador != NULL && strcmp(iterador->clave, clave) != 0 )
+                iterador = iterador->siguiente;
+
+        if (!iterador)
+                return false;
+
+        if ( strcmp(iterador->clave, clave) == 0 )
+                return true;
+
+        return false;
+}
+
+/*
+ * Dada una lista y una clave no nula, devuelve el elemento correspondiente a la clave dada,
+ * o NULL si no se encuentra el elemento.
+ */
 void *lista_encontrar_elemento(lista_t lista, const char *clave)
 {
-    entrada_t *iterador = lista.head;
+        entrada_t *iterador = lista.head;
 
-    while ( iterador != NULL && strcmp(iterador->clave, clave) != 0 ) {
-        iterador = iterador->siguiente;
-    }
+        while (iterador != NULL && strcmp(iterador->clave, clave) != 0)
+                iterador = iterador->siguiente;
 
-    if (!iterador) return NULL;
+        if (!iterador)
+                return NULL;
 
-    if ( strcmp(iterador->clave, clave) == 0) {
-        return iterador->elemento;
-    }
+        if (strcmp(iterador->clave, clave) == 0)
+                return iterador->elemento;
 
-    return NULL;
+        return NULL;
 }
 
+/*
+ * Dada una clave no nula y la capacidad del hash, devuelve la posición de la tabla a la cual se
+ * se hasheó la clave.
+ */
 size_t posicion(const char *clave, size_t capacidad)
 {
     return funcion_hash(clave) % capacidad;
 }
 
+/*
+ * Dada una lista, una clave no nula, un elemento, un puntero y un contador, inserta la clave
+ * y el elemento en la lista si no se encuentra. Aumenta el contador. Si la clave ya se
+ * encuentra almacenada actualiza el elemente y devuelve el elemento anterior en el puntero pasado.
+ * Devuelve la lista actualizada.
+ */
 lista_t lista_insertar(lista_t lista, const char *clave, void *elemento, void ***anterior, size_t *ocupados)
 {
-    if (lista.cantidad == 0) {
-        (*ocupados)++;
-        lista.head = nueva_entrada(clave, elemento);
-        lista.tail = lista.head;
-        lista.cantidad++;
-        if (anterior != NULL && (*anterior) != NULL) **anterior = NULL;
+        if (lista.cantidad == 0 || !lista_contiene_elemento(lista, clave)) {
+                (*ocupados)++;
+
+                if (lista.cantidad == 0) {
+                        lista.head = nueva_entrada(clave, elemento);
+                        lista.tail = lista.head;    
+                } else {        
+                        lista.tail->siguiente = nueva_entrada(clave, elemento);
+                        lista.tail = lista.tail->siguiente;
+                }
+
+                lista.cantidad++;
+
+                if (anterior != NULL && (*anterior) != NULL)
+                        **anterior = NULL;
+                
+                return lista;
+        }
+
+        entrada_t *iterador = lista.head;
+
+        while ( strcmp(clave, iterador->clave) != 0 )
+                iterador = iterador->siguiente;
+
+        if (anterior != NULL && (*anterior) != NULL)
+                **anterior = iterador->elemento;
+
+        iterador->elemento = elemento;
+
         return lista;
-    }
-
-    if ( !bool_lista_encontrar_elemento(lista, clave) ) {
-        (*ocupados)++;
-        lista.tail->siguiente = nueva_entrada(clave, elemento);
-        lista.tail = lista.tail->siguiente;
-        lista.cantidad++;
-        if (anterior != NULL && (*anterior) != NULL) **anterior = NULL;
-        return lista;
-    }
-
-    entrada_t *iterador = lista.head;
-
-    while ( strcmp(clave, iterador->clave) != 0 ) {
-        iterador = iterador->siguiente;
-    }
-
-    if (anterior != NULL && (*anterior) != NULL) **anterior = iterador->elemento;
-	iterador->elemento = elemento;
-    
-    return lista;
 }
 
+/*
+ * Dada una lista, una clave no nula, un elemento, un puntero y un contador, elimina la clave
+ * y el elemento si se encuentran. Decrementa el contador. Si la clave no se encuentra, devuelve
+ * la lista.
+ * Devuelve la lista actualizada.
+ */
 lista_t lista_quitar(lista_t lista, const char *clave, void **quitado, size_t *ocupados)
 {
-    if (lista.cantidad == 0) return lista;
+        if (lista.cantidad == 0 || !lista_contiene_elemento(lista, clave))
+                return lista;
 
-    if ( !bool_lista_encontrar_elemento(lista, clave) ) return lista;
+        entrada_t *iterador = lista.head;
+        entrada_t *anterior = NULL;
 
-    entrada_t *iterador = lista.head;
-    entrada_t *anterior = NULL;
+        while (strcmp(clave, iterador->clave) != 0) {
+                anterior = iterador;
+                iterador = iterador->siguiente;
+        }
 
-    while ( strcmp(clave, iterador->clave) != 0) {
-        anterior = iterador;
-        iterador = iterador->siguiente;
-    }
+        *quitado = iterador->elemento;
+        (*ocupados)--;
+        lista.cantidad--;
 
-    *quitado = iterador->elemento;
-    lista.cantidad--;
-    (*ocupados)--;
-    if (!iterador->siguiente) lista.tail = anterior;
-    if (!anterior) lista.head = iterador->siguiente;
-    else anterior->siguiente = iterador->siguiente;
-    free((char *)iterador->clave);
-    free(iterador);
+        if (!iterador->siguiente) {
+                lista.tail = anterior;
+                if (anterior != NULL) anterior->siguiente = NULL;
+        }
 
-    return lista;
+        if (!anterior)
+                lista.head = iterador->siguiente;
+        else
+                anterior->siguiente = iterador->siguiente;
+
+        free((char *)iterador->clave);
+        free(iterador);
+
+        return lista;
 }
 
+/*
+ * Dado un hash no nulo, reacomoda todos sus elementos en una tabla más grande y devuelve
+ * el hash ampliado con todos sus elementos correctamente ubicados.
+ */
 hash_t *rehash(hash_t* hash)
 {
-    size_t nueva_capacidad = hash->capacidad * FACTOR_REHASH;
-    size_t nuevo_ocupados = 0;
-    lista_t *nueva_tabla = calloc(nueva_capacidad, sizeof(lista_t));
+        size_t nueva_capacidad = hash->capacidad * FACTOR_REHASH;
+        size_t nuevo_ocupados = 0;
+        lista_t *nueva_tabla = calloc(nueva_capacidad, sizeof(lista_t));
 
-    size_t pos = 0;
+        size_t pos = 0;
 
-    for (int i = 0; i < hash->capacidad; i++) {
+        for (int i = 0; i < hash->capacidad; i++) {
 
-        entrada_t *iterador = hash->tabla[i].head;
-        entrada_t *aux = iterador;
+                entrada_t *iterador = hash->tabla[i].head;
+                entrada_t *aux = iterador;
 
-        while (iterador != NULL) {
-            pos = posicion(iterador->clave, nueva_capacidad);
-            nueva_tabla[pos] = lista_insertar(nueva_tabla[pos], iterador->clave, iterador->elemento, NULL, &nuevo_ocupados);
-            aux = iterador;
-            iterador = iterador->siguiente;
-            free((char *)aux->clave);
-            free(aux);
+                while (iterador != NULL) {
+                        pos = posicion(iterador->clave, nueva_capacidad);
+                        nueva_tabla[pos] = lista_insertar(nueva_tabla[pos], iterador->clave, iterador->elemento, NULL, &nuevo_ocupados);
+                        aux = iterador;
+                        iterador = iterador->siguiente;
+                        free((char *)aux->clave);
+                        free(aux);
+                }
         }
-    }
 
-    free(hash->tabla);
-    hash->capacidad = nueva_capacidad;
-    if ( nuevo_ocupados != hash->ocupados ) printf("estem xd");
-    hash->tabla = nueva_tabla;
+        free(hash->tabla);
+        hash->capacidad = nueva_capacidad;
+        hash->tabla = nueva_tabla;
+        hash->ocupados = nuevo_ocupados;
 
-    return hash;
+        return hash;
 }
 
+/*
+ * Dada una tabla no nula, la capacidad de la tabla y opcionalmente una función destructora,
+ * destruye todas las listas de la tabla, cada elementos si la función no es nula, y la tabla,
+ * liberando toda la memoria.
+ */
 void destruir_tabla(lista_t *tabla, size_t capacidad, void (*destructor)(void *))
 {
-    for (int i = 0; i < capacidad; i++) {
+        for (int i = 0; i < capacidad; i++) {
 
-        while ( tabla[i].head != NULL) {
+                while ( tabla[i].head != NULL) {
+                        entrada_t *auxiliar = tabla[i].head;
+                        tabla[i].head = tabla[i].head->siguiente;
 
-            entrada_t *auxiliar = tabla[i].head;
-            tabla[i].head = tabla[i].head->siguiente;
+                        if (destructor != NULL)
+                                destructor(auxiliar->elemento);
+                                
+                        free((char *)auxiliar->clave);
+                        free(auxiliar);
 
-            if (destructor != NULL) destructor(auxiliar->elemento);
-            free((char *)auxiliar->clave);
-            free(auxiliar);
+                        tabla[i].cantidad--;
+                }
 
-            tabla[i].cantidad--;
+                tabla[i].head = NULL;
+                tabla[i].tail = NULL;
         }
 
-        tabla[i].head = NULL;
-        tabla[i].tail = NULL;
-    }
-
-    free(tabla);
+        free(tabla);
 }
 
 
 hash_t *hash_crear(size_t capacidad)
 {
-    hash_t *hash = calloc(1, sizeof(hash_t));
-    if (!hash) return NULL;
-    
-    hash->capacidad = capacidad < CAPACIDAD_MIN_HASH ? CAPACIDAD_MIN_HASH : capacidad;
+        hash_t *hash = calloc(1, sizeof(hash_t));
+        if (!hash)
+                return NULL;
 
-    hash->tabla = calloc(hash->capacidad, sizeof(lista_t));
-    if (!hash->tabla) {
-        free(hash);
-        return NULL;
-    }
+        hash->capacidad = capacidad < CAPACIDAD_MIN_HASH ? CAPACIDAD_MIN_HASH : capacidad;
 
-    return hash;
+        hash->tabla = calloc(hash->capacidad, sizeof(lista_t));
+
+        if (!hash->tabla) {
+                free(hash);
+                return NULL;
+        }
+
+        return hash;
 }
 
 hash_t *hash_insertar(hash_t *hash, const char *clave, void *elemento, void** anterior)
 {
-    if (!hash || !clave) return NULL;
+        if (!hash || !clave)
+                return NULL;
 
-    if ( debo_rehash(hash) ) hash = rehash(hash);
+        if (debo_rehash(hash))
+                hash = rehash(hash);
 
-    size_t pos = posicion(clave, hash->capacidad);
-    
-    hash->tabla[pos] = lista_insertar(hash->tabla[pos], clave, elemento, &anterior, &hash->ocupados);
+        size_t pos = posicion(clave, hash->capacidad);
 
-    // size_t cant;
-    // if ((cant = hash_cantidad(hash)) % 4999 == 0) printf("%i\n", (int)cant);
-    // if ((cant = hash_cantidad(hash)) < 50000 && cant > 49990) printf("%i\n", (int)cant);
-    // if ((cant = hash_cantidad(hash)) > 50000) printf("%i\n", (int)cant);
+        hash->tabla[pos] = lista_insertar(hash->tabla[pos], clave, elemento, &anterior, &hash->ocupados);
 
-    // if (hash_cantidad(hash) == 50001) hash->ocupados--;
-
-    return hash;
+        return hash;
 }
 
 void *hash_quitar(hash_t *hash, const char *clave)
 {
-    if (!hash || !clave) return NULL;
+        if (!hash || !clave)
+                return NULL;
 
-    void *quitado = NULL;
+        void *quitado = NULL;
 
-    size_t pos = posicion(clave, hash->capacidad);
+        size_t pos = posicion(clave, hash->capacidad);
 
-    hash->tabla[pos] = lista_quitar(hash->tabla[pos], clave, &quitado, &hash->ocupados);
+        hash->tabla[pos] = lista_quitar(hash->tabla[pos], clave, &quitado, &hash->ocupados);
 
-    return quitado;
+        return quitado;
 }
 
 void *hash_obtener(hash_t *hash, const char *clave)
 {
-    if (!hash) return NULL;
+        if (!hash)
+                return NULL;
 
-    size_t pos = posicion(clave, hash->capacidad);
+        size_t pos = posicion(clave, hash->capacidad);
 
-    return lista_encontrar_elemento(hash->tabla[pos], clave);
+        return lista_encontrar_elemento(hash->tabla[pos], clave);
 }
 
 bool hash_contiene(hash_t *hash, const char *clave)
 {
-    if (!hash) return NULL;
+        if (!hash)
+                return NULL;
 
-    return !hash_obtener(hash, clave) ? false : true; 
+        return !hash_obtener(hash, clave) ? false : true; 
 }
 
 size_t hash_cantidad(hash_t *hash)
 {
-    if (!hash) return 0;
+        if (!hash)
+                return 0;
 
-    return hash->ocupados;
+        return hash->ocupados;
 }
 
 void hash_destruir(hash_t *hash)
 {
-    if (!hash) return;
+        if (!hash)
+                return;
 
-    hash_destruir_todo(hash, NULL);
+        hash_destruir_todo(hash, NULL);
 }
 
 void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 {
-    if (!hash) return;
+        if (!hash)
+                return;
 
-    destruir_tabla(hash->tabla, hash->capacidad, destructor);
+        destruir_tabla(hash->tabla, hash->capacidad, destructor);
 
-    free(hash);
+        free(hash);
 }
 
 size_t hash_con_cada_clave(hash_t *hash,
-						   bool (*f)(const char *clave, void *valor, void *aux),
-						   void *aux)
+                           bool (*f)(const char *clave, void *valor, void *aux),
+                           void *aux)
 {
-    if (!hash) return 0;
+        if (!hash)
+                return 0;
 
-	size_t contador = 0;
+        size_t contador = 0;
 
-	int i = 0;
-	while (i < hash->capacidad && iterador(hash->tabla[i], f, aux, &contador)) {
-		i++;
-	}
+        int i = 0;
 
-	return contador;
+        while (i < hash->capacidad && iterador(hash->tabla[i], f, aux, &contador))
+                i++;
+
+        return contador;
 }
